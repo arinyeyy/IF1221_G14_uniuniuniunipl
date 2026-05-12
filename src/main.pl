@@ -67,18 +67,18 @@ kartu(hitam, mimic).
 
 startGame :- inputJumlahPemain.
 inputJumlahPemain :- write('Masukkan jumlah pemain: '), read(Jml),
-                     ((Jml > 1, Jml < 5, asserta(jumlahPemain(Jml)), nl, tambahPemain(Jml));
-                     ((Jml < 2; Jml > 4), write('Jumlah pemain harus di antara 2 sampai 4!'), nl, inputJumlahPemain)).
+                     ((Jml > 1, Jml < 5) -> (asserta(jumlahPemain(Jml)), nl, tambahPemain(Jml));
+                     (write('Jumlah pemain harus di antara 2 sampai 4!'), nl, inputJumlahPemain)).
 
-helpTambahPemain(_,0) :- !, randomizeUrutan. 
+helpTambahPemain(_,0) :- randomizeUrutan. 
 
 helpTambahPemain(X,N) :- N > 0, format('Masukkan nama pemain ~w: ', [X]), read(Nama),
-                   ((\+pemain(Nama), assertz(pemain(Nama)),
-                    N1 is N - 1, X1 is X + 1, helpTambahPemain(X1, N1));
+                   (\+pemain(Nama) -> assertz(pemain(Nama)),
+                    N1 is N - 1, X1 is X + 1, helpTambahPemain(X1, N1);
                    (pemain(Nama), sudahAdaPemain(X, N))).
 
 sudahAdaPemain(X, N) :- N > 0, write('Pemain sudah ada! Masukkan nama lain: '), read(Nama),
-                        ((\+pemain(Nama), assertz(pemain(Nama)), X1 is X + 1, N1 is N - 1, helpTambahPemain(X1, N1));
+                        (\+pemain(Nama) -> assertz(pemain(Nama)), X1 is X + 1, N1 is N - 1, helpTambahPemain(X1, N1);
                         pemain(Nama), sudahAdaPemain(X, N)).
 
 tambahPemain(N) :- N > 0, X is 1, helpTambahPemain(X,N).
@@ -120,7 +120,7 @@ randomizeUrutan :- findall(Nama, pemain(Nama), Daftar),
                    write('Setiap pemain mendapatkan 7 kartu acak.'),
                    nl,
                    discardPile,
-                   writeDiscardTop.
+                   writeDiscardTop,!.
 
 writeDiscardTop :- discardPileTop([kartu(W,J)]),
                    format('Kartu Discard Top: ~w-~w~n', [W, J]).
