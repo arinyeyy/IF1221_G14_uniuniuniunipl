@@ -96,9 +96,9 @@ bagiKartu([Nama|Sisa]) :-
  
 ambilTujuh(_, 0) :- !.
 ambilTujuh(Nama, N) :-
-    retract(tumpukanKartu([KartuTeratas|SisaDeck])),
+    retract(tumpukanKartu([KartuTeratas|Sisa])),
     assertz(kartuPemain(Nama, KartuTeratas)),
-    asserta(tumpukanKartu(SisaDeck)),
+    asserta(tumpukanKartu(Sisa)),
     N1 is N - 1,
     ambilTujuh(Nama, N1).
 
