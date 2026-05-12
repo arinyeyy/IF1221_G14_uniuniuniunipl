@@ -124,6 +124,7 @@ randomizeUrutan :- findall(Nama, pemain(Nama), Daftar),
 
 writeDiscardTop :- discardPileTop([kartu(W,J)]),
                    format('Kartu Discard Top: ~w-~w~n', [W, J]).
+       
             
 % miscellaneous rules
 
@@ -148,4 +149,3 @@ randomizeList(List, [El|T]) :-
 
 writeList([H]) :- write(H), write('.'),!.
 writeList([H|T]) :- listLength([H|T], N), N > 1, write(H), write(' - '), writeList(T).
-
