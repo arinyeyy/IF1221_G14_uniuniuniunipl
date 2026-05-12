@@ -1,37 +1,82 @@
-getAllCards(AllCards) :-
-    Angka = [merah-0, merah-1, merah-2, merah-3, merah-4, merah-5, merah-6, merah-7, merah-8, merah-9,
-             hijau-0, hijau-1, hijau-2, hijau-3, hijau-4, hijau-5, hijau-6, hijau-7, hijau-8, hijau-9,
-             biru-0, biru-1, biru-2, biru-3, biru-4, biru-5, biru-6, biru-7, biru-8, biru-9,
-             kuning-0, kuning-1, kuning-2, kuning-3, kuning-4, kuning-5, kuning-6, kuning-7, kuning-8, kuning-9],
-    
-    Aksi = [merah-skip, hijau-skip, biru-skip, kuning-skip,
-            merah-reverse, hijau-reverse, biru-reverse, kuning-reverse,
-            merah-draw_two, hijau-draw_two, biru-draw_two, kuning-draw_two],
-    
-    Wild = [hitam-wild,hitam-wild_draw_four],
-
-    append(Angka, Aksi, Temp),
-    append(Temp, Wild, AllCards).
+% Fakta Kartu
+kartu(merah, 0). 
+kartu(merah, 1). 
+kartu(merah, 2). 
+kartu(merah, 3). 
+kartu(merah, 4).
+kartu(merah, 5). 
+kartu(merah, 6). 
+kartu(merah, 7). 
+kartu(merah, 8). 
+kartu(merah, 9).
+kartu(hijau, 0). 
+kartu(hijau, 1). 
+kartu(hijau, 2). 
+kartu(hijau, 3). 
+kartu(hijau, 4).
+kartu(hijau, 5). 
+kartu(hijau, 6). 
+kartu(hijau, 7). 
+kartu(hijau, 8). 
+kartu(hijau, 9).
+kartu(biru, 0). 
+kartu(biru, 1). 
+kartu(biru, 2). 
+kartu(biru, 3). 
+kartu(biru, 4).
+kartu(biru, 5). 
+kartu(biru, 6). 
+kartu(biru, 7). 
+kartu(biru, 8). 
+kartu(biru, 9).
+kartu(kuning, 0). 
+kartu(kuning, 1). 
+kartu(kuning, 2). 
+kartu(kuning, 3). 
+kartu(kuning, 4).
+kartu(kuning, 5). 
+kartu(kuning, 6). 
+kartu(kuning, 7). 
+kartu(kuning, 8). 
+kartu(kuning, 9).
+kartu(merah, skip). 
+kartu(hijau, skip). 
+kartu(biru, skip). 
+kartu(kuning, skip).
+kartu(merah, reverse). 
+kartu(hijau, reverse). 
+kartu(biru, reverse). 
+kartu(kuning, reverse).
+kartu(merah, draw_two). 
+kartu(hijau, draw_two). 
+kartu(biru, draw_two). 
+kartu(kuning, draw_two).
+kartu(hitam, wild). 
+kartu(hitam, wild_draw_four). 
+kartu(hitam, mimic).
 
 initDeck :-
-    % Ambil list kartu yang sudah kita definisikan secara manual
-    getAllCards(AllCards),
-    
-    % Tetap gunakan randomizeList agar urutan pembagian kartu tidak selalu sama
-    randomizeList(AllCards, ShuffledDeck),
-    
-    % Simpan ke memori dinamis
+    findall(kartu(W, J), kartu(W, J), AllCards),
+    randomizeList(AllCards, Kocok),
     retractall(deck(_)),
-    asserta(deck(ShuffledDeck)).
+    asserta(deck(Kocok)).
+
+bagiKartu([]).
+bagiKartu([Nama|Sisa]) :-
+    ambilTujuh(Nama, 7),
+    bagiKartu(Sisa).
+
+ambilTujuh(_, 0) :- !.
+ambilTujuh(Nama, N) :-
+    retract(deck([KartuTeratas|SisaDeck])),
+    assertz(kartuPemain(Nama, KartuTeratas)),
+    asserta(deck(SisaDeck)),
+    N1 is N - 1,
+    ambilTujuh(Nama, N1).
 
 initDiscardPile :-
-    retract(deck([Top|Rest])),
-    % Cek apakah kartu angka (misal formatnya Warna-Angka, bukan Warna-Aksi)
-    (   (Top = _-Angka, number(Angka)) -> 
-        asserta(discardPile([Top])), assertz(deck(Rest))
-    ;   % Jika bukan kartu angka, masukkan lagi ke bawah deck dan cari lagi
-        append(Rest, [Top], NewDeck),
-        retractall(deck(_)),
-        asserta(deck(NewDeck)),
-        initDiscardPile
+    retract(deck([kartu(W, J) | Sisa])),
+    (   number(J) -> 
+        asserta(discardPile([kartu(W, J)])),asserta(deck(Sisa));
+        append(Sisa, [kartu(W, J)], DeckBaru),asserta(deck(DeckBaru)),initDiscardPile
     ).
