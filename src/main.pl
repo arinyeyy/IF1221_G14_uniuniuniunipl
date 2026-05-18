@@ -140,7 +140,7 @@ ambilTujuh(Nama, N) :-
 
 discardPile :-
     retract(tumpukanKartu([kartu(W, J) | Sisa])),
-    (number(J) -> 
+    (0<=J, J<=9 -> 
     asserta(discardPileTop([kartu(W, J)])),asserta(tumpukanKartu(Sisa));
     append(Sisa, [kartu(W, J)], Baru),asserta(tumpukanKartu(Baru)),discardPile
     ).
