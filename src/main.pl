@@ -14,6 +14,12 @@
 :- dynamic(tumpukanKartu/1).
 :- dynamic(discardPileTop/1).
 
+:- dynamic(nomorGiliran/1)
+
+:- dynamic(prevDiscardPileTop/1)
+:- dynamic(giliran/1).
+:- dynamic(prevgiliran/1).
+
 /*Fakta Kartu*/
 kartu(merah, 0). 
 kartu(merah, 1). 
@@ -126,7 +132,19 @@ randomizeUrutan :- findAllPemain(Daftar),
                    write('Setiap pemain mendapatkan 7 kartu acak.'),
                    nl,
                    discardPile,
-                   writeDiscardTop,!.
+                   writeDiscardTop,
+                   assert(nomorGiliran(0))
+                   beriGiliran(N), !.
 
 writeDiscardTop :- discardPileTop([kartu(W,J)]),
                    format('Kartu Discard Top: ~w-~w~n', [W, J]).
+
+beriGiliran(N) :- findAllPemain(AllPemain),
+                  findAllNomorGiliran(Num),
+                  getElement(AllPemain, Num, PemainTerkini),
+                  retractall(giliran(_)),
+                  asserta(giliran(PemainTerkini)),
+                  listLength(AllPemain, Len),
+                  N1 is (N + 1) mod Len,
+                  retractall(nomorGiliran(_)),
+                  asserta(nomorGiliran(N1)).
