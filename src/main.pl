@@ -20,6 +20,13 @@
 :- dynamic(giliran/1).
 :- dynamic(prevgiliran/1).
 
+/* State Game */
+:- dynamic(gameStarted/0)
+:- dynamic(tantangActivated/0).
+:- dynamic(uniActivated/0).
+/* state game ini nyala kalau ada kondisi tertentu, lalu mati di giliran selanjutnya (tiap mainkanKartu hrs dimatiin) */
+/* nyalain: asserta; matiin: retractall */
+
 /*Fakta Kartu*/
 kartu(merah, 0). 
 kartu(merah, 1). 
@@ -118,7 +125,7 @@ discardPile :-
     retract(tumpukanKartu([kartu(W, J) | Sisa])),
     (number(J) -> 
     asserta(discardPileTop([kartu(W, J)])),asserta(tumpukanKartu(Sisa));
-    append(Sisa, [kartu(W, J)],Baru),asserta(tumpukanKartu(Baru)),discardPile
+    append(Sisa, [kartu(W, J)], Baru),asserta(tumpukanKartu(Baru)),discardPile
     ).
 
 randomizeUrutan :- findAllPemain(Daftar),
@@ -133,18 +140,33 @@ randomizeUrutan :- findAllPemain(Daftar),
                    nl,
                    discardPile,
                    writeDiscardTop,
-                   assert(nomorGiliran(0))
-                   beriGiliranNormal(N), !.
+                   assert(nomorGiliran(0)),
+                   listLength(RandomizedDaftar),
+                   beriGiliranPertama, !.
 
 writeDiscardTop :- discardPileTop([kartu(W,J)]),
                    format('Kartu Discard Top: ~w-~w~n', [W, J]).
 
+beriGiliranPertama :- findAllPemain(AllPemain),
+                      nomorGiliran(Num),
+                      getElement(AllPemain, Num, PemainTerkini),
+                      asserta(giliran(PemainTerkini)).
+
 beriGiliranNormal(N) :- findAllPemain(AllPemain),
                   nomorGiliran(Num),
                   getElement(AllPemain, Num, PemainTerkini),
-                  retractall(giliran(_)),
-                  asserta(giliran(PemainTerkini)),
-                  listLength(AllPemain, Len),
-                  N1 is (N + 1) mod Len,
-                  retractall(nomorGiliran(_)),
-                  asserta(nomorGiliran(N1)).
+                  ((giliran(PemainSebelum),
+                        asserta(prevGiliran(PemainSebelum)),
+                        retractall(giliran(_)),
+                        asserta(giliran(PemainTerkini)),
+                        listLength(AllPemain, Len),
+                        N1 is (N + 1) mod Len,
+                        retractall(nomorGiliran(_)),
+                        asserta(nomorGiliran(N1)));
+                    (\+giliran(PemainSebelum),
+                        asserta(giliran(PemainTerkini)),
+                        listLength(AllPemain, Len),
+                        N1 is (N + 1) mod Len,
+                        retractall(nomorGiliran(_)),
+                        asserta(nomorGiliran(N1)))).
+                  
