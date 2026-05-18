@@ -4,7 +4,7 @@
 :- include('cekInfo.pl').
 :- include('lihatCommand&lihatKartu.pl').
 :- include('findAll.pl').
-% :- include('mainkanKartu.pl').
+:- include('mainkanKartu.pl').
 
 :- dynamic(gameStarted/0).
 :- dynamic(jumlahPemain/1).
@@ -84,7 +84,24 @@ kartu(hitam, wild).
 kartu(hitam, wild_draw_four). 
 kartu(hitam, mimic).
 
-startGame :- inputJumlahPemain.
+startGame :-  \+gameStarted -> (
+                                    retractall(jumlahPemain(_)),
+                                    retractall(pemain(_)),
+                                    retractall(kartuPemain(_,_)),
+                                    retractall(allPemain(_)),
+                                    retractall(tumpukanKartu(_)),
+                                    retractall(discardPileTop(_)),
+                                    retractall(nomorGiliran(_)),
+                                    retractall(prevDiscardPileTop(_)),
+                                    retractall(giliran(_)),
+                                    retractall(prevGiliran(_)),
+                                    asserta(gameStarted),
+                                    inputJumlahPemain
+                                )
+                                ;
+                gameStarted -> write('Permainan sudah dimulai!'), nl, nl;
+                fail.
+
 inputJumlahPemain :- write('Masukkan jumlah pemain: '), read(Jml),
                      ((Jml > 1, Jml < 5) -> (asserta(jumlahPemain(Jml)), nl, tambahPemain(Jml));
                      (write('Jumlah pemain harus di antara 2 sampai 4!'), nl, inputJumlahPemain)).
@@ -146,29 +163,29 @@ randomizeUrutan :- findAllPemain(Daftar),
 writeDiscardTop :- discardPileTop([kartu(W,J)]),
                    format('Kartu Discard Top: ~w-~w~n', [W, J]).
 
-beriGiliranPertama :- findAllPemain(AllPemain),
+beriGiliranPertama :- allPemain(AllPemain),
                       nomorGiliran(Num),
                       getElement(AllPemain, Num, PemainTerkini),
                       asserta(giliran(PemainTerkini)),
                       format('Giliran ~w~n~n', [PemainTerkini]).
 
-beriGiliranNormal(N) :- findAllPemain(AllPemain),
-                  nomorGiliran(Num),
-                  getElement(AllPemain, Num, PemainTerkini),
-                  ((giliran(PemainSebelum),
-                        retractall(prevGiliran(_)),
-                        asserta(prevGiliran(PemainSebelum)),
-                        retractall(giliran(_)),
-                        asserta(giliran(PemainTerkini)),
-                        listLength(AllPemain, Len),
-                        N1 is (N + 1) mod Len,
-                        retractall(nomorGiliran(_)),
-                        asserta(nomorGiliran(N1)));
-                    (\+giliran(PemainSebelum),
-                        asserta(giliran(PemainTerkini)),
-                        listLength(AllPemain, Len),
-                        N1 is (N + 1) mod Len,
-                        retractall(nomorGiliran(_)),
-                        asserta(nomorGiliran(N1)))),
-                    format('Giliran ~w~n~n', [PemainTerkini]).
+beriGiliranNormal(Num) :-   allPemain(AllPemain),
+                            nomorGiliran(Num),
+                            
+                            listLength(AllPemain, Len),
+                            Num1 is (Num + 1) mod Len,
+
+                            getElement(AllPemain, Num1, PemainTerkini),
+
+                            (giliran(PemainSebelum),
+                            retractall(prevGiliran(_)),
+                            asserta(prevGiliran(PemainSebelum)),
+
+                            retractall(giliran(_)),
+                            asserta(giliran(PemainTerkini)),
+
+                            retractall(nomorGiliran(_)),
+                            asserta(nomorGiliran(N1))),
+
+                            format('Giliran ~w~n~n', [PemainTerkini]).
                   
