@@ -133,11 +133,11 @@ kocokTumpukan :-
 
 bagiKartu([]).
 bagiKartu([Nama|Sisa]) :-
-    ambilTujuh(Nama, 7),
+    ambil(Nama, 7),
     bagiKartu(Sisa).
  
-ambilTujuh(_, 0) :- !.
-ambilTujuh(Nama, N) :-
+ambil(_, 0) :- !.
+ambil(Nama, N) :-
     retract(tumpukanKartu([KartuTeratas|Sisa])),
     KartuTeratas = kartu(W, J),
     (    
@@ -158,7 +158,7 @@ ambilTujuh(Nama, N) :-
 
 discardPile :-
     retract(tumpukanKartu([kartu(W, J) | Sisa])),
-    (number(J) -> 
+    (0<=J, J<=9 -> 
     asserta(discardPileTop([kartu(W, J)])),asserta(tumpukanKartu(Sisa));
     append(Sisa, [kartu(W, J)], Baru),asserta(tumpukanKartu(Baru)),discardPile
     ).
