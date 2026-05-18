@@ -17,7 +17,7 @@ lihatCommand :-
 lihatKartu :-
     giliran(PemainAktif),
     write('Berikut kartu yang anda miliki.'), nl,
-    findall(kartu(W,J), kartuPemain(PemainAktif, kartu(W,J)), DaftarKartu),
+    findAllKartuPemain(PemainAktif, DaftarKartu),
     tampilkanKartu(DaftarKartu, 1).
 
 tampilkanKartu([], _).

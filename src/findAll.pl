@@ -6,10 +6,6 @@ findPemain(Input, Input) :- \+ (pemain(X), \+ isMember(X,Input)).
 findPemain(Input, Output) :- pemain(X), \+ isMember(X,Input), !, findPemain([X|Input], Output).
 findAllPemain(List) :- findPemain([], List).
 
-findNomorGiliran(Input, Input) :- \+ (nomorGiliran(X), isMember(X,Input)).
-findNomorGiliran(Input, Output) :- giliran(X), \+ isMember(X,Input), !, findNomorGiliran([X|Input], Output).
-findAllNomorGiliran(List) :- findNomorGiliran([], List).
-
 findKartuPemain(Nama, Input, Input) :- \+ (kartuPemain(Nama, K), \+ isMember(K, Input)).
 findKartuPemain(Nama, Input, Output) :- kartuPemain(Nama, K), \+ isMember(K, Input), !, findKartuPemain(Nama, [K|Input], Output).
 findAllKartuPemain(Nama, List) :- findKartuPemain(Nama, [], List).

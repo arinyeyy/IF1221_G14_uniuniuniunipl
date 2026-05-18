@@ -1,6 +1,6 @@
 mainkanKartu(Index) :-
     giliran(Pemain),
-    tangan(Pemain, ListKartu),
+    kartuPemain(Pemain, ListKartu),
     ambil_idx(Index, ListKartu, Kartu),
     discardPileTop(KartuAtas),
     (
@@ -32,20 +32,31 @@ efek_kartu(Kartu) :- Kartu = kartu(W, J), nomorGiliran(Num),
                         (J == skip, ...);
                         (J == reverse, ...);
                         (J == draw-two, ...);
-                        (J == wild, beriGiliranNormal(Num));
-                        (J == wild-draw-four, asserta(tantangActivated), beriGiliranNormal(Num)).
+                        (J == wild, pilihWarna, beriGiliranNormal(Num));
+                        (J == wild-draw-four, asserta(tantangActivated), pilihWarna, beriGiliranNormal(Num)).
                      ).
 
 valid(Kartu, KartuAtas) :- Kartu = kartu(W, J), KartuAtas = kartu(WAtas, JAtas),
+                            (JAtas \== wild, JAtas \== wild-draw-four) ->
                             (
                                 (WAtas \== W, J == draw-two) -> fail;
-                                (JAtas == wild, J == wild) -> fail;
-                                (JAtas == wild-draw-four, J == wild) -> fail;
-                                (JAtas == wild, J == wild-draw-four) -> fail;
-                                (JAtas == wild-draw-four, J == wild) -> fail;
-                                (JAtas == J, JAtas \== wild, J \== wild, JAtas \== wild-draw-four, J \== wild-draw-four) -> true;
-                                (WAtas == W, WAtas \== hitam, W \== hitam) -> true;
-                                (WAtas == hitam, W \== hitam) -> true;
-                                (WAtas \== hitam, W == hitam) -> true;
+                                (WAtas == W) -> true;
+                                (JAtas == J) -> true;
+                                (J == wild) -> true;
+                                (J == wild-draw-four) -> true;
+                                fail
+                            );
+                            (
+                                warnaWildTerpilih(Warna),
+                                (Warna == W) -> true;
                                 fail
                             ).
+                            
+pilihWarna :- retractall(warnaWildTerpilih(_)),
+              write('Pilih warna: '),
+              read(Warna),
+              (Warna == 'merah') -> asserta(warnaWildTerpilih(merah));
+              (Warna == 'biru') -> asserta(warnaWildTerpilih(biru));
+              (Warna == 'kuning') -> asserta(warnaWildTerpilih(kuning));
+              (Warna == 'hijau') -> asserta(warnaWildTerpilih(hijau));
+              nl, write('Warna tidak tersedia!'), nl, pilihWarna.

@@ -14,9 +14,7 @@
 :- dynamic(allKartu/1).
 :- dynamic(tumpukanKartu/1).
 :- dynamic(discardPileTop/1).
-
 :- dynamic(nomorGiliran/1).
-
 :- dynamic(prevDiscardPileTop/1).
 :- dynamic(giliran/1).
 :- dynamic(prevgiliran/1).
@@ -27,6 +25,7 @@
 :- dynamic(uniActivated/0).
 /* state game ini nyala kalau ada kondisi tertentu, lalu mati di giliran selanjutnya (tiap mainkanKartu hrs dimatiin) */
 /* nyalain: asserta; matiin: retractall */
+:- dynamic(warnaWildTerpilih/1).
 
 /*Fakta Kartu*/
 kartu(merah, 0). 
