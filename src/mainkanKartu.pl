@@ -7,7 +7,9 @@ mainkanKartu(Index) :-
         discardPileTop([KartuAtas|_]), 
         (
             valid(Kartu, KartuAtas) ->
-            (write(Pemain), write(' memainkan kartu: '), write(Kartu), nl, nl,
+            (write(Pemain), write(' memainkan kartu: '), 
+            Kartu = kartu(W, J),
+            format('~w-~w', [W, J]), nl, nl,
             deleteElement(ListKartu, Indexriil, SisaKartu),
             retract(kartuPemain(Pemain, Kartu)), !,
             retractall(discardPileTop(_)),

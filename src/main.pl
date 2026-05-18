@@ -125,6 +125,12 @@ kocokKartu:-
     retractall(tumpukanKartu(_)),
     asserta(tumpukanKartu(Kocok)).
 
+kocokTumpukan :-
+    tumpukanKartu(Cards),
+    randomizeList(Cards, NewCards),
+    retractall(tumpukanKartu(_)),
+    asserta(tumpukanKartu(NewCards)).
+
 bagiKartu([]).
 bagiKartu([Nama|Sisa]) :-
     ambilTujuh(Nama, 7),
@@ -133,10 +139,22 @@ bagiKartu([Nama|Sisa]) :-
 ambilTujuh(_, 0) :- !.
 ambilTujuh(Nama, N) :-
     retract(tumpukanKartu([KartuTeratas|Sisa])),
-    assertz(kartuPemain(Nama, KartuTeratas)),
-    asserta(tumpukanKartu(Sisa)),
-    N1 is N - 1,
-    ambilTujuh(Nama, N1).
+    KartuTeratas = kartu(W, J),
+    (    
+        integer(J) -> 
+            (
+                assertz(kartuPemain(Nama, KartuTeratas)),
+                asserta(tumpukanKartu(Sisa)),
+                N1 is N - 1,
+                ambilTujuh(Nama, N1)
+            );
+            (
+                asserta(tumpukanKartu(Sisa)),
+                kocokTumpukan,
+                ambilTujuh(Nama, N)
+            )
+        ).
+
 
 discardPile :-
     retract(tumpukanKartu([kartu(W, J) | Sisa])),
@@ -185,7 +203,6 @@ beriGiliranNormal(Num) :-   allPemain(AllPemain),
                             asserta(giliran(PemainTerkini)),
 
                             retractall(nomorGiliran(_)),
-                            asserta(nomorGiliran(N1))),
+                            asserta(nomorGiliran(Num1))),
 
                             format('Giliran ~w~n~n', [PemainTerkini]).
-                  
