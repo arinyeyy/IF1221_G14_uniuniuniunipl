@@ -16,13 +16,12 @@ lihatKartu :-
 
 tampilkanKartu([], _).
 
-tampilkanKartu([H|T], N) :-
-    kartuTersembunyi(H), !,
-    H = kartu(W, J),
+tampilkanKartu([kartu(W,J)|T], N) :-
+    kartuTersembunyi(kartu(W,J)), !,
     format('~w. ~w-~w (disembunyikan)~n', [N, W, J]),
     N1 is N + 1,
     tampilkanKartu(T, N1).
-
+    
 tampilkanKartu([kartu(W,J)|T], N) :-
     format('~w. ~w-~w~n', [N, W, J]),
     N1 is N + 1,
