@@ -3,7 +3,7 @@
 :- include('ambilKartu.pl').
 :- include('cekInfo.pl').
 :- include('lihatCommand&lihatKartu.pl').
-
+:- include('findAll.pl').
 
 :- dynamic(gameStarted/0).
 :- dynamic(jumlahPemain/1).
@@ -89,12 +89,6 @@ sudahAdaPemain(X, N) :- N > 0, write('Pemain sudah ada! Masukkan nama lain: '), 
 
 tambahPemain(N) :- N > 0, X is 1, helpTambahPemain(X,N).
 
-findKartu(Input, Input) :- \+ (kartu(W,J), \+ isMember(kartu(W,J),Input)).
-findKartu(Input, Output) :- kartu(W,J), \+ isMember(kartu(W,J),Input), !, findKartu([kartu(W,J)|Input], Output).
-findAllKartu(List) :- findKartu([], List).
-
-/* Sumber Kode: https://stackoverflow.com/questions/72682057/implementing-a-simple-version-of-prolog-findall-without-using-the-built-in-finda */
-
 kocokKartu:-
     findAllKartu(AllCards),
     randomizeList(AllCards, Kocok),
@@ -120,12 +114,6 @@ discardPile :-
     asserta(discardPileTop([kartu(W, J)])),asserta(tumpukanKartu(Sisa));
     append(Sisa, [kartu(W, J)],Baru),asserta(tumpukanKartu(Baru)),discardPile
     ).
-
-findPemain(Input, Input) :- \+ (pemain(X), \+ isMember(X,Input)).
-findPemain(Input, Output) :- pemain(X), \+ isMember(X,Input), !, findPemain([X|Input], Output).
-findAllPemain(List) :- findPemain([], List).
-
-/* Sumber Kode: https://stackoverflow.com/questions/72682057/implementing-a-simple-version-of-prolog-findall-without-using-the-built-in-finda */
 
 randomizeUrutan :- findAllPemain(Daftar),
                    randomizeList(Daftar, RandomizedDaftar),
