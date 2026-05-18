@@ -1,6 +1,9 @@
 % miscellaneous rules
 :- use_module(library(random)).
 
+isMember(H, [H|_]) :- !.
+isMember(H, [_|T]) :- isMember(H, T).
+
 listLength([], 0) :- !.
 listLength([_|Tail], Length) :- listLength(Tail, TailLength), Length is TailLength + 1.
 

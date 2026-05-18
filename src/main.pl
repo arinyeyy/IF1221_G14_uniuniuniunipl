@@ -89,8 +89,14 @@ sudahAdaPemain(X, N) :- N > 0, write('Pemain sudah ada! Masukkan nama lain: '), 
 
 tambahPemain(N) :- N > 0, X is 1, helpTambahPemain(X,N).
 
+findKartu(Input, Input) :- \+ (kartu(W,J), \+ isMember(kartu(W,J),Input)).
+findKartu(Input, Output) :- kartu(W,J), \+ isMember(kartu(W,J),Input), !, findKartu([kartu(W,J)|Input], Output).
+findAllKartu(List) :- findKartu([], List).
+
+/* Sumber Kode: https://stackoverflow.com/questions/72682057/implementing-a-simple-version-of-prolog-findall-without-using-the-built-in-finda */
+
 kocokKartu:-
-    findall(kartu(W, J), kartu(W, J), AllCards),
+    findAllKartu(AllCards),
     randomizeList(AllCards, Kocok),
     retractall(tumpukanKartu(_)),
     asserta(tumpukanKartu(Kocok)).
@@ -115,7 +121,13 @@ discardPile :-
     append(Sisa, [kartu(W, J)],Baru),asserta(tumpukanKartu(Baru)),discardPile
     ).
 
-randomizeUrutan :- findall(Nama, pemain(Nama), Daftar),
+findPemain(Input, Input) :- \+ (pemain(X), \+ isMember(X,Input)).
+findPemain(Input, Output) :- pemain(X), \+ isMember(X,Input), !, findPemain([X|Input], Output).
+findAllPemain(List) :- findPemain([], List).
+
+/* Sumber Kode: https://stackoverflow.com/questions/72682057/implementing-a-simple-version-of-prolog-findall-without-using-the-built-in-finda */
+
+randomizeUrutan :- findAllPemain(Daftar),
                    randomizeList(Daftar, RandomizedDaftar),
                    asserta(allPemain(RandomizedDaftar)), nl,
                    kocokKartu,
