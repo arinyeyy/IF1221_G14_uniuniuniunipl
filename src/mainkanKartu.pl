@@ -38,13 +38,14 @@ efek_kartu(Kartu) :- Kartu = kartu(W, J), nomorGiliran(Num),
 
 valid(Kartu, KartuAtas) :- Kartu = kartu(W, J), KartuAtas = kartu(WAtas, JAtas),
                             (
-                                ((WAtas \== W, J == draw-two) -> fail);
-                                ((JAtas == wild, J == wild) -> fail);
-                                ((JAtas == wild-draw-four, J == wild) -> fail);
-                                ((JAtas == wild, J == wild-draw-four) -> fail);
-                                ((JAtas == wild-draw-four, J == wild) -> fail);
-                                ((JAtas == J, JAtas \== wild, J \== wild, JAtas \== wild-draw-four, J \== wild-draw-four) -> true);
-                                ((WAtas == W, WAtas \== hitam, W \== hitam) -> true);
-                                ((WAtas == hitam, W \== hitam) -> true);
-                                ((WAtas \== hitam, W == hitam) -> true)
+                                (WAtas \== W, J == draw-two) -> fail;
+                                (JAtas == wild, J == wild) -> fail;
+                                (JAtas == wild-draw-four, J == wild) -> fail;
+                                (JAtas == wild, J == wild-draw-four) -> fail;
+                                (JAtas == wild-draw-four, J == wild) -> fail;
+                                (JAtas == J, JAtas \== wild, J \== wild, JAtas \== wild-draw-four, J \== wild-draw-four) -> true;
+                                (WAtas == W, WAtas \== hitam, W \== hitam) -> true;
+                                (WAtas == hitam, W \== hitam) -> true;
+                                (WAtas \== hitam, W == hitam) -> true;
+                                fail
                             ).
