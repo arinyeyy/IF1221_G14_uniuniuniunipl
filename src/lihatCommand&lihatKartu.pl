@@ -11,18 +11,19 @@ lihatCommand :-
 lihatKartu :-
     allPemain([PemainAktif|_]),
     write('Berikut kartu yang anda miliki.'), nl,
-    kartuPemain(PemainAktif, DaftarKartu),  %ini rulesnya belum ada btw, aku tebak dulu aja yah
+    findall(kartu(W,J), kartuPemain(PemainAktif, kartu(W,J)), DaftarKartu),
     tampilkanKartu(DaftarKartu, 1).
 
 tampilkanKartu([], _).
 
 tampilkanKartu([H|T], N) :-
     kartuTersembunyi(H), !,
-    format('~w. ~w (disembunyikan)~n', [N, H]),
+    H = kartu(W, J),
+    format('~w. ~w-~w (disembunyikan)~n', [N, W, J]),
     N1 is N + 1,
     tampilkanKartu(T, N1).
 
-tampilkanKartu([H|T], N) :-
-    format('~w. ~w~n', [N, H]),
+tampilkanKartu([kartu(W,J)|T], N) :-
+    format('~w. ~w-~w~n', [N, W, J]),
     N1 is N + 1,
     tampilkanKartu(T, N1).
