@@ -1,4 +1,10 @@
 :- use_module(library(random)).
+:- include('miscellaneous.pl').
+:- include('ambilKartu.pl').
+:- include('cekInfo.pl').
+:- include('lihatCommand&lihatKartu.pl').
+:- include('findAll.pl').
+
 :- dynamic(gameStarted/0).
 :- dynamic(jumlahPemain/1).
 :- dynamic(pemain/1).
@@ -7,6 +13,12 @@
 :- dynamic(allKartu/1).
 :- dynamic(tumpukanKartu/1).
 :- dynamic(discardPileTop/1).
+
+:- dynamic(nomorGiliran/1)
+
+:- dynamic(prevDiscardPileTop/1)
+:- dynamic(giliran/1).
+:- dynamic(prevgiliran/1).
 
 /*Fakta Kartu*/
 kartu(merah, 0). 
@@ -84,7 +96,7 @@ sudahAdaPemain(X, N) :- N > 0, write('Pemain sudah ada! Masukkan nama lain: '), 
 tambahPemain(N) :- N > 0, X is 1, helpTambahPemain(X,N).
 
 kocokKartu:-
-    findall(kartu(W, J), kartu(W, J), AllCards),
+    findAllKartu(AllCards),
     randomizeList(AllCards, Kocok),
     retractall(tumpukanKartu(_)),
     asserta(tumpukanKartu(Kocok)).
@@ -109,7 +121,7 @@ discardPile :-
     append(Sisa, [kartu(W, J)],Baru),asserta(tumpukanKartu(Baru)),discardPile
     ).
 
-randomizeUrutan :- findall(Nama, pemain(Nama), Daftar),
+randomizeUrutan :- findAllPemain(Daftar),
                    randomizeList(Daftar, RandomizedDaftar),
                    asserta(allPemain(RandomizedDaftar)), nl,
                    kocokKartu,
@@ -120,32 +132,19 @@ randomizeUrutan :- findall(Nama, pemain(Nama), Daftar),
                    write('Setiap pemain mendapatkan 7 kartu acak.'),
                    nl,
                    discardPile,
-                   writeDiscardTop,!.
+                   writeDiscardTop,
+                   assert(nomorGiliran(0))
+                   beriGiliran(N), !.
 
 writeDiscardTop :- discardPileTop([kartu(W,J)]),
                    format('Kartu Discard Top: ~w-~w~n', [W, J]).
-       
-            
-% miscellaneous rules
 
-listLength([], 0) :- !.
-listLength([_|Tail], Length) :- listLength(Tail, TailLength), Length is TailLength + 1.
-
-getElement([E|_], 0, E) :- !.
-getElement([_|T], I, E) :- I > 0, NewI is I - 1, getElement(T, NewI, E).
-
-deleteElement([_|Tail], 0, Tail) :- !.
-deleteElement([Head|Tail], Index, [Head|UpdatedTail]) :- Index > 0, NewIndex is Index - 1, deleteElement(Tail, NewIndex, UpdatedTail).
-
-appendElement(List, Element, NewList) :- append(List, [Element], NewList), !.
-
-randomizeList([], []) :- !.
-randomizeList(List, [El|T]) :-
-    listLength(List, Length),
-    random(0, Length, R),
-    getElement(List, R, El),
-    deleteElement(List, R, UpdatedList),
-    randomizeList(UpdatedList, T).
-
-writeList([H]) :- write(H), write('.'),!.
-writeList([H|T]) :- listLength([H|T], N), N > 1, write(H), write(' - '), writeList(T).
+beriGiliran(N) :- findAllPemain(AllPemain),
+                  findAllNomorGiliran(Num),
+                  getElement(AllPemain, Num, PemainTerkini),
+                  retractall(giliran(_)),
+                  asserta(giliran(PemainTerkini)),
+                  listLength(AllPemain, Len),
+                  N1 is (N + 1) mod Len,
+                  retractall(nomorGiliran(_)),
+                  asserta(nomorGiliran(N1)).
