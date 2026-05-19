@@ -16,7 +16,7 @@ cekInfo :-
 
 displayAllPlayersInfo([], _).
 displayAllPlayersInfo([Nama|T], Index) :-
-    findAllTangan(Nama, Tangan),
+    findKartuPemain(Nama, Tangan),
     listLength(Tangan, Jumlah),
     format('Nama pemain ~w: ~w~n', [Index, Nama]),
     format('Jumlah kartu : ~w~n', [Jumlah]),
