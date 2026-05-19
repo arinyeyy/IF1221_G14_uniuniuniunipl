@@ -4,6 +4,7 @@
 :- include('cekInfo.pl').
 :- include('lihatCommand&lihatKartu.pl').
 :- include('findAll.pl').
+:- include('mainkanKartu.pl').
 
 :- dynamic(gameStarted/0).
 :- dynamic(jumlahPemain/1).
@@ -13,6 +14,18 @@
 :- dynamic(allKartu/1).
 :- dynamic(tumpukanKartu/1).
 :- dynamic(discardPileTop/1).
+:- dynamic(nomorGiliran/1).
+:- dynamic(prevDiscardPileTop/1).
+:- dynamic(giliran/1).
+:- dynamic(prevgiliran/1).
+
+/* State Game */
+:- dynamic(gameStarted/0).
+:- dynamic(tantangActivated/0).
+:- dynamic(uniActivated/0).
+/* state game ini nyala kalau ada kondisi tertentu, lalu mati di giliran selanjutnya (tiap mainkanKartu hrs dimatiin) */
+/* nyalain: asserta; matiin: retractall */
+:- dynamic(warnaWildTerpilih/1).
 
 /*Fakta Kartu*/
 kartu(merah, 0). 
@@ -71,7 +84,24 @@ kartu(hitam, wild).
 kartu(hitam, wild_draw_four). 
 kartu(hitam, mimic).
 
-startGame :- inputJumlahPemain.
+startGame :-  \+gameStarted -> (
+                                    retractall(jumlahPemain(_)),
+                                    retractall(pemain(_)),
+                                    retractall(kartuPemain(_,_)),
+                                    retractall(allPemain(_)),
+                                    retractall(tumpukanKartu(_)),
+                                    retractall(discardPileTop(_)),
+                                    retractall(nomorGiliran(_)),
+                                    retractall(prevDiscardPileTop(_)),
+                                    retractall(giliran(_)),
+                                    retractall(prevGiliran(_)),
+                                    asserta(gameStarted),
+                                    inputJumlahPemain
+                                )
+                                ;
+                gameStarted -> write('Permainan sudah dimulai!'), nl, nl;
+                fail.
+
 inputJumlahPemain :- write('Masukkan jumlah pemain: '), read(Jml),
                      ((Jml > 1, Jml < 5) -> (asserta(jumlahPemain(Jml)), nl, tambahPemain(Jml));
                      (write('Jumlah pemain harus di antara 2 sampai 4!'), nl, inputJumlahPemain)).
@@ -97,22 +127,22 @@ kocokKartu:-
 
 bagiKartu([]).
 bagiKartu([Nama|Sisa]) :-
-    ambilTujuh(Nama, 7),
+    ambil(Nama, 7),
     bagiKartu(Sisa).
  
-ambilTujuh(_, 0) :- !.
-ambilTujuh(Nama, N) :-
+ambil(_, 0) :- !.
+ambil(Nama, N) :-
     retract(tumpukanKartu([KartuTeratas|Sisa])),
     assertz(kartuPemain(Nama, KartuTeratas)),
     asserta(tumpukanKartu(Sisa)),
     N1 is N - 1,
-    ambilTujuh(Nama, N1).
+    ambil(Nama, N1).
 
 discardPile :-
     retract(tumpukanKartu([kartu(W, J) | Sisa])),
     (0<=J, J<=9 -> 
     asserta(discardPileTop([kartu(W, J)])),asserta(tumpukanKartu(Sisa));
-    append(Sisa, [kartu(W, J)],Baru),asserta(tumpukanKartu(Baru)),discardPile
+    append(Sisa, [kartu(W, J)], Baru),asserta(tumpukanKartu(Baru)),discardPile
     ).
 
 randomizeUrutan :- findAllPemain(Daftar),
@@ -124,9 +154,38 @@ randomizeUrutan :- findAllPemain(Daftar),
                    writeList(RandomizedDaftar),
                    nl,
                    write('Setiap pemain mendapatkan 7 kartu acak.'),
-                   nl,
+                   nl, nl,
                    discardPile,
-                   writeDiscardTop,!.
+                   writeDiscardTop,
+                   asserta(nomorGiliran(0)),
+                   beriGiliranPertama, !.
 
 writeDiscardTop :- discardPileTop([kartu(W,J)]),
                    format('Kartu Discard Top: ~w-~w~n', [W, J]).
+
+beriGiliranPertama :- allPemain(AllPemain),
+                      nomorGiliran(Num),
+                      getElement(AllPemain, Num, PemainTerkini),
+                      asserta(giliran(PemainTerkini)),
+                      format('Giliran ~w~n~n', [PemainTerkini]).
+
+beriGiliranNormal(Num) :-   allPemain(AllPemain),
+                            nomorGiliran(Num),
+                            
+                            listLength(AllPemain, Len),
+                            Num1 is (Num + 1) mod Len,
+
+                            getElement(AllPemain, Num1, PemainTerkini),
+
+                            (giliran(PemainSebelum),
+                            retractall(prevGiliran(_)),
+                            asserta(prevGiliran(PemainSebelum)),
+
+                            retractall(giliran(_)),
+                            asserta(giliran(PemainTerkini)),
+
+                            retractall(nomorGiliran(_)),
+                            asserta(nomorGiliran(N1))),
+
+                            format('Giliran ~w~n~n', [PemainTerkini]).
+                  
