@@ -1,7 +1,3 @@
-:-include('kartuSkip.pl').
-:-include('kartuReverse.pl').
-:-include('draw_two.pl').
-
 mainkanKartu(Index) :-
     gameStarted -> (
         giliran(Pemain), !,
@@ -11,7 +7,8 @@ mainkanKartu(Index) :-
         discardPileTop([KartuAtas|_]), 
         (
             valid(Kartu, KartuAtas) ->
-            (write(Pemain), write(' memainkan kartu: '), write(Kartu), nl, nl,
+            ( Kartu = kartu(W,J),
+            write(Pemain), format(' memainkan kartu: ~w-~w~n', [W, J]),
             deleteElement(ListKartu, Indexriil, SisaKartu),
             retract(kartuPemain(Pemain, Kartu)), !,
             retractall(discardPileTop(_)),

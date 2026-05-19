@@ -1,5 +1,3 @@
-:- include('turn.pl').
-
 ambilKartu :-
     pemainAktif(P),
     discardPileTop([kartu(_, JenisTop)]),
@@ -13,7 +11,7 @@ ambilKartu :-
 
     ambilBeberapaKartu(P, Count, KartuDiambil),
 
-    maplist([kartu(W,J)]>>(format('~w mendapatkan kartu: ~w-~w.~n', [P, W, J])), KartuDiambil),
+    % maplist([kartu(W,J)]>>(format('~w mendapatkan kartu: ~w-~w.~n', [P, W, J])), KartuDiambil),
 
     skipTurn,
     giliran(Next),

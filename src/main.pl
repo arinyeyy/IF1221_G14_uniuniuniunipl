@@ -10,6 +10,8 @@
 :- include('kartuReverse.pl').
 :- include('kartuSkip.pl').
 :- include('uni.pl').
+:- include('draw_two.pl').
+
 
 :- dynamic(gameStarted/0).
 :- dynamic(jumlahPemain/1).
