@@ -8,12 +8,6 @@ lihatCommand :-
     write('2. lihatKartu'), nl,
     write('3. cekInfo'), nl.
 
-/* lihatKartu :-
-    allPemain([PemainAktif|_]),
-    write('Berikut kartu yang anda miliki.'), nl,
-    findall(kartu(W,J), kartuPemain(PemainAktif, kartu(W,J)), DaftarKartu),
-    tampilkanKartu(DaftarKartu, 1). */
-
 lihatKartu :-
     giliran(PemainAktif),
     write('Berikut kartu yang anda miliki.'), nl,
