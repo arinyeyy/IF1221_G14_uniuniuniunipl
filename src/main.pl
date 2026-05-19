@@ -202,6 +202,7 @@ beriGiliranPertama :- allPemain(AllPemain),
                       getElement(AllPemain, Num, PemainTerkini),
                       asserta(giliran(PemainTerkini)),
                       format('Giliran ~w~n~n', [PemainTerkini]).
+                      tentukanAksi(PemainTerkini).
 
 beriGiliranNormal(Num) :-   allPemain(AllPemain),
                             nomorGiliran(Num),
@@ -224,5 +225,6 @@ beriGiliranNormal(Num) :-   allPemain(AllPemain),
                             format('Giliran ~w~n~n', [PemainTerkini]),
                             
                             aktifkanUniJika(PemainTerkini).
+                            tentukanAksi(PemainTerkini).
 
 exitGame :- retractall(gameStarted).
