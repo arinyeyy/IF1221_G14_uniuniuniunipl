@@ -2,44 +2,62 @@
 :- include('kartuSkip.pl').
 
 mainkanKartu(Index) :-
-    giliran(Pemain),
-    findall(kartu(W,J),
-        kartuPemain(Pemain, kartu(W,J)),
-        DaftarKartu),
+    gameStarted -> (
+        giliran(Pemain), !,
+        findAllKartuPemain(Pemain, ListKartu),
+        Indexriil is Index-1,
+        getElement(ListKartu, Indexriil, Kartu),
+        discardPileTop([KartuAtas|_]), 
+        (
+            valid(Kartu, KartuAtas) ->
+            (write(Pemain), write(' memainkan kartu: '), 
+            Kartu = kartu(W, J),
+            format('~w-~w', [W, J]), nl, nl,
+            deleteElement(ListKartu, Indexriil, SisaKartu),
+            retract(kartuPemain(Pemain, Kartu)), !,
+            retractall(discardPileTop(_)),
+            assertz(discardPileTop([Kartu])),
+            efek_kartu(Kartu))
+            ;
+            write('Kartu tidak valid!'), nl, nl, fail
+        )
+    );
+    write('Permainan belum dimulai!'), nl, nl, fail.
 
-    getElement(DaftarKartu, Index, kartu(Warna, Jenis)),
-    discardPileTop([kartu(WarnaTop, JenisTop)]),
+efek_kartu(kartu(_, J)) :- integer(J), !,
+                           nomorGiliran(Num),
+                           beriGiliranNormal(Num).
 
-    (
-        Warna == WarnaTop ;
-        Jenis == JenisTop ;
-        Warna == hitam
-    ),
+efek_kartu(kartu(_, wild)) :- nomorGiliran(Num),
+                              pilihWarna,
+                              beriGiliranNormal(Num).
 
-    retract(kartuPemain(Pemain, kartu(Warna, Jenis))),
-    retractall(discardPileTop(_)),
-    asserta(discardPileTop([kartu(Warna, Jenis)])),
+efek_kartu(kartu(_, wild-draw-four)) :- nomorGiliran(Num),
+                                        asserta(activateTantang),
+                                        pilihWarna,
+                                        beriGiliranNormal(Num).
 
-    format('~w memainkan kartu ~w-~w.~n',
-        [Pemain, Warna, Jenis]),
-
-    efekKartu(kartu(Warna, Jenis)).
-
-efekKartu(kartu(_, reverse)) :-
-    kartuReverse, !.
-
-efekKartu(kartu(_, skip)) :-
-    kartuSkip, !.
-
-/* efekKartu(kartu(_, draw_two)) :-
-    skipKartu, !.
-
-efekKartu(kartu(_, wild)) :-
-    skipKartu, !. 
-    
-efekKartu(kartu(_, wild_draw_four)) :-
-    skipKartu, !. */
-
-efekKartu(_) :-
-    nomorGiliran(N),        % ambil N di sini
-    beriGiliranNormal(N).   % lalu pass
+valid(Kartu, KartuAtas) :- Kartu = kartu(W, J), KartuAtas = kartu(WAtas, JAtas),
+                            (JAtas \== wild, JAtas \== wild-draw-four) ->
+                            (
+                                (WAtas \== W, J == draw-two) -> fail;
+                                (WAtas == W) -> true;
+                                (JAtas == J) -> true;
+                                (J == wild) -> true;
+                                (J == wild-draw-four) -> true;
+                                fail
+                            );
+                            (
+                                warnaWildTerpilih(Warna),
+                                (Warna == W) -> true;
+                                fail
+                            ).
+                            
+pilihWarna :- retractall(warnaWildTerpilih(_)),
+              write('Pilih warna: '),
+              read(Warna),
+              (Warna == 'merah') -> asserta(warnaWildTerpilih(merah));
+              (Warna == 'biru') -> asserta(warnaWildTerpilih(biru));
+              (Warna == 'kuning') -> asserta(warnaWildTerpilih(kuning));
+              (Warna == 'hijau') -> asserta(warnaWildTerpilih(hijau));
+              nl, write('Warna tidak tersedia!'), nl, pilihWarna.

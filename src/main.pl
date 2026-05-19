@@ -125,22 +125,40 @@ kocokKartu:-
     retractall(tumpukanKartu(_)),
     asserta(tumpukanKartu(Kocok)).
 
+kocokTumpukan :-
+    tumpukanKartu(Cards),
+    randomizeList(Cards, NewCards),
+    retractall(tumpukanKartu(_)),
+    asserta(tumpukanKartu(NewCards)).
+
 bagiKartu([]).
 bagiKartu([Nama|Sisa]) :-
-    ambilTujuh(Nama, 7),
+    ambil(Nama, 7),
     bagiKartu(Sisa).
  
-ambilTujuh(_, 0) :- !.
-ambilTujuh(Nama, N) :-
+ambil(_, 0) :- !.
+ambil(Nama, N) :-
     retract(tumpukanKartu([KartuTeratas|Sisa])),
-    assertz(kartuPemain(Nama, KartuTeratas)),
-    asserta(tumpukanKartu(Sisa)),
-    N1 is N - 1,
-    ambilTujuh(Nama, N1).
+    KartuTeratas = kartu(W, J),
+    (    
+        integer(J) -> 
+            (
+                assertz(kartuPemain(Nama, KartuTeratas)),
+                asserta(tumpukanKartu(Sisa)),
+                N1 is N - 1,
+                ambil(Nama, N1)
+            );
+            (
+                asserta(tumpukanKartu(Sisa)),
+                kocokTumpukan,
+                ambil(Nama, N)
+            )
+        ).
+
 
 discardPile :-
     retract(tumpukanKartu([kartu(W, J) | Sisa])),
-    (number(J) -> 
+    (0<=J, J<=9 -> 
     asserta(discardPileTop([kartu(W, J)])),asserta(tumpukanKartu(Sisa));
     append(Sisa, [kartu(W, J)], Baru),asserta(tumpukanKartu(Baru)),discardPile
     ).
