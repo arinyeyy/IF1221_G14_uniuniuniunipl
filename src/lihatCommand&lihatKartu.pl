@@ -18,9 +18,9 @@ lihatKartu :-
     giliran(PemainAktif),
     write('Berikut kartu yang anda miliki.'), nl,
     findAllKartuPemain(PemainAktif, DaftarKartu),
-    tampilkanKartu(DaftarKartu, 1).
+    tampilkanKartu(DaftarKartu, 1), !.
 
-tampilkanKartu([], _).
+tampilkanKartu([], _). :- !.
 
 /* tampilkanKartu([kartu(W,J)|T], N) :-
     kartuTersembunyi(kartu(W,J)), !,
