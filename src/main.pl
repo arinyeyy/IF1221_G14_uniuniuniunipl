@@ -9,6 +9,7 @@
 :- include('turn.pl').
 :- include('kartuReverse.pl').
 :- include('kartuSkip.pl').
+:- include('uni.pl').
 
 :- dynamic(gameStarted/0).
 :- dynamic(jumlahPemain/1).
@@ -25,8 +26,10 @@
 
 /* State Game */
 :- dynamic(gameStarted/0).
-:- dynamic(tantangActivated/0).
-:- dynamic(uniActivated/0).
+:- dynamic(tantangActivated/1).
+:- dynamic(uniActivated/1).
+:- dynamic(tangkapActivated/1).
+:- dynamic(tangkap/1).
 /* state game ini nyala kalau ada kondisi tertentu, lalu mati di giliran selanjutnya (tiap mainkanKartu hrs dimatiin) */
 /* nyalain: asserta; matiin: retractall */
 :- dynamic(warnaWildTerpilih/1).
@@ -159,6 +162,13 @@ ambilTujuh(Nama, N) :-
             )
         ).
 
+ambil(_, 0) :- !.
+ambil(Nama, N) :- retract(tumpukanKartu([KartuTeratas|Sisa])),
+                  assertz(kartuPemain(Nama, KartuTeratas)),
+                  asserta(tumpukanKartu(Sisa)),
+                  N1 is N - 1,
+                  ambil(Nama, N1).
+
 
 discardPile :-
     retract(tumpukanKartu([kartu(W, J) | Sisa])),
@@ -209,4 +219,8 @@ beriGiliranNormal(Num) :-   allPemain(AllPemain),
                             retractall(nomorGiliran(_)),
                             asserta(nomorGiliran(Num1))),
 
-                            format('Giliran ~w~n~n', [PemainTerkini]).
+                            format('Giliran ~w~n~n', [PemainTerkini]),
+                            
+                            aktifkanUniJika(PemainTerkini).
+
+exitGame :- retractall(gameStarted).
