@@ -146,12 +146,12 @@ ambil(Nama, N) :-
                 assertz(kartuPemain(Nama, KartuTeratas)),
                 asserta(tumpukanKartu(Sisa)),
                 N1 is N - 1,
-                ambilTujuh(Nama, N1)
+                ambil(Nama, N1)
             );
             (
                 asserta(tumpukanKartu(Sisa)),
                 kocokTumpukan,
-                ambilTujuh(Nama, N)
+                ambil(Nama, N)
             )
         ).
 
@@ -175,7 +175,7 @@ randomizeUrutan :- findAllPemain(Daftar),
                    nl, nl,
                    discardPile,
                    writeDiscardTop,
-                   asserta(nomorGiliran(0)),
+                   asserta(nomorGiliran(1)), /* 0 jadi 1 */
                    beriGiliranPertama, !.
 
 writeDiscardTop :- discardPileTop([kartu(W,J)]),
@@ -191,7 +191,7 @@ beriGiliranNormal(Num) :-   allPemain(AllPemain),
                             nomorGiliran(Num),
                             
                             listLength(AllPemain, Len),
-                            Num1 is (Num + 1) mod Len,
+                            Num1 is (Num mod Len) + 1, /* sebelumnya Num1 is (Num + 1) mod Len */
 
                             getElement(AllPemain, Num1, PemainTerkini),
 
@@ -203,6 +203,17 @@ beriGiliranNormal(Num) :-   allPemain(AllPemain),
                             asserta(giliran(PemainTerkini)),
 
                             retractall(nomorGiliran(_)),
-                            asserta(nomorGiliran(Num1))),
+                            asserta(nomorGiliran(Num1))), /* N1 → Num1 */
 
                             format('Giliran ~w~n~n', [PemainTerkini]).
+
+
+% masalah:
+/* 1. indeks yg ditampilin dan kartu yg keluar ga sesuai. solved, semua indeks pertama jadi 1.
+2. state kartu berubah kalo kebanyakan trun??!?
+3. reverse mabok dikit */
+
+% notes:
+/* 1. mau pake giliran atau nomor giliran?
+bole ga ya tambahin keterangan kartu apa yang di dicard pile teratas? biar ga lupa TT
+*/

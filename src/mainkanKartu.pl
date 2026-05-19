@@ -1,3 +1,6 @@
+:- include('kartuReverse.pl').
+:- include('kartuSkip.pl').
+
 mainkanKartu(Index) :-
     gameStarted -> (
         giliran(Pemain), !,
