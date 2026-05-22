@@ -1,23 +1,23 @@
 pemainAktif(P) :-
-    allPemain(List),
+    allPemain(AllPemain),
     nomorGiliran(N),
-    getElement(List, N, P). /* fix: hapus mod, N sudah valid index */
+    getElement(AllPemain, N, P).
 
 nextPlayer(NextP, NextN) :-
-    allPemain(List),
+    allPemain(AllPemain),
     nomorGiliran(N),
-    listLength(List, Len),
+    listLength(AllPemain, Len),
 
-    NextN is (N mod Len) + 1,
-    getElement(List, NextN, NextP).
+    NextN is (N + 1) mod Len,
+    getElement(AllPemain, NextN, NextP).
 
 skipTurn :-
-    allPemain(List),
-    listLength(List, Len),
+    allPemain(AllPemain),
+    listLength(AllPemain, Len),
     nomorGiliran(N),
 
-    NextN is (N mod Len) + 1,
-    getElement(List, NextN, NextP),
+    NextN is (N + 1) mod Len,
+    getElement(AllPemain, NextN, NextP),
 
     retractall(nomorGiliran(_)),
     asserta(nomorGiliran(NextN)),

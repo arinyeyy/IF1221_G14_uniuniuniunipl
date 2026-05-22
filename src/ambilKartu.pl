@@ -1,28 +1,39 @@
 ambilKartu :-
-    pemainAktif(P),
-    discardPileTop([kartu(_, JenisTop)]),
+    giliran(Pemain),
+    ambilBeberapaKartu(Pemain, 1),
+    skipTurn.
 
-    (   JenisTop == draw_two ->
-        Count = 2
-    ;   JenisTop == wild_draw_four ->
-        Count = 4
-    ;   Count = 1
-    ),
+ambilBeberapaKartu(Pemain, Count) :-
+    ambilBeberapaKartuHelper(Pemain, Count, _).
 
-    ambilBeberapaKartu(P, Count, KartuDiambil),
-
-    % maplist([kartu(W,J)]>>(format('~w mendapatkan kartu: ~w-~w.~n', [P, W, J])), KartuDiambil),
-
-    skipTurn,
-    giliran(Next),
-    format('Giliran ~w~n', [Next]).
-
-ambilBeberapaKartu(_, 0, []) :- !.
-ambilBeberapaKartu(P, N, [K|Rest]) :- /* fix: tambah argumen list */
+ambilBeberapaKartuHelper(_, 0, []) :- !.
+ambilBeberapaKartuHelper(Pemain, N, [K|Rest]) :- 
     N > 0,
     retract(tumpukanKartu([K|Sisa])),
-    assertz(kartuPemain(P, K)),
+    K = kartu(W, J),
+    format('~w mengambil kartu: ~w-~w~n', [Pemain, W,J]),
+    assertz(kartuPemain(Pemain, K)),
     retractall(tumpukanKartu(_)),
     asserta(tumpukanKartu(Sisa)),
     N1 is N - 1,
-    ambilBeberapaKartu(P, N1, Rest).
+    ambilBeberapaKartuHelper(Pemain, N1, Rest).
+
+ambilBeberapaKartuHelper(Pemain, N, Rest) :-
+    tumpukanKartu(ListKartu),
+    listLength(ListKartu, Len),
+    N > Len,
+    reshuffleTemp,
+    ambilBeberapaKartuHelper(Pemain, N, Rest).
+
+reshuffleTemp :-
+    temp(Kartu),
+    tumpukanKartu(ListLama),
+    randomizeList(Kartu, KartuBaru),
+    concatList(ListLama, KartuBaru, ListBaru),
+    retractall(temp(_)),
+    asserta(temp([])),
+    retractall(tumpukanKartu(_)),
+    asserta(tumpukanKartu(ListBaru)).
+
+/* ambil kartu jalan cuma harus ngetik siapa yg ambil dan brp kartu.
+ngga ada keterangan ambil kartu apa, ngga ngeskip giliran setelah ambil*/

@@ -11,6 +11,9 @@ mainkanKartu(Index) :-
             write(Pemain), format(' memainkan kartu: ~w-~w~n', [W, J]),
             deleteElement(ListKartu, Indexriil, SisaKartu),
             retract(kartuPemain(Pemain, Kartu)), !,
+            temp(ListLama),
+            retractall(temp(_)),
+            asserta(temp([KartuAtas|ListLama])),
             retractall(discardPileTop(_)),
             assertz(discardPileTop([Kartu])),
             efek_kartu(Kartu))
@@ -24,11 +27,39 @@ efek_kartu(kartu(_, J)) :- integer(J), !,
                            nomorGiliran(Num),
                            beriGiliranNormal(Num).
 
+efek_kartu(kartu(_, reverse)) :- allPemain(AllPemain),
+                                 giliran(Pemain),
+                                 reverse(AllPemain, NewList),
+                                 retractall(allPemain(_)),
+                                 asserta(allPemain(NewList)),
+                                 getIndex(NewList, Pemain, Num),
+                                 listLength(NewList, Len),
+                                 Num1 is (Num + 1) mod Len,
+                                 getElement(NewList, Num1, NextP),
+                                 retractall(nomorGiliran(_)),
+                                 asserta(nomorGiliran(Num1)),
+                                 retract(giliran(_)),
+                                 asserta(giliran(NextP)),
+
+                                 write('Arah permainan dibalik!'), nl,
+                                 format('Giliran ~w.~n', [NextP]).
+
+efek_kartu(kartu(_, skip)) :- nomorGiliran(Num),
+                              beriGiliranSkip(Num).
+
+efek_kartu(kartu(_,draw_two)):- nomorGiliran(Num),
+                                allPemain(AllPemain),
+                                listLength(AllPemain, Len),
+                                Num1 is (Num + 1) mod Len,
+                                getElement(AllPemain, Num1, PemainSelanjutnya),
+                                ambilBeberapaKartu(PemainSelanjutnya, 2),
+                                beriGiliranSkip(Num).
+
 efek_kartu(kartu(_, wild)) :- nomorGiliran(Num),
                               pilihWarna,
                               beriGiliranNormal(Num).
 
-efek_kartu(kartu(_, wild-draw-four)) :- nomorGiliran(Num),
+efek_kartu(kartu(_, wild_draw_four)) :- nomorGiliran(Num),
                                         asserta(activateTantang),
                                         pilihWarna,
                                         beriGiliranNormal(Num).

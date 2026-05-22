@@ -1,7 +1,7 @@
 aktifkanUniJika(Pemain) :- kartuPemain(Pemain, Kartu),
                   listLength(Kartu, Len),
                   (
-                    (Len =:= 2) -> (asserta(uniActivated(Penain)), true);
+                    (Len =:= 2) -> (asserta(uniActivated(Pemain)), true);
                     true
                   ).
 

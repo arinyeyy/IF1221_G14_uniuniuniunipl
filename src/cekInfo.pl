@@ -3,6 +3,8 @@ cekInfo :-
         (
             discardPileTop([kartu(W, J)|_]),
             format('Kartu discard top: ~w-~w.~n', [W, J]),
+            giliran(Pemain),
+            format('Sekarang giliran: ~w.~n', [Pemain]),
             nl,
             allPemain(Urutan),
             write('Urutan pemain: '),

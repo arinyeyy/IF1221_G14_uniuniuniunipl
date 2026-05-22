@@ -7,10 +7,7 @@
 :- include('mainkanKartu.pl').
 :- include('ambilKartu.pl').
 :- include('turn.pl').
-:- include('kartuReverse.pl').
-:- include('kartuSkip.pl').
 :- include('uni.pl').
-:- include('draw_two.pl').
 
 
 :- dynamic(gameStarted/0).
@@ -25,6 +22,7 @@
 :- dynamic(prevDiscardPileTop/1).
 :- dynamic(giliran/1).
 :- dynamic(prevgiliran/1).
+:- dynamic(temp/1).
 
 /* State Game */
 :- dynamic(gameStarted/0).
@@ -104,10 +102,11 @@ startGame :-  \+gameStarted -> (
                                     retractall(prevDiscardPileTop(_)),
                                     retractall(giliran(_)),
                                     retractall(prevGiliran(_)),
+                                    retractall(temp(_)),
+                                    asserta(temp([])),
                                     asserta(gameStarted),
                                     inputJumlahPemain
-                                )
-                                ;
+                                ).
                 gameStarted -> write('Permainan sudah dimulai!'), nl, nl;
                 fail.
 
@@ -224,7 +223,30 @@ beriGiliranNormal(Num) :-   allPemain(AllPemain),
 
                             format('Giliran ~w~n~n', [PemainTerkini]),
                             
-                            aktifkanUniJika(PemainTerkini).
+                            aktifkanUniJika(PemainTerkini),
                             tentukanAksi(PemainTerkini).
+
+beriGiliranSkip(Num) :- allPemain(AllPemain),
+                        nomorGiliran(Num),
+                            
+                        listLength(AllPemain, Len),
+                        Num1 is (Num + 2) mod Len,
+
+                        getElement(AllPemain, Num1, PemainTerkini),
+
+                        (giliran(PemainSebelum),
+                        retractall(prevGiliran(_)),
+                        asserta(prevGiliran(PemainSebelum)),
+
+                        retractall(giliran(_)),
+                        asserta(giliran(PemainTerkini)),
+
+                        retractall(nomorGiliran(_)),
+                        asserta(nomorGiliran(Num1))),
+
+                        format('Giliran ~w~n~n', [PemainTerkini]),
+                        
+                        aktifkanUniJika(PemainTerkini),
+                        tentukanAksi(PemainTerkini).
 
 exitGame :- retractall(gameStarted).
