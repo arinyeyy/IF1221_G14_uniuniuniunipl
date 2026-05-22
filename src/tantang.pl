@@ -21,7 +21,7 @@ tantang :-
         format('Giliran ~w.~n', [PemainSelanjutnya]), !
     )
 
-tantangValid(PemainSebelum) :-
+tantangValid(PemainSebelum) :- /* baca: tantang ke pemain sebelumnya valid*/
     discardPile(List),
     prevDiscardPileTop(List, PrevCard),
     punyaKartuValid(PemainSebelum, PrevCard).

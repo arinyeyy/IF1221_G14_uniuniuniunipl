@@ -75,13 +75,13 @@ valid(Kartu, KartuAtas) :- Kartu = kartu(W, J), KartuAtas = kartu(WAtas, JAtas),
                                 fail
                             );
                             (
-                                warnaWildTerpilih(Warna),
+                                warnaWildTerpilih(Warna), /*mau ganti jadi warna aktif?*/
                                 (Warna == W) -> true;
                                 fail
                             ).
                             
 pilihWarna :- retractall(warnaWildTerpilih(_)),
-              write('Pilih warna: '),
+              write('Pilih warna (merah/biru/kuning/hijau): '),
               read(Warna),
               (Warna == 'merah') -> asserta(warnaWildTerpilih(merah));
               (Warna == 'biru') -> asserta(warnaWildTerpilih(biru));
