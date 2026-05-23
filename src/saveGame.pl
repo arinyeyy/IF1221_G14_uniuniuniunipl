@@ -1,27 +1,27 @@
-saveGame :- write(“Masukkan nama file penyimpanan : ~w”), 
+saveGame :- write(“Masukkan nama file penyimpanan: ”), 
             read(NamaFile), nl, 
             sambung_txt(NamaFile, FileNama), 
             createFile(FileNama).
 
 sambung_txt(NamaFile, FileNama):-name(NamaFile, HasilFile), 
                                  name(‘.txt’, Txt), 
-                                 concatList(HasilFile,  Txt, Hasil), 
+                                 concatList(HasilFile, Txt, Hasil), 
                                  name(FileNama, Hasil). 
       
 createFile(FileNama):- open('FileNama', write, S), 
 
+writeUrutanPemain :- allPemain(Urutan),
+                     writeList(Urutan),
+                     format(S, "urutan_pemain: [~w].~n", [Urutan]).
 
-urutan Pemain: [‘..’, ‘..’].
+writeGiliran :- giliran(PemainTerkini),
+                format(S, "giliran: ~w.~n", [PemainTerkini]).
 
-writeGiliran: -giliran(PemainTerkini),
-write(S, ‘giliran: ~w.’, [PemainTerkini]), nl,
+writeDiscardPileTop :- discardPileTop([kartu(W,J)]),
+                       format(S, "discard_top: ~w-~w.~n", [W,J]).
 
-discardPileTop([kartu(W,J)])
-write(S, ‘discard_top: w-w.’, [W,J]), nl,
-
-warna_aktif: 
-warnaWildTerpilih(Warna),
-write(S, ‘warna_aktif: ~w.’, [Warna]), nl,
+writeWarnaAktif :- warnaWildTerpilih(Warna),
+                   format(S, "warna_aktif: ~w.~n", [Warna]).
 
 arah_permainan:
 write(S, ‘arah_permainan: ~w.’, [Arah]), nl,
@@ -29,5 +29,17 @@ write(S, ‘arah_permainan: ~w.’, [Arah]), nl,
 status_UNI: [(siapa aja yg udh uni)]
 write(S, ‘status_UNI: ~w.’, [Warna]), nl,
 
-kartu(‘..’): 
-write(S, ‘kartu(~w): ~w.’, [Pemain, kartuPemain]), nl,
+writeKartu :- giliran(PemainTerkini),
+              findAllKartuPemain(PemainTerkini, DaftarKartu),
+              format(S, "kartu(~w): [~w].~n", [Pemain, DaftarKartu]).
+
+writeKartuAksiTerakhir :- kartuAksiTerakhir(W, J), giliranAksiTerakhir(PemainAksi, Count) ->
+                          (
+                            format(S, "kartu_aksi_terakhir: ~w-~w (oleh ~w, ~w giliran lalu).~n", 
+                            [W, J, PemainAksi, Count])
+                          ;
+                            write(S, "kartu_aksi_terakhir: tidak ada."), nl
+                          ).
+                          
+
+% writeKartuTersembunyi :- 
