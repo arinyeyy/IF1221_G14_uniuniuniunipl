@@ -1,9 +1,9 @@
-aktifkanUniJika(Pemain) :- kartuPemain(Pemain, Kartu),
-                  listLength(Kartu, Len),
-                  (
-                    (Len =:= 2) -> (asserta(uniActivated(Pemain)), true);
-                    true
-                  ).
+aktifkanUniJika(Pemain) :- findAllKartuPemain(Pemain, ListKartu),
+                           listLength(ListKartu, Len),
+                           (
+                            (Len =:= 2) -> (asserta(uniActivated(Pemain)), true);
+                            true
+                           ).
 
 uni(Index) :- 
     gameStarted -> 

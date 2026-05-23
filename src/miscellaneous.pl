@@ -38,5 +38,5 @@ balik([], Temp, Temp).
 balik([H|T], Temp, NewList) :- 
     balik(T, [H|Temp], NewList).
 
-writeList([H]) :- write(H), write('.'),!.
+writeList([H]) :- write(H),!.
 writeList([H|T]) :- listLength([H|T], N), N > 1, write(H), write(' - '), writeList(T).

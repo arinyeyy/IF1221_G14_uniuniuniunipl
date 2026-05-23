@@ -30,7 +30,7 @@ cariKartuValid([H|T], PrevCard) :-
     (valid(H, PrevCard) -> true ; cariKartuValid(T, PrevCard)).
 
 punyaKartuValid(Pemain, PrevCard) :-
-    kartuPemain(Pemain, ListKartu),
+    findAllKartuPemain(Pemain, ListKartu),
     cariKartuValid(ListKartu, PrevCard).
 
 prevDiscardPileTop([_,X|_], X).

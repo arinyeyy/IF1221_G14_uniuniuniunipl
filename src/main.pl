@@ -1,13 +1,18 @@
 :- use_module(library(random)).
 :- include('miscellaneous.pl').
+:- include('mainkanKartu.pl').
 :- include('ambilKartu.pl').
 :- include('cekInfo.pl').
 :- include('lihatCommand&lihatKartu.pl').
+:- include('lihatCommand.pl').
 :- include('findAll.pl').
-:- include('mainkanKartu.pl').
-:- include('ambilKartu.pl').
+:- include('kartuMimic.pl').
+% :- include('kartuTersembunyi.pl').
 :- include('turn.pl').
 :- include('uni.pl').
+:- include('tangkap.pl').
+:- include('tantang.pl').
+% :- include('endGame.pl').
 
 
 :- dynamic(gameStarted/0).
@@ -23,6 +28,9 @@
 :- dynamic(giliran/1).
 :- dynamic(prevgiliran/1).
 :- dynamic(temp/1).
+:- dynamic(kartuAksiTerakhir/2).
+:- dynamic(giliranAksiTerakhir/2).
+:- dynamic(riwayatAksi/3).
 
 /* State Game */
 :- dynamic(gameStarted/0).

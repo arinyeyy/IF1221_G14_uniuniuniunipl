@@ -1,25 +1,20 @@
-:- dynamic kartuAksiTerakhir/2.
-:- dynamic giliranAksiTerakhir/2.
-:- dynamic riwayatAksi/3.
-
-giliranAksiTerakhir(kosong, 0).
-
 updateKartuAksi(W, J) :-
     giliran(PemainAksi),
-    giliranAksiTerakhir(PemainAksi, Count),
+    (giliranAksiTerakhir(_, Count) -> true ; Count = 0),  
     assertz(riwayatAksi(Count, W, J)),
-    retract(giliranAksiTerakhir(PemainAksi, Count)),
+    retractall(giliranAksiTerakhir(_, _)),
     assertz(giliranAksiTerakhir(PemainAksi, 0)),
     retractall(kartuAksiTerakhir(_, _)),
     assertz(kartuAksiTerakhir(W, J)).
 
 updateGiliranMimic :-
-    retract(giliranAksiTerakhir(PemainAksi, Count)),
+    (giliranAksiTerakhir(PemainAksi, Count) -> true ; PemainAksi = kosong, Count = 0),
     Count1 is (Count + 1),
+    retractall(giliranAksiTerakhir(_, _)),
     assertz(giliranAksiTerakhir(PemainAksi, Count1)).
 
 kartuMimic(PemainTerkini) :-
-    write('Menelusuri riwayat permainan.'),
+    write('Menelusuri riwayat permainan.'), nl, nl,
     (   kartuAksiTerakhir(_, J)->  
         Efek = J
     ;   
@@ -27,33 +22,33 @@ kartuMimic(PemainTerkini) :-
     ),
 
     (   kartuAksiTerakhir(W, J), giliranAksiTerakhir(PemainAksi, Count) ->  
-        format('Kartu aksi terakhir yang dimainkan: ~w-~w (oleh ~w, ~w giliran lalu)~n', 
-        [W, J, PemainAksi, Count]), 
-        % format('Kartu mimic menyalin efek ~w!~n', [J])
-    ;   
-        write('Tidak ada kartu aksi sebelumnya, kartu mimic menyalin efek Wild.~n')
+        format('Kartu aksi terakhir yang dimainkan: ~w-~w (oleh ~w, ~w giliran lalu)~n~n', 
+        [W, J, PemainAksi, Count])
+        ;   
+        write('Tidak ada kartu aksi sebelumnya, kartu mimic menyalin efek kartu wild.'), nl, nl
     ),
 
     pilihWarna,
     warnaWildTerpilih(Warna),
-    format('Warna aktif sekarang: ~w.~n', [Warna]),
-
+    format('Warna aktif sekarang: ~w.~n~n', [Warna]),
+    
     nomorGiliran(Num),
     pemainNext(Num, PemainSelanjutnya),
-    eksekusiEfek(Efek, PemainSelanjutnya),
-    beriGiliranSkip(Num),
-    format('Giliran ~w.~n~n', [PemainSelanjutnya]).
-    
+    eksekusiEfek(Efek, PemainSelanjutnya).
 
 eksekusiEfek(skip, PemainSelanjutnya) :-
-    write('Kartu mimic menyalin efek Skip! Pemain berikutnya diskip.~n').
+    write('Kartu mimic menyalin efek Skip! Pemain berikutnya diskip.'), nl, nl,
+    nomorGiliran(Num),
+    beriGiliranSkip(Num).
 
 eksekusiEfek(draw_two, PemainSelanjutnya) :-
-    write('Kartu mimic menyalin efek Draw Two! Pemain berikutnya +2.~n'),
-    ambilBeberapaKartu(PemainSelanjutnya, 2).
+    write('Kartu mimic menyalin efek Draw Two! Pemain berikutnya +2.'), nl, nl,
+    ambilBeberapaKartu(PemainSelanjutnya, 2),
+    nomorGiliran(Num),
+    beriGiliranSkip(Num).
 
 eksekusiEfek(reverse, _) :-
-    write('Kartu mimic menyalin efek Reverse! Arah permainan dibalik.~n'),
+    write('Kartu mimic menyalin efek Reverse! Arah permainan dibalik.'), nl, nl,
     allPemain(AllPemain),
     giliran(PemainTerkini),
     balik(AllPemain, NewList),
@@ -61,12 +56,17 @@ eksekusiEfek(reverse, _) :-
     asserta(allPemain(NewList)),
     getIndex(NewList, PemainTerkini, Num),
     retractall(nomorGiliran(_)),
-    asserta(nomorGiliran(Num)).
+    asserta(nomorGiliran(Num)),
+    beriGiliranNormal(Num).
 
 eksekusiEfek(wild, _) :-
-    write('Kartu mimic menyalin efek Wild! Warna sudah dipilih.~n').
+    write('Kartu mimic menyalin efek Wild! Warna sudah dipilih.'), nl, nl,
+    nomorGiliran(Num),
+    beriGiliranNormal(Num).
 
 eksekusiEfek(wild_draw_four, PemainSelanjutnya) :-
-    write('Kartu mimic menyalin efek Wild Draw Four! Pemain berikutnya +4.~n'),
+    write('Kartu mimic menyalin efek Wild Draw Four! Pemain berikutnya +4.'), nl, nl,
     asserta(activateTantang),
-    ambilBeberapaKartu(PemainSelanjutnya, 4).
+    ambilBeberapaKartu(PemainSelanjutnya, 4),
+    nomorGiliran(Num),
+    beriGiliranSkip(Num).

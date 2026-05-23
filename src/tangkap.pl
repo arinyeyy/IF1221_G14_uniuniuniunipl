@@ -8,9 +8,9 @@ tangkap(Pemain) :-
             ambil(Pemain, 2), retract(uniActivated(Pemain)), !
         ;   
             write('Perintah tidak valid! '), write(Pemain), write(' sudah menyerukan UNI.'), nl,
-            giliran(PemainTantang), ambil(PemainTantang, 1),!
+            giliran(PemainTantang), ambil(PemainTantang, 1), !
         )
     ;
         write('Perintah tidak valid! Kartu '), write(Pemain), write(' tidak berjumlah satu.'), nl,
-        giliran(PemainTantang), ambil(PemainTantang, 1),!
-    ),
+        giliran(PemainTantang), ambil(PemainTantang, 1), !
+    ).
