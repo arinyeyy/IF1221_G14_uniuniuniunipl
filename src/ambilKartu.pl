@@ -3,27 +3,24 @@ ambilKartu :-
     ambilBeberapaKartu(Pemain, 1),
     skipTurn.
 
+ambilBeberapaKartu(_, 0) :- !.
 ambilBeberapaKartu(Pemain, Count) :-
-    ambilBeberapaKartuHelper(Pemain, Count, _).
-
-ambilBeberapaKartuHelper(_, 0, []) :- !.
-ambilBeberapaKartuHelper(Pemain, N, [K|Rest]) :- 
-    N > 0,
+    Count > 0,
     retract(tumpukanKartu([K|Sisa])),
     K = kartu(W, J),
     format('~w mengambil kartu: ~w-~w~n', [Pemain, W,J]),
     assertz(kartuPemain(Pemain, K)),
     retractall(tumpukanKartu(_)),
     asserta(tumpukanKartu(Sisa)),
-    N1 is N - 1,
-    ambilBeberapaKartuHelper(Pemain, N1, Rest).
+    Count1 is (Count - 1),
+    ambilBeberapaKartu(Pemain, Count1).
 
-ambilBeberapaKartuHelper(Pemain, N, Rest) :-
+ambilBeberapaKartu(Pemain, Count) :-
     tumpukanKartu(ListKartu),
     listLength(ListKartu, Len),
-    N > Len,
+    Count > Len,
     reshuffleTemp,
-    ambilBeberapaKartuHelper(Pemain, N, Rest).
+    ambilBeberapaKartu(Pemain, Count).
 
 reshuffleTemp :-
     temp(Kartu),
