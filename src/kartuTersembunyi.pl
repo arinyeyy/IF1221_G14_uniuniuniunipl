@@ -1,5 +1,3 @@
-:- dynamic kartuTersembunyi/2.
-
 sembunyikanKartu(Index) :-
     giliran(PemainTerkini),
     \+ kartuTersembunyi(PemainTerkini, _),
@@ -25,5 +23,5 @@ pemain yang sembunyiin kartu harus:
 2. punya kartu > 1
 kalo valid baru kartu di Index dihapus dari listKartuPemain, di masukkan ke kartuTersembunyi.
 
-tampilkan kartu: kartuYGTersembunyi dipindah dari kartuTersembunyi ke tangan pemain,
+tampilkan kartu: KartuYGTersembunyi dipindah dari kartuTersembunyi ke tangan pemain,
 bisa keliatan di cekInfo & lihatKartu*/

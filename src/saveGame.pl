@@ -42,4 +42,8 @@ writeKartuAksiTerakhir :- kartuAksiTerakhir(W, J), giliranAksiTerakhir(PemainAks
                           ).
                           
 
-% writeKartuTersembunyi :- 
+/* writeKartuTersembunyi :- giliran(PemainTerkini),
+                         kartuTersembunyi(PemainTerkini, KartuYGTersembunyi),
+                         format(S, "kartu_tersembunyi: ~w.").
+                         
+                         bingung cara nampilin kartu tersembunyi tiap pemain*/

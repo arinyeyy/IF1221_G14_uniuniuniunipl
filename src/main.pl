@@ -31,6 +31,7 @@
 :- dynamic(kartuAksiTerakhir/2).
 :- dynamic(giliranAksiTerakhir/2).
 :- dynamic(riwayatAksi/3).
+:- dynamic(kartuTersembunyi/2).
 
 /* State Game */
 :- dynamic(gameStarted/0).
