@@ -7,12 +7,14 @@
 :- include('lihatCommand.pl').
 :- include('findAll.pl').
 :- include('kartuMimic.pl').
-% :- include('kartuTersembunyi.pl').
+:- include('kartuTersembunyi.pl').
 :- include('turn.pl').
 :- include('uni.pl').
 :- include('tangkap.pl').
 :- include('tantang.pl').
 % :- include('endGame.pl').
+% :- include('saveGame.pl').
+% :- include('loadGame.pl').
 
 
 :- dynamic(gameStarted/0).
