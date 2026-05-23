@@ -1,25 +1,24 @@
 tantang :-
-    allPemain(AllPemain),
     giliran(PemainTerkini),
     nomorGiliran(Num),
-    listLength(AllPemain, Len),
-    Num1 is (Num + 1) mod Len,
-    getElement(AllPemain, Num1, PemainSelanjutnya),
-    Num2 is (Num - 1 + Len) mod Len,
-    getElement(AllPemain, Num2, PemainSebelum),
+    pemainNext(Num, PemainSelanjutnya),
+    pemainPrev(Num, PemainSebelum),
+    retract(activateTantang),
     
     write('Tantangan dilakukan!'),
     format('Memeriksa kartu ~w...~n', [PemainSebelum]), nl,
 
     (tantangValid(PemainSebelum) -> 
         format('Tantangan berhasil. ~w mendapatkan 4 kartu acak.~n', [PemainSebelum]), nl,
-        ambilBeberapaKartu(PemainSebelum, 4),
+        ambilBeberapaKartu(PemainSebelum, 4), 
+        beriGiliranSkip(Num), 
         format('Giliran ~w.~n', [PemainSelanjutnya]), !
     ;
         format('Tantangan gagal. ~w mendapatkan 6 kartu acak.~n', [PemainTerkini]), nl,
-        ambilBeberapaKartu(PemainTerkini, 6),
+        ambilBeberapaKartu(PemainTerkini, 6), 
+        beriGiliranSkip(Num), 
         format('Giliran ~w.~n', [PemainSelanjutnya]), !
-    )
+    ).
 
 tantangValid(PemainSebelum) :- /* baca: tantang ke pemain sebelumnya valid*/
     discardPile(List),

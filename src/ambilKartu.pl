@@ -34,6 +34,3 @@ reshuffleTemp :-
     asserta(temp([])),
     retractall(tumpukanKartu(_)),
     asserta(tumpukanKartu(ListBaru)).
-
-/* ambil kartu jalan cuma harus ngetik siapa yg ambil dan brp kartu.
-ngga ada keterangan ambil kartu apa, ngga ngeskip giliran setelah ambil*/

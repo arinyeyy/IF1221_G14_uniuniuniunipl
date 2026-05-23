@@ -24,45 +24,49 @@ mainkanKartu(Index) :-
     write('Permainan belum dimulai!'), nl, nl, fail.
 
 efek_kartu(kartu(_, J)) :- integer(J), !,
+                           updateGiliranMimic,
                            nomorGiliran(Num),
                            beriGiliranNormal(Num).
 
-efek_kartu(kartu(_, reverse)) :- allPemain(AllPemain),
-                                 giliran(Pemain),
-                                 reverse(AllPemain, NewList),
+efek_kartu(kartu(_, reverse)) :- updateKartuAksi(_, reverse),
+                                 allPemain(AllPemain),
+                                 giliran(PemainTerkini),
+                                 balik(AllPemain, NewList),
                                  retractall(allPemain(_)),
                                  asserta(allPemain(NewList)),
-                                 getIndex(NewList, Pemain, Num),
-                                 listLength(NewList, Len),
-                                 Num1 is (Num + 1) mod Len,
-                                 getElement(NewList, Num1, NextP),
+                                 getIndex(NewList, PemainTerkini, Num),
+                                 pemainNext(Num, PemainSelanjutnya),
+                                 getIndex(NewList, PemainSelanjutnya, Num1),
                                  retractall(nomorGiliran(_)),
                                  asserta(nomorGiliran(Num1)),
                                  retract(giliran(_)),
-                                 asserta(giliran(NextP)),
+                                 asserta(giliran(PemainSelanjutnya)),
 
                                  write('Arah permainan dibalik!'), nl,
-                                 format('Giliran ~w.~n', [NextP]).
+                                 format('Giliran ~w.~n', [PemainSelanjutnya]).
 
-efek_kartu(kartu(_, skip)) :- nomorGiliran(Num),
+efek_kartu(kartu(_, skip)) :- updateKartuAksi(_, skip),
+                              nomorGiliran(Num),
                               beriGiliranSkip(Num).
 
-efek_kartu(kartu(_,draw_two)):- nomorGiliran(Num),
-                                allPemain(AllPemain),
-                                listLength(AllPemain, Len),
-                                Num1 is (Num + 1) mod Len,
-                                getElement(AllPemain, Num1, PemainSelanjutnya),
+efek_kartu(kartu(_,draw_two)):- updateKartuAksi(_, draw_two),
+                                nomorGiliran(Num),
+                                pemainNext(Num, PemainSelanjutnya),
                                 ambilBeberapaKartu(PemainSelanjutnya, 2),
                                 beriGiliranSkip(Num).
 
-efek_kartu(kartu(_, wild)) :- nomorGiliran(Num),
+efek_kartu(kartu(_, wild)) :- updateKartuAksi(_, wild),
+                              nomorGiliran(Num),
                               pilihWarna,
                               beriGiliranNormal(Num).
 
-efek_kartu(kartu(_, wild_draw_four)) :- nomorGiliran(Num),
+efek_kartu(kartu(_, wild_draw_four)) :- updateKartuAksi(_, wild_draw_four),
+                                        nomorGiliran(Num),
                                         asserta(activateTantang),
+                                        pemainNext(Num, PemainSelanjutnya),
+                                        ambilBeberapaKartu(PemainSelanjutnya, 4),
                                         pilihWarna,
-                                        beriGiliranNormal(Num).
+                                        beriGiliranSkip(Num).
 
 valid(Kartu, KartuAtas) :- Kartu = kartu(W, J), KartuAtas = kartu(WAtas, JAtas),
                             (JAtas \== wild, JAtas \== wild-draw-four) ->

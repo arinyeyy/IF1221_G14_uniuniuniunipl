@@ -32,5 +32,11 @@ randomizeList(List, [El|T]) :-
     deleteElement(List, R, UpdatedList),
     randomizeList(UpdatedList, T).
 
+balik(List, NewList) :- 
+    balik(List, [], NewList).
+balik([], Temp, Temp).
+balik([H|T], Temp, NewList) :- 
+    balik(T, [H|Temp], NewList).
+
 writeList([H]) :- write(H), write('.'),!.
 writeList([H|T]) :- listLength([H|T], N), N > 1, write(H), write(' - '), writeList(T).

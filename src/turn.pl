@@ -3,13 +3,17 @@ pemainAktif(P) :-
     nomorGiliran(N),
     getElement(AllPemain, N, P).
 
-nextPlayer(NextP, NextN) :-
+pemainNext(NumPemainTerkini, PemainSelanjutnya) :-
     allPemain(AllPemain),
-    nomorGiliran(N),
     listLength(AllPemain, Len),
+    Num1 is (NumPemainTerkini + 1) mod Len,
+    getElement(AllPemain, Num1, PemainSelanjutnya).
 
-    NextN is (N + 1) mod Len,
-    getElement(AllPemain, NextN, NextP).
+pemainPrev(NumPemainTerkini, PemainSebelum) :-
+    allPemain(AllPemain),
+    listLength(AllPemain, Len),
+    Num2 is (NumPemainTerkini - 1 + Len) mod Len,
+    getElement(AllPemain, Num2, PemainSebelum).
 
 skipTurn :-
     allPemain(AllPemain),
