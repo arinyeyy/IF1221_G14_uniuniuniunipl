@@ -159,20 +159,10 @@ ambilTujuh(_, 0) :- !.
 ambilTujuh(Nama, N) :-
     retract(tumpukanKartu([KartuTeratas|Sisa])),
     KartuTeratas = kartu(W, J),
-    (    
-        integer(J) -> 
-            (
-                assertz(kartuPemain(Nama, KartuTeratas)),
-                asserta(tumpukanKartu(Sisa)),
-                N1 is N - 1,
-                ambilTujuh(Nama, N1)
-            );
-            (
-                asserta(tumpukanKartu(Sisa)),
-                kocokTumpukan,
-                ambilTujuh(Nama, N)
-            )
-        ).
+    assertz(kartuPemain(Nama, KartuTeratas)),
+    asserta(tumpukanKartu(Sisa)),
+    N1 is N - 1,
+    ambilTujuh(Nama, N1)
 
 ambil(_, 0) :- !.
 ambil(Nama, N) :- retract(tumpukanKartu([KartuTeratas|Sisa])),
