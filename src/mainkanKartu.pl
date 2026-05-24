@@ -69,8 +69,8 @@ efek_kartu(kartu(W, wild_draw_four)) :- updateKartuAksi(W, wild_draw_four),
                                         beriGiliranSkip(Num).
 
 efek_kartu(kartu(W, mimic)) :- updateGiliranMimic,
-                               giliran(PemainTerkini),
-                               kartuMimic(PemainTerkini).
+                               nomorGiliran(Num),
+                               kartuMimic(Num).
 
 valid(Kartu, KartuAtas) :- Kartu = kartu(W, J), 
                            KartuAtas = kartu(WAtas, JAtas),
