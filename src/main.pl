@@ -12,11 +12,10 @@
 :- include('uni.pl').
 :- include('tangkap.pl').
 :- include('tantang.pl').
-:- include('saveGame.pl')
 % :- include('endGame.pl').
 
 
-%:- dynamic(gameStarted/0).
+:- dynamic(gameStarted/0).
 :- dynamic(jumlahPemain/1).
 :- dynamic(pemain/1).
 :- dynamic(kartuPemain/2).
@@ -32,8 +31,6 @@
 :- dynamic(kartuAksiTerakhir/2).
 :- dynamic(giliranAksiTerakhir/2).
 :- dynamic(riwayatAksi/3).
-:- dynamic(riwayatUNI/1).
-:- dynamic(arahMain/1).
 
 /* State Game */
 :- dynamic(gameStarted/0).
@@ -115,10 +112,6 @@ startGame :-  \+gameStarted -> (
                                     retractall(prevGiliran(_)),
                                     retractall(temp(_)),
                                     asserta(temp([])),
-                                    retractall(riwayatUNI(_)),
-                                    asserta(riwayatUNI([])),
-                                    retractall(arahMain(_)),
-                                    asserta(arahMain(kanan)),
                                     asserta(gameStarted),
                                     inputJumlahPemain
                                 ).
@@ -192,7 +185,6 @@ discardPile :-
     asserta(discardPileTop([kartu(W, J)])),asserta(tumpukanKartu(Sisa));
     append(Sisa, [kartu(W, J)], Baru),asserta(tumpukanKartu(Baru)),discardPile
     ).
-
 
 randomizeUrutan :- findAllPemain(Daftar),
                    randomizeList(Daftar, RandomizedDaftar),
