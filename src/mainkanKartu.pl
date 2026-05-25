@@ -9,7 +9,7 @@ mainkanKartu(Index) :-
             valid(Kartu, KartuAtas) ->
             ( Kartu = kartu(W,J),
             write(Pemain), format(' memainkan kartu: ~w-~w~n~n', [W, J]),
-            deleteElement(ListKartu, Indexriil, SisaKartu),
+            % deleteElement(ListKartu, Indexriil, SisaKartu), /* kayanya ini bisa dihapuss?? */
             retract(kartuPemain(Pemain, Kartu)), !,
             temp(ListLama),
             retractall(temp(_)),
@@ -76,7 +76,7 @@ valid(Kartu, KartuAtas) :- Kartu = kartu(W, J),
                            KartuAtas = kartu(WAtas, JAtas),
                            (JAtas \== wild, JAtas \== wild_draw_four, JAtas \== mimic ->
                                 ( WAtas \== W, J == draw-two -> fail
-                                ; WAtas == W -> true
+                                ; WAtas == W
                                 ; JAtas == J -> true
                                 ; J == wild -> true
                                 ; J == wild_draw_four -> true
