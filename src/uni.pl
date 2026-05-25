@@ -21,6 +21,7 @@ uni(Index) :-
                                 Kartu = kartu(W, J),
                                 format('~w memaikan kartu: ~w-~w~n', [Pemain, W, J]),
                                 format('~w menyerukan UNI!~n~n', [Pemain]),
+                                assertz(riwayatUNI(Pemain)),
                                 retract(uniActivated(Pemain)),
                                 deleteElement(ListKartu, Indexriil, SisaKartu),
                                 retract(kartuPemain(Pemain, Kartu)), !,

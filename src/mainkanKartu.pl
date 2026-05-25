@@ -41,6 +41,13 @@ efek_kartu(kartu(W, reverse)) :- updateKartuAksi(W, reverse),
                                  asserta(nomorGiliran(Num1)),
                                  retract(giliran(_)),
                                  asserta(giliran(PemainSelanjutnya)),
+                                 arahMain(Arah),
+                                 (Arah == kanan ->
+                                    retractall(arahMain(_)),
+                                    asserta(arahMain(kiri))
+                                ;
+                                    retractall(arahMain(_)),
+                                    asserta(arahMain(kanan))),
 
                                  write('Arah permainan dibalik!'), nl,
                                  format('Giliran ~w.~n', [PemainSelanjutnya]).
