@@ -3,8 +3,10 @@ swapKartu(X,Y):- mode(2),
                 setim(Pemain, Teman), 
                 findAllKartuPemain(Pemain, ListKartuPemain), 
                 findAllKartuPemain(Teman, ListKartuTeman), 
-                listLength(ListKartuPemain) > 1,
-                listLength(ListKartuTeman) > 1,
+                listLength(ListKartuPemain, JmlPemain),
+                listLength(ListKartuTeman, JmlTeman),
+                JmlPemain > 1,
+                JmlTeman > 1,
                 X1 is X-1, 
                 Y1 is Y-1,
                 getElement(ListKartuPemain,X1,KartuPemain),
@@ -12,7 +14,8 @@ swapKartu(X,Y):- mode(2),
                 retract(kartuPemain(Pemain, KartuPemain)),
                 retract(kartuPemain(Teman, KartuTeman)),
                 assertz(kartuPemain(Pemain, KartuTeman)),
-                assertz(kartuPemain(Teman, KartuPemain)).
+                assertz(kartuPemain(Teman, KartuPemain)),
+                asserta(swapKartuDilakukan).
 
 
 
