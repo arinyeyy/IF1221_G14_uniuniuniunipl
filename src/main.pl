@@ -17,6 +17,7 @@
 :- include('endGame.pl').
 :- include('saveGame.pl').
 :- include('loadGame.pl').
+:- include('godsHand.pl').
 
 
 :- dynamic(gameStarted/0).
@@ -43,6 +44,7 @@
 :- dynamic(setim/2).
 :- dynamic(aksiYangDapatDilakukan/2).
 :- dynamic(swapKartuDilakukan/0).
+:- dynamic(pemainRandom/2).
 
 /* State Game */
 :- dynamic(gameStarted/0).
