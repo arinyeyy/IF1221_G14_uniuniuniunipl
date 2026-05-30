@@ -46,7 +46,7 @@ writeStatusUNI(S):- (riwayatUNI(Pemain) ->
 
 writeKartu(S) :- giliran(PemainTerkini),
               findAllKartuPemain(PemainTerkini, DaftarKartu),
-              format(S, "kartu(~w): [~w].~n", [PemainTerkini, DaftarKartu]).
+              format(S, "kartu ~w: ~w.~n", [PemainTerkini, DaftarKartu]).
 
 writeKartuAksiTerakhir(S) :- kartuAksiTerakhir(W, J), giliranAksiTerakhir(PemainAksi, Count) ->
                           (
