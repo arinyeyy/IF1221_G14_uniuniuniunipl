@@ -1,5 +1,3 @@
-:- dynamic(aksiYangDapatDilakukan/2).
-
 kartuEfektif(KartuAtas, KartuEfektif) :-
     KartuAtas = kartu(_, Jenis),
     (Jenis == wild ; Jenis == wild_draw_four ; Jenis == mimic),
@@ -52,13 +50,12 @@ tentukanAksi(Pemain) :-
         assertz(aksiYangDapatDilakukan(Pemain, uni))
     ; true),
 
-    (mode(2), \+kenaEfekDraw,
-    % \+swapKartuDilakukan, ini harus disesuain sama swapKartu
-    findAllKartuPemain(Pemain, ListKartu2),
-    listLength(ListKartu2, Jumlah), Jumlah > 1 ->
+    (mode(2), \+kenaEfekDraw, \+swapKartuDilakukan,
+    findAllKartuPemain(Pemain, ListKartu2), listLength(ListKartu2, Jumlah), Jumlah > 1, setim(Pemain, Teman),
+    findAllKartuPemain(Teman, ListKartuTeman), listLength(ListKartuTeman, JumlahTeman), JumlahTeman > 1 ->
         assertz(aksiYangDapatDilakukan(Pemain, swapKartu))
     ; true).
-
+    
 lihatCommand :-
     giliran(Pemain),
     write('Aksi utama yang tersedia:'), nl,
