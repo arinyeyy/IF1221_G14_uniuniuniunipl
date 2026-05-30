@@ -265,13 +265,17 @@ pilihanMode:- write('Tersedia 2 mode permainan'),nl,
                 ;
                 write('Permainan dimulai dalam mode turnamen'),nl).
 
-bikinTim:- mode(2),
+bikinTim :- mode(2),
     write('Membentuk tim secara acak...'),nl,nl,
     allPemain(Daftar),
     Daftar=[Pemain1, Pemain2, Pemain3, Pemain4],
-    asserta(tim1(Pemain1,Pemain3)),
-    asserta(tim2(Pemain2,Pemain4)),
+    asserta(tim(1, [Pemain1, Pemain3])),
+    asserta(tim(2, [Pemain2, Pemain4])),
+    asserta(setim(Pemain1, Pemain3)),
+    asserta(setim(Pemain3, Pemain1)),
+    asserta(setim(Pemain2, Pemain4)),
+    asserta(setim(Pemain4, Pemain2)),
     format('Tim 1 : ~w, ~w~n', [Pemain1, Pemain3]),
-    format('Tim 1 : ~w, ~w~n', [Pemain2, Pemain4]).
+    format('Tim 2 : ~w, ~w~n', [Pemain2, Pemain4]).
 
 exitGame :- retractall(gameStarted).
