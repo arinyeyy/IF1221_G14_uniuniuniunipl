@@ -38,8 +38,8 @@
 :- dynamic(arahMain/1).
 :- dynamic(riwayatUNI/1).
 :- dynamic(mode/1).
-:- dynamic(tim1/2).
-:- dynamic(tim2/2).
+:- dynamic(tim/2).
+:- dynamic(setim/2).
 
 /* State Game */
 :- dynamic(gameStarted/0).
