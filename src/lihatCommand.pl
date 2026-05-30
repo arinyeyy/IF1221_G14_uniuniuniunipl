@@ -1,9 +1,18 @@
 :- dynamic(aksiYangDapatDilakukan/2).
 
+kartuEfektif(KartuAtas, KartuEfektif) :-
+    KartuAtas = kartu(_, Jenis),
+    (Jenis == wild ; Jenis == wild_draw_four ; Jenis == mimic),
+    warnaWildTerpilih(Warna),
+    !,
+    KartuEfektif = kartu(Warna, Jenis).
+kartuEfektif(KartuAtas, KartuAtas).
+
 adaKartuValid(Pemain) :-
     findAllKartuPemain(Pemain, ListKartu),
     discardPileTop([KartuAtas|_]),
-    adaYangValid(ListKartu, KartuAtas).
+    kartuEfektif(KartuAtas, KartuEfektif),
+    adaYangValid(ListKartu, KartuEfektif).
 
 adaYangValid([H|_], KartuAtas) :-
     valid(H, KartuAtas), !.

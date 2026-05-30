@@ -1,19 +1,19 @@
-nilaiKartu(kartu(_, 0), 0) :- !.
-nilaiKartu(kartu(_, 1), 1) :- !.
-nilaiKartu(kartu(_, 2), 2) :- !.
-nilaiKartu(kartu(_, 3), 3) :- !.
-nilaiKartu(kartu(_, 4), 4) :- !.
-nilaiKartu(kartu(_, 5), 5) :- !.
-nilaiKartu(kartu(_, 6), 6) :- !.
-nilaiKartu(kartu(_, 7), 7) :- !.
-nilaiKartu(kartu(_, 8), 8) :- !.
-nilaiKartu(kartu(_, 9), 9) :- !.
-nilaiKartu(kartu(_, skip), 10) :- !.
-nilaiKartu(kartu(_, reverse), 10) :- !.
-nilaiKartu(kartu(_, draw_two), 10) :- !.
-nilaiKartu(kartu(_, wild), 20) :- !.
-nilaiKartu(kartu(_, wild_draw_four), 20) :- !.
-nilaiKartu(kartu(_, mimic), 20) :- !.
+nilaiKartu(kartu(_, 0), 0).
+nilaiKartu(kartu(_, 1), 1).
+nilaiKartu(kartu(_, 2), 2).
+nilaiKartu(kartu(_, 3), 3).
+nilaiKartu(kartu(_, 4), 4).
+nilaiKartu(kartu(_, 5), 5).
+nilaiKartu(kartu(_, 6), 6).
+nilaiKartu(kartu(_, 7), 7).
+nilaiKartu(kartu(_, 8), 8).
+nilaiKartu(kartu(_, 9), 9).
+nilaiKartu(kartu(_, skip), 10).
+nilaiKartu(kartu(_, reverse), 10).
+nilaiKartu(kartu(_, draw_two), 10).
+nilaiKartu(kartu(_, wild), 20).
+nilaiKartu(kartu(_, wild_draw_four), 20).
+nilaiKartu(kartu(_, mimic), 20).
 
 hitungTotalPoin([], Total, Total).
 hitungTotalPoin([H|T], TotalSementara, Total) :-
@@ -53,7 +53,7 @@ tampilkanPerhitungan([Nama|T]) :-
     ), nl,
     tampilkanPerhitungan(T).
 
-cariPosisi([Nama|_], Nama, 0) :- !.
+cariPosisi([Nama|_], Nama, 0).
 cariPosisi([_|T], Nama, Idx) :-
     cariPosisi(T, Nama, Idx1),
     Idx is Idx1 + 1.

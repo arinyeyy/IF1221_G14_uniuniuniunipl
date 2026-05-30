@@ -1,20 +1,10 @@
-/* lihatCommand :-
-    write('Aksi utama yang tersedia:'), nl,
-    write('1. ambilKartu'), nl,
-    write('2. tantang'), nl,
-    nl,
-    write('Aksi pendukung yang tersedia:'), nl,
-    write('1. lihatCommand'), nl,
-    write('2. lihatKartu'), nl,
-    write('3. cekInfo'), nl. */
-
 lihatKartu :-
     giliran(PemainAktif),
-    write('Berikut kartu yang anda miliki.'), nl,
+    format('Berikut kartu yang ~w miliki:~n', [PemainAktif]),
     findAllKartuPemain(PemainAktif, DaftarKartu),
     tampilkanKartu(DaftarKartu, 1), !.
 
-tampilkanKartu([], _). :- !.
+tampilkanKartu([], _) :- !.
 
 /* tampilkanKartu([kartu(W,J)|T], N) :-
     kartuTersembunyi(kartu(W,J)), !,
