@@ -1,6 +1,12 @@
 mainkanKartu(Index) :-
     gameStarted -> (
         giliran(Pemain), !,
+        (aksiYangDapatDilakukan(Pemain, mainkanKartu) ->
+         true
+        ;
+         write('Command mainkanKartu tidak valid saat ini!'), nl, 
+         write('Pilih tantang atau ambilKartu.'), nl, nl, fail
+        ),
         findAllKartuPemain(Pemain, ListKartu),
         Indexriil is Index-1,
         getElement(ListKartu, Indexriil, Kartu),

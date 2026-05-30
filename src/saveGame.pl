@@ -1,4 +1,11 @@
-saveGame :- write('Masukkan nama file penyimpanan: '), 
+saveGame :- giliran(Pemain),
+            (\+ tantangActivated(_) ->
+             true
+            ;
+             write('Tidak dapat melakukan saveGame'), nl, 
+             write('Pilih tantang atau ambilKartu terlebih dahulu.'), nl, nl, fail
+            ),
+            write('Masukkan nama file penyimpanan: '), 
             read(NamaFile), nl, 
             sambung_txt(NamaFile, FileNama), 
             createFile(FileNama),
