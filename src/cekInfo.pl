@@ -32,4 +32,4 @@ displayTim:-
     tim(1,[P1,P2]),
     tim(2,[P3,P4]),
     format('Tim 1: ~w, ~w', [P1,P2]),nl,
-    format('Tim 1: ~w, ~w', [P3,P4]),nl.
+    format('Tim 2: ~w, ~w', [P3,P4]),nl.

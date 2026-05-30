@@ -108,8 +108,8 @@ daftarkan1PemainKT(Pemain, [H|T]) :-
   daftarkan1PemainKT(Pemain, T).
 
 loadTim(S) :-
-  read(S, tim(1):Tim1),
-  read(S, tim(2):Tim2),
+  read(S, tim1:Tim1),
+  read(S, tim2:Tim2),
   retractall(tim(_, _)),
   retractall(setim(_, _)),
   asserta(tim(1, Tim1)),
@@ -129,6 +129,7 @@ loadGame :-
     ( open(FileNama, read, S) ->
       asserta(gameStarted),
       loadMode(S),
+      (mode(2) -> loadTim(S) ; true),
       loadUrutanPemain(S),
       loadGiliran(S),
       loadDiscardPileTop(S),
@@ -138,7 +139,6 @@ loadGame :-
       loadKartuPemain(S),
       loadKartuAksiTerakhir(S),
       loadKartuTersembunyi(S),
-      (mode(2) -> loadTim(S) ; true),
       close(S),
       format('Status permainan berhasil dimuat dari ~w.~n', [FileNama]),
       giliran(PemainTerkini),

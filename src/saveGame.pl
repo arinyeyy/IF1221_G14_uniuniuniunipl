@@ -90,8 +90,8 @@ writeKartuTersembunyi(S) :- allPemain(Urutan),
 
 writeTim(S):-
     tim(1, Tim1), tim(2, Tim2), 
-    format(S, 'tim(~w):~w.~n', [1, Tim1]),
-    format(S, 'tim(~w):~w.~n', [2, Tim2]).
+    format(S, 'tim1:~w.~n', [Tim1]),
+    format(S, 'tim2:~w.~n', [Tim2]).
 
 writeMode(S):- (mode(1) -> 
             format(S, ' mode:~w.~n', [klasik])
