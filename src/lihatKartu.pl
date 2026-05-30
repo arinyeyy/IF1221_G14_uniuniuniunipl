@@ -2,9 +2,16 @@ lihatKartu :-
     giliran(PemainAktif),
     format('Berikut kartu yang ~w miliki:~n', [PemainAktif]),
     findAllKartuPemain(PemainAktif, DaftarKartu),
-    tampilkanKartu(DaftarKartu, 1), !.
+    tampilkanKartu(DaftarKartu, 1),
+    (mode(2) ->
+        setim(PemainAktif, Teman),
+        nl,
+        format('Berikut kartu yang teman satu tim anda miliki (~w).~n', [Teman]),
+        findAllKartuPemain(Teman, KartuTeman),
+        tampilkanKartu(KartuTeman, 1)
+    ; true).
 
-tampilkanKartu([], _) :- !.
+tampilkanKartu([], _).
 
 /* tampilkanKartu([kartu(W,J)|T], N) :-
     kartuTersembunyi(kartu(W,J)), !,

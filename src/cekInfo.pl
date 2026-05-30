@@ -5,7 +5,7 @@ cekInfo :-
             format('Kartu discard top: ~w-~w.~n', [W, J]),
             (mode(2)->displayTim;true),
             giliran(Pemain),
-            format('Sekarang giliran: ~w.~n', [Pemain]),
+            format('Giliran saat ini: ~w.~n', [Pemain]),
             nl,
             allPemain(Urutan),
             write('Urutan pemain: '),
