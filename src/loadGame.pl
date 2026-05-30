@@ -6,7 +6,12 @@ daftarkanPemain([Nama|T]) :-
 loadMode(S) :-
   read(S, mode:Mode),
   retractall(mode(_)),
-  asserta(mode(Mode)).
+  (
+    Mode == turnamen ->
+    asserta(mode(2))
+    ;
+    asserta(mode(1))
+  ).
 
 loadUrutanPemain(S) :-
   read(S, urutan_pemain:Urutan),

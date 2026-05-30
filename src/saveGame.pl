@@ -93,10 +93,10 @@ writeTim(S):-
     format(S, 'tim(~w):~w.~n', [1, Tim1]),
     format(S, 'tim(~w):~w.~n', [2, Tim2]).
 
-/* writeMode(S):- (mode(1) -> 
+writeMode(S):- (mode(1) -> 
             format(S, ' mode:~w.~n', [klasik])
             ;
-            format(S, ' mode:~w.~n', [turnamen])). */
+            format(S, ' mode:~w.~n', [turnamen])).
  
   
 kartuTersembunyiSaatSave([], _).
