@@ -100,6 +100,29 @@ tampilkanPemenang([Nama|T], Rank) :-
     Rank1 is Rank + 1,
     tampilkanPemenang(T, Rank1).
 
+hitungPoinTim(NomorTim, PoinTim) :-
+    tim(NomorTim, [P1, P2]),
+    hitungPoin(P1, Poin1),
+    hitungPoin(P2, Poin2),
+    PoinTim is Poin1 + Poin2.
+
+tampilkanPoinTim :-
+    write('Berikut perhitungan poin untuk masing-masing tim.'), nl,
+    tim(1, [T1P1, T1P2]),
+    tim(2, [T2P1, T2P2]),
+    hitungPoin(T1P1, PT1P1), hitungPoin(T1P2, PT1P2),
+    hitungPoin(T2P1, PT2P1), hitungPoin(T2P2, PT2P2),
+    PoinTim1 is PT1P1 + PT1P2,
+    PoinTim2 is PT2P1 + PT2P2,
+    format('Tim 1 (~w, ~w) : ~w + ~w = ~w poin~n', [T1P1, T1P2, PT1P1, PT1P2, PoinTim1]),
+    format('Tim 2 (~w, ~w) : ~w + ~w = ~w poin~n', [T2P1, T2P2, PT2P1, PT2P2, PoinTim2]).
+
+pemenangTim(1) :-
+    hitungPoinTim(1, Poin1),
+    hitungPoinTim(2, Poin2),
+    Poin1 =< Poin2, !.
+pemenangTim(2).
+
 endGame :-
     giliran(Pemenang),
     \+kartuPemain(Pemenang, _), !,
@@ -108,9 +131,15 @@ endGame :-
     write('Berikut perhitungan poin sisa kartu.'), nl,
     tampilkanPerhitungan(SemuaPemain),
     nl,
-    write('Urutan pemenang:'), nl,
-    urutkanPemenang(SemuaPemain, Terurut),
-    tampilkanPemenang(Terurut, 1),
-    nl,
-    Terurut = [Juara|_],
-    format('Selamat, ~w menjadi pemenang!~n', [Juara]).
+    (mode(2) ->
+        tampilkanPoinTim, nl,
+        pemenangTim(TimMenang),
+        format('Selamat, Tim ~w menjadi pemenang!~n', [TimMenang])
+    ;
+        write('Urutan pemenang:'), nl,
+        urutkanPemenang(SemuaPemain, Terurut),
+        tampilkanPemenang(Terurut, 1),
+        nl,
+        Terurut = [Juara|_],
+        format('Selamat, ~w menjadi pemenang!~n', [Juara])
+    ).
