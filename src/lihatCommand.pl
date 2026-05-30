@@ -52,10 +52,17 @@ tentukanAksi(Pemain) :-
         assertz(aksiYangDapatDilakukan(Pemain, uni))
     ; true).
 
+    (mode(2), \+kenaEfekDraw,
+    % \+swapKartuDilakukan, ini harus disesuain sama swapKartu
+    findAllKartuPemain(Pemain, ListKartu2),
+    listLength(ListKartu2, Jumlah), Jumlah > 1 ->
+        assertz(aksiYangDapatDilakukan(Pemain, swapKartu))
+    ; true).
+
 lihatCommand :-
     giliran(Pemain),
     write('Aksi utama yang tersedia:'), nl,
-    tulisAksiUtama(Pemain, 1, [mainkanKartu, ambilKartu, tantang, uni]),
+    tulisAksiUtama(Pemain, 1, [mainkanKartu, ambilKartu, tantang, uni, swapKartu]),
     nl,
     write('Aksi pendukung yang tersedia:'), nl,
     write('1. tangkap'), nl,
