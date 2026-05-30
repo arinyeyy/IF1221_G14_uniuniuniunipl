@@ -1,0 +1,7 @@
+urutan_pemain: [l,f,g,e].
+giliran: l.
+discard_top: hijau-5.
+warna_aktif: [].
+arah_permainan:kanan.
+status Unu:[].
+kartu l: [kartu(hitam,wild_draw_four),kartu(kuning,draw_two),kartu(hijau,draw_two),kartu(biru,draw_two),kartu(hijau,6),kartu(kuning,1),kartu(hijau,8)].

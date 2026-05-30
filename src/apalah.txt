@@ -1,0 +1,8 @@
+urutan_pemain: [f,a].
+giliran: f.
+discard_top: biru-4.
+warna_aktif: biru.
+arah_permainan:kanan.
+status Uni:[].
+kartu f: [kartu(biru,7),kartu(kuning,draw_two),kartu(hitam,mimic),kartu(kuning,2),kartu(biru,0),kartu(hitam,wild_draw_four),kartu(kuning,9)].
+[107,97,114,116,117,95,97,107,115,105,95,116,101,114,97,107,104,105,114,58,32,116,105,100,97,107,32,97,100,97,46]

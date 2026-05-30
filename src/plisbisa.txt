@@ -1,0 +1,9 @@
+urutan_pemain: [e,h,g,f].
+giliran: e.
+discard_top: kuning-7.
+warna_aktif: kuning.
+arah_permainan: kanan.
+status Uni: [].
+kartu e: [kartu(merah,skip),kartu(hijau,8),kartu(merah,3),kartu(biru,2),kartu(biru,0),kartu(hijau,3),kartu(merah,0)].
+[107,97,114,116,117,95,97,107,115,105,95,116,101,114,97,107,104,105,114,58,32,116,105,100,97,107,32,97,100,97,46]
+kartu_tersembunyi: [].

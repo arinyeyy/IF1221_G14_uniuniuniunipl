@@ -2,7 +2,7 @@ saveGame :- write('Masukkan nama file penyimpanan: '),
             read(NamaFile), nl, 
             sambung_txt(NamaFile, FileNama), 
             createFile(FileNama),
-            format('Status permainan berhasil disimpan ke ~w.~n', [FileNama]).
+            format('Status permainan berhasil disimpan ke ~w.~n', [FileNama]). 
 
 sambung_txt(NamaFile, FileNama):-name(NamaFile, HasilFile), 
                                  name('.txt', Txt), 
@@ -19,46 +19,49 @@ createFile(FileNama):-
   writeStatusUNI(S),
   writeKartu(S),
   writeKartuAksiTerakhir(S),
-  %writeKartuTersembunyi(S),
+  writeKartuTersembunyi(S),
   close(S).
   
 
 writeUrutanPemain(S) :- allPemain(Urutan),
-                     format(S, 'urutan_pemain: ~w.~n', [Urutan]).
+                        format(S, 'urutan_pemain: ~w.~n', [Urutan]).
 
 writeGiliran(S) :- giliran(PemainTerkini),
-                format(S, 'giliran: ~w.~n', [PemainTerkini]).
+                   format(S, 'giliran: ~w.~n', [PemainTerkini]).
 
 writeDiscardPileTop(S) :- discardPileTop([kartu(W,J)]),
-                       format(S, 'discard_top: ~w-~w.~n', [W,J]).
+                          format(S, 'discard_top: ~w-~w.~n', [W,J]).
 
 writeWarnaAktif(S) :- (warnaWildTerpilih(Warna) ->
-                   format(S, 'warna_aktif: ~w.~n', [Warna])
-                   ;
-                   format(S, 'warna_aktif: [].~n', [])).
+                       format(S, 'warna_aktif: ~w.~n', [Warna])
+                      ;
+                       discardPileTop([kartu(W,J)]),
+                       format(S, 'warna_aktif: ~w.~n', [W])
+                      ).
 
-writeArah(S) :- arahMain(Arah), format(S, 'arah_permainan:~w.~n', [Arah]).
+writeArah(S) :- arahMain(Arah), format(S, 'arah_permainan: ~w.~n', [Arah]).
 
 writeStatusUNI(S):- (riwayatUNI(Pemain) ->
-                    format(S, 'status Unu:~w.~n', [Pemain])
-                    ;
-                    format(S, 'status Unu: [].~n', [])).
+                     format(S, 'status Uni: ~w.~n', [Pemain])
+                     ;
+                     format(S, 'status Uni: [].~n', [])
+                    ).
 
 writeKartu(S) :- giliran(PemainTerkini),
-              findAllKartuPemain(PemainTerkini, DaftarKartu),
-              format(S, "kartu ~w: ~w.~n", [PemainTerkini, DaftarKartu]).
+                 findAllKartuPemain(PemainTerkini, DaftarKartu),
+                 format(S, "kartu ~w: ~w.~n", [PemainTerkini, DaftarKartu]).
 
-writeKartuAksiTerakhir(S) :- kartuAksiTerakhir(W, J), giliranAksiTerakhir(PemainAksi, Count) ->
-                          (
-                            format(S, "kartu_aksi_terakhir: ~w-~w (oleh ~w, ~w giliran lalu).~n", 
-                            [W, J, PemainAksi, Count])
-                          ;
-                            write(S, "kartu_aksi_terakhir: tidak ada."), nl
-                          ).
+writeKartuAksiTerakhir(S) :- (kartuAksiTerakhir(W, J), giliranAksiTerakhir(PemainAksi, Count) ->
+                              format(S, "kartu_aksi_terakhir: ~w-~w (oleh ~w, ~w giliran lalu).~n", 
+                              [W, J, PemainAksi, Count])
+                             ;
+                              write(S, "kartu_aksi_terakhir: tidak ada."), nl(S)
+                             ).
                           
 
-/* writeKartuTersembunyi(S) :- giliran(PemainTerkini),
-                         kartuTersembunyi(PemainTerkini, KartuYGTersembunyi),
-                         format(S, "kartu_tersembunyi: ~w.").
-                         
-                         bingung cara nampilin kartu tersembunyi tiap pemain*/
+writeKartuTersembunyi(S) :- giliran(PemainTerkini),
+                            ( kartuTersembunyi(PemainTerkini, KartuYGTersembunyi) ->
+                              format(S, "kartu_tersembunyi: [~w: ~w].~n", [PemainTerkini, KartuYGTersembunyi])
+                            ;
+                              format(S, "kartu_tersembunyi: [].~n", [])
+                            ).
