@@ -192,7 +192,7 @@ randomizeUrutan :- findAllPemain(Daftar),
                    beriGiliranPertama, !.
 
 writeDiscardTop :- discardPileTop([kartu(W,J)]),
-                   format('Kartu Discard Top: ~w-~w~n', [W, J]).
+                   format('Kartu Discard Top: ~w-~w~n~n', [W, J]).
 
 beriGiliranPertama :- allPemain(AllPemain),
                       nomorGiliran(Num),
@@ -219,7 +219,7 @@ beriGiliranNormal(Num) :-   allPemain(AllPemain),
                             retractall(nomorGiliran(_)),
                             asserta(nomorGiliran(Num1))),
 
-                            format('Giliran ~w~n~n', [PemainTerkini]),
+                            format('Giliran ~w.~n', [PemainTerkini]),
                             
                             aktifkanUniJika(PemainTerkini),
                             tentukanAksi(PemainTerkini).
@@ -242,7 +242,7 @@ beriGiliranSkip(Num) :- allPemain(AllPemain),
                         retractall(nomorGiliran(_)),
                         asserta(nomorGiliran(Num1))),
 
-                        format('Giliran ~w~n~n', [PemainTerkini]),
+                        format('Giliran ~w.~n', [PemainTerkini]),
                         
                         aktifkanUniJika(PemainTerkini),
                         tentukanAksi(PemainTerkini).

@@ -1,14 +1,15 @@
 ambilKartu :-
     giliran(Pemain),
     ambilBeberapaKartu(Pemain, 1),
-    skipTurn.
+    nomorGiliran(Num),
+    beriGiliranNormal(Num).
 
 ambilBeberapaKartu(_, 0) :- !.
 ambilBeberapaKartu(Pemain, Count) :-
     Count > 0,
     retract(tumpukanKartu([K|Sisa])),
     K = kartu(W, J),
-    format('~w mengambil kartu: ~w-~w~n', [Pemain, W,J]),
+    format('~w mengambil kartu: ~w-~w.~n~n', [Pemain, W,J]),
     assertz(kartuPemain(Pemain, K)),
     retractall(tumpukanKartu(_)),
     asserta(tumpukanKartu(Sisa)),
