@@ -172,8 +172,8 @@ discardPile :-
     retract(tumpukanKartu([kartu(W, J) | Sisa])),
     (number(J) -> 
     asserta(discardPileTop([kartu(W, J)])),asserta(tumpukanKartu(Sisa));
-    append(Sisa, [kartu(W, J)], Baru),asserta(tumpukanKartu(Baru)),discardPile
-    ).
+    append(Sisa, [kartu(W, J)], Baru),asserta(tumpukanKartu(Baru)),
+    discardPile).
 
 randomizeUrutan :- findAllPemain(Daftar),
                    randomizeList(Daftar, RandomizedDaftar),

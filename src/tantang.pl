@@ -1,28 +1,24 @@
 tantang :-
     giliran(PemainTerkini),
     nomorGiliran(Num),
-    pemainNext(Num, PemainSelanjutnya),
     pemainPrev(Num, PemainSebelum),
-    retract(activateTantang),
+    retractall(tantangActivated(_)),    
     
-    write('Tantangan dilakukan!'),
+    write('Tantangan dilakukan!'), nl,
     format('Memeriksa kartu ~w...~n', [PemainSebelum]), nl,
 
     (tantangValid(PemainSebelum) -> 
         format('Tantangan berhasil. ~w mendapatkan 4 kartu acak.~n', [PemainSebelum]), nl,
         ambilBeberapaKartu(PemainSebelum, 4), 
-        beriGiliranSkip(Num), 
-        format('Giliran ~w.~n', [PemainSelanjutnya]), !
+        beriGiliranNormal(Num), !
     ;
         format('Tantangan gagal. ~w mendapatkan 6 kartu acak.~n', [PemainTerkini]), nl,
         ambilBeberapaKartu(PemainTerkini, 6), 
-        beriGiliranSkip(Num), 
-        format('Giliran ~w.~n', [PemainSelanjutnya]), !
+        beriGiliranNormal(Num), !
     ).
 
 tantangValid(PemainSebelum) :- /* baca: tantang ke pemain sebelumnya valid*/
-    discardPile(List),
-    prevDiscardPileTop(List, PrevCard),
+    prevDiscardPileTop([PrevCard]),
     punyaKartuValid(PemainSebelum, PrevCard).
 
 cariKartuValid([], _) :- fail.
@@ -32,5 +28,3 @@ cariKartuValid([H|T], PrevCard) :-
 punyaKartuValid(Pemain, PrevCard) :-
     findAllKartuPemain(Pemain, ListKartu),
     cariKartuValid(ListKartu, PrevCard).
-
-prevDiscardPileTop([_,X|_], X).

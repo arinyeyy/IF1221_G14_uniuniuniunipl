@@ -14,6 +14,9 @@ mainkanKartu(Index) :-
             temp(ListLama),
             retractall(temp(_)),
             asserta(temp([KartuAtas|ListLama])),
+            discardPileTop(KartuLama),          
+            retractall(prevDiscardPileTop(_)), 
+            asserta(prevDiscardPileTop(KartuLama)), 
             retractall(discardPileTop(_)),
             assertz(discardPileTop([Kartu])),
             efek_kartu(Kartu))
@@ -69,11 +72,9 @@ efek_kartu(kartu(W, wild)) :- updateKartuAksi(W, wild),
 
 efek_kartu(kartu(W, wild_draw_four)) :- updateKartuAksi(W, wild_draw_four),
                                         nomorGiliran(Num),
-                                        asserta(activateTantang),
-                                        pemainNext(Num, PemainSelanjutnya),
-                                        ambilBeberapaKartu(PemainSelanjutnya, 4),
+                                        asserta(tantangActivated(true)),   
                                         pilihWarna,
-                                        beriGiliranSkip(Num).
+                                        beriGiliranNormal(Num).           
 
 efek_kartu(kartu(W, mimic)) :- updateGiliranMimic,
                                nomorGiliran(Num),
@@ -83,7 +84,7 @@ valid(Kartu, KartuAtas) :- Kartu = kartu(W, J),
                            KartuAtas = kartu(WAtas, JAtas),
                            (JAtas \== wild, JAtas \== wild_draw_four, JAtas \== mimic ->
                                 ( WAtas \== W, J == draw-two -> fail
-                                ; WAtas == W
+                                ; WAtas == W -> true
                                 ; JAtas == J -> true
                                 ; J == wild -> true
                                 ; J == wild_draw_four -> true
