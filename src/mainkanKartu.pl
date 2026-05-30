@@ -1,36 +1,42 @@
 mainkanKartu(Index) :-
-    gameStarted -> (
-        giliran(Pemain), !,
-        (aksiYangDapatDilakukan(Pemain, mainkanKartu) ->
-         true
-        ;
-         write('Command mainkanKartu tidak valid saat ini!'), nl, 
-         write('Pilih tantang atau ambilKartu.'), nl, nl, fail
-        ),
-        findAllKartuPemain(Pemain, ListKartu),
-        Indexriil is Index-1,
-        getElement(ListKartu, Indexriil, Kartu),
-        discardPileTop([KartuAtas|_]), 
-        (
-            valid(Kartu, KartuAtas) ->
-            ( Kartu = kartu(W,J),
-            write(Pemain), format(' memainkan kartu: ~w-~w~n~n', [W, J]),
-            % deleteElement(ListKartu, Indexriil, SisaKartu), /* kayanya ini bisa dihapuss?? */
-            retract(kartuPemain(Pemain, Kartu)), !,
-            temp(ListLama),
-            retractall(temp(_)),
-            asserta(temp([KartuAtas|ListLama])),
-            discardPileTop(KartuLama),          
-            retractall(prevDiscardPileTop(_)), 
-            asserta(prevDiscardPileTop(KartuLama)), 
-            retractall(discardPileTop(_)),
-            assertz(discardPileTop([Kartu])),
-            efek_kartu(Kartu))
-            ;
-            write('Kartu tidak valid!'), nl, nl, fail
+    (   gameStarted -> 
+        (   giliran(Pemain), !,
+            (   tantangActivated(_) ->
+                write('Command mainkanKartu tidak valid saat ini!'), nl,
+                write('Pilih tantang atau ambilKartu.'), nl, nl, fail
+            ;   
+                true
+            ),
+            findAllKartuPemain(Pemain, ListKartu),
+            Indexriil is Index-1,
+            getElement(ListKartu, Indexriil, Kartu),
+            discardPileTop([KartuAtas|_]),
+            (   valid(Kartu, KartuAtas) ->
+                (   Kartu = kartu(W,J),
+                    write(Pemain), format(' memainkan kartu: ~w-~w~n~n', [W, J]),
+                    (   \+ aksiBeruntunValid(Kartu) ->
+                        write('Kartu aksi tidak bisa dimainkan 2 kali berturut-turut!'), nl, nl, fail
+                    ;
+                        true
+                    ),
+                    retract(kartuPemain(Pemain, Kartu)), !,
+                    temp(ListLama),
+                    retractall(temp(_)),
+                    asserta(temp([KartuAtas|ListLama])),
+                    discardPileTop(KartuLama),          
+                    retractall(prevDiscardPileTop(_)), 
+                    asserta(prevDiscardPileTop(KartuLama)), 
+                    retractall(discardPileTop(_)),
+                    assertz(discardPileTop([Kartu])),
+                    efek_kartu(Kartu)
+                )
+                ;
+                write('Kartu tidak valid!'), nl, nl, fail
+            )
         )
-    );
-    write('Permainan belum dimulai!'), nl, nl, fail.
+    ;
+        write('Permainan belum dimulai!'), nl, nl, fail
+    ).
 
 efek_kartu(kartu(_, J)) :- integer(J), !,
                            updateGiliranMimic,
@@ -89,7 +95,7 @@ efek_kartu(kartu(W, mimic)) :- updateGiliranMimic,
 valid(Kartu, KartuAtas) :- Kartu = kartu(W, J), 
                            KartuAtas = kartu(WAtas, JAtas),
                            (JAtas \== wild, JAtas \== wild_draw_four, JAtas \== mimic ->
-                                ( WAtas \== W, J == draw-two -> fail
+                                ( WAtas \== W, J == draw_two -> fail
                                 ; WAtas == W -> true
                                 ; JAtas == J -> true
                                 ; J == wild -> true
@@ -103,6 +109,11 @@ valid(Kartu, KartuAtas) :- Kartu = kartu(W, J),
                                   fail
                                 )
                            ).
+
+aksiBeruntunValid(kartu(_, J)) :- integer(J), !.
+aksiBeruntunValid(kartu(_, J)) :- discardPileTop([KartuAtas|_]),
+                                  KartuAtas = kartu(_, JAtas),
+                                  J \== JAtas.
                             
 pilihWarna :- retractall(warnaWildTerpilih(_)),
               write('Pilih warna (merah/biru/kuning/hijau): '),

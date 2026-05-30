@@ -36,7 +36,7 @@ tentukanAksi(Pemain) :-
     /*
     ambilKartu -> selalu
     mainkanKartu -> kalau ada kartu valid di tangan, gak kena efek draw
-    tantang -> kalau pemain sebelumnya ngasih wild-draw-four
+    tantang -> kalau pemain sebelumnya ngasih wild_draw_four
     uni -> kalau ada kartu valid, sisa kartu 2, gak knea efek draw
     */
 
@@ -50,7 +50,7 @@ tentukanAksi(Pemain) :-
 
     (\+kenaEfekDraw, findAllKartuPemain(Pemain, ListKartu), listLength(ListKartu, 2), adaKartuValid(Pemain) ->
         assertz(aksiYangDapatDilakukan(Pemain, uni))
-    ; true).
+    ; true),
 
     (mode(2), \+kenaEfekDraw,
     % \+swapKartuDilakukan, ini harus disesuain sama swapKartu
