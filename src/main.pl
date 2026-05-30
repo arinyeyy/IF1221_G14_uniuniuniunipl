@@ -38,8 +38,7 @@
 :- dynamic(arahMain/1).
 :- dynamic(riwayatUNI/1).
 :- dynamic(mode/1).
-:- dynamic(tim1/2).
-:- dynamic(tim2/2).
+:- dynamic(tim/2).
 
 /* State Game */
 :- dynamic(gameStarted/0).
@@ -186,7 +185,7 @@ randomizeUrutan :- findAllPemain(Daftar),
                    asserta(allPemain(RandomizedDaftar)), nl,
                    kocokKartu,
                    bagiKartu(RandomizedDaftar),
-                   bikinTim,
+                   (mode(2)->bikinTim; true),
                    write('Urutan Pemain: '),
                    writeList(RandomizedDaftar),
                    nl,
@@ -265,12 +264,12 @@ pilihanMode:- write('Tersedia 2 mode permainan'),nl,
                 ;
                 write('Permainan dimulai dalam mode turnamen'),nl).
 
-bikinTim:- mode(2),
+bikinTim:- 
     write('Membentuk tim secara acak...'),nl,nl,
     allPemain(Daftar),
     Daftar=[Pemain1, Pemain2, Pemain3, Pemain4],
-    asserta(tim1(Pemain1,Pemain3)),
-    asserta(tim2(Pemain2,Pemain4)),
+    asserta(tim(1,[Pemain1,Pemain3])),
+    asserta(tim(2,[Pemain2,Pemain4])),
     format('Tim 1 : ~w, ~w~n', [Pemain1, Pemain3]),
     format('Tim 1 : ~w, ~w~n', [Pemain2, Pemain4]).
 
