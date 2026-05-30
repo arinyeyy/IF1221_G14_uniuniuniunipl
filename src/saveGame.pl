@@ -24,7 +24,6 @@ createFile(FileNama):-
   
 
 writeUrutanPemain(S) :- allPemain(Urutan),
-                     writeList(Urutan),
                      format(S, 'urutan_pemain: [~w].~n', [Urutan]).
 
 writeGiliran(S) :- giliran(PemainTerkini),
