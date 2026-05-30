@@ -18,7 +18,7 @@ tantang :-
     ).
 
 tantangValid(PemainSebelum) :- /* baca: tantang ke pemain sebelumnya valid*/
-    prevDiscardPileTop(PrevCard),
+    prevDiscardPileTop([PrevCard]),
     punyaKartuValid(PemainSebelum, PrevCard).
 
 cariKartuValid([], _) :- fail.
