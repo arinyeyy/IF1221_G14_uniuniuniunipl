@@ -41,6 +41,8 @@
 :- dynamic(mode/1).
 :- dynamic(tim/2).
 :- dynamic(setim/2).
+:- dynamic(aksiYangDapatDilakukan/2).
+:- dynamic(swapKartuDilakukan/0).
 
 /* State Game */
 :- dynamic(gameStarted/0).
