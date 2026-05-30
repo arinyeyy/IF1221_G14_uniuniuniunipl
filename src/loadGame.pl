@@ -30,6 +30,32 @@ loadWarnaAktif(S) :-
   asserta(warnaWildTerpilih(Warna)).
 loadWarnaAktif(_).
 
+loadArah(S) :-
+  read(S, arah_permainan(Arah)),
+  retractall(arahMain(_)),
+  asserta(arahMain(Arah)).
+
+loadStatusUNI(S) :-
+  read(S, status_UNI(StatUni)),
+  retractall(riwayatUNI(_)),
+  asserta(riwayatUNI(StatUni)).
+
+loadKartuPemain(S) :- allPemain(Urutan), listLength(Urutan, N), helperLoadKartuPemain(S, N).
+
+helperLoadKartuPemain(_, 0) :- !.
+helperLoadKartuPemain(S, N) :-
+  read(S, Line),
+  Line = kartu(Pemain, ListKartu),
+  retractall(kartuPemain(Pemain,_)),
+  daftarkanKartuSatuPemain(Pemain, ListKartu),
+  N1 is N-1,
+  helperLoadKartuPemain(S, N1).
+
+daftarkanKartuSatuPemain(_, []) :- !.
+daftarkanKartuSatuPemain(Pemain, [Kartu|Sisa]) :-
+  asserta(kartuPemain(Pemain, Kartu)),
+  daftarkanKartuSatuPemain(Pemain, Sisa).
+
 loadGame :-
   write('Masukkan nama file yang akan dimuat: '), read(NamaFile), nl,
   sambung_txt(NamaFile, FileNama),
@@ -38,6 +64,9 @@ loadGame :-
       loadGiliran(S),
       loadDiscardPileTop(S),
       loadWarnaAktif(S),
+      loadArah(S),
+      loadStatusUNI(S),
+      loadKartuPemain(S),
       close(S),
       format('Status permainan berhasil dimuat dari ~w.~n', [FileNama]),
       giliran(PemainTerkini),
