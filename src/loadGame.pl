@@ -54,7 +54,7 @@ loadKartuPemain(S) :-
 helperLoadKartuPemain(_, 0) :- !.
 helperLoadKartuPemain(S, N) :-
     read(S, Line),
-    Line = kartu(Pemain, ListKartu),
+    Line = kartu(Pemain): ListKartu,
     retractall(kartuPemain(Pemain,_)),
     daftarkanKartuSatuPemain(Pemain, ListKartu),
     N1 is N-1,
@@ -65,10 +65,10 @@ daftarkanKartuSatuPemain(Pemain, [Kartu|Sisa]) :-
     asserta(kartuPemain(Pemain, Kartu)),
     daftarkanKartuSatuPemain(Pemain, Sisa).
 
-loadMode(S) :-
-    read_term(S, ' mode':Mode, []),
+/* loadMode(S) :-
+    read_term(S, 'mode':Mode, []),
     retractall(mode(_)),
-    (Mode == turnamen -> asserta(mode(2)) ; asserta(mode(1))).
+    (Mode == turnamen -> asserta(mode(2)) ; asserta(mode(1))). */
 
 loadKartuAksiTerakhir(S) :-
   read(S, kartu_aksi_terakhir:Term),
@@ -103,8 +103,8 @@ daftarkan1PemainKT(Pemain, [H|T]) :-
   daftarkan1PemainKT(Pemain, T).
 
 loadTim(S) :-
-  read(S, tim1:Tim1),
-  read(S, tim2:Tim2),
+  read(S, tim(1):Tim1),
+  read(S, tim(2):Tim2),
   retractall(tim(_, _)),
   retractall(setim(_, _)),
   asserta(tim(1, Tim1)),
