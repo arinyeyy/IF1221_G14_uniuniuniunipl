@@ -39,6 +39,10 @@
 :- dynamic(riwayatUNI/1).
 :- dynamic(mode/1).
 :- dynamic(tim/2).
+<<<<<<< HEAD
+=======
+:- dynamic(setim/2).
+>>>>>>> 24db3e07e6f1d9e278129dab1ec84ffb938b985c
 
 /* State Game */
 :- dynamic(gameStarted/0).
