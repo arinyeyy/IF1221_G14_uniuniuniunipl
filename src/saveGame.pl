@@ -9,7 +9,8 @@ saveGame :- giliran(Pemain),
             read(NamaFile), nl, 
             sambung_txt(NamaFile, FileNama), 
             createFile(FileNama),
-            format('Status permainan berhasil disimpan ke ~w.~n', [FileNama]). 
+            format('Status permainan berhasil disimpan ke ~w.~n', [FileNama]),
+            retractSemua. 
 
 sambung_txt(NamaFile, FileNama):-name(NamaFile, HasilFile), 
                                  name('.txt', Txt), 
@@ -110,3 +111,16 @@ kartuTersembunyiSaatSave([Nama|T], S) :-
         format(S, 'kartu_tersembunyi(~w):[].~n', [Nama])
     ),
     kartuTersembunyiSaatSave(T, S).
+
+retractSemua :-
+    retractall(gameStarted),
+    retractall(allPemain(_)),
+    retractall(mode(_)),
+    retractall(giliran(_)),
+    retractall(discardPileTop(_)),
+    retractall(warnaWildTerpilih(_)),
+    retractall(kartuPemain(_,_)),
+    retractall(kartuAksiTerakhir(_,_)),
+    retractall(giliranAksiTerakhir(_,_)),
+    retractall(kartuTersembunyi(_,_)),
+    retractall(tim(_,_)).
