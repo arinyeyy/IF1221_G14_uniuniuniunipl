@@ -10,6 +10,9 @@ listLength([_|Tail], Length) :- listLength(Tail, TailLength), Length is TailLeng
 getElement([E|_], 0, E) :- !.
 getElement([_|T], I, E) :- I > 0, NewI is I - 1, getElement(T, NewI, E).
 
+setElement(0, [_|T], NewElement, [NewElement |T]).
+setElement(I, [H|T1], NewElement, [H|T2]) :- I>0, INext is I - 1, setElement(INext, T1, NewElement, T2).
+
 getIndex([Element|_], Element, 0).
 getIndex([_|Tail], Element, Index) :-
     getIndex(Tail, Element, TempIndex),

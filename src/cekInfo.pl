@@ -3,6 +3,7 @@ cekInfo :-
         (
             discardPileTop([kartu(W, J)|_]),
             format('Kartu discard top: ~w-~w.~n', [W, J]),
+            (mode(2)->displayTim;true),
             giliran(Pemain),
             format('Sekarang giliran: ~w.~n', [Pemain]),
             nl,
@@ -25,3 +26,9 @@ displayAllPlayersInfo([Nama|T], Index) :-
     nl,
     NextIndex is Index + 1,
     displayAllPlayersInfo(T, NextIndex).
+
+displayTim:-
+    tim(1,[P1,P2]),
+    tim(2,[P3,P4]),
+    format('Tim 1: ~w, ~w', [P1,P2]),nl,
+    format('Tim 1: ~w, ~w', [P3,P4]),nl.
