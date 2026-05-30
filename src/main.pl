@@ -37,9 +37,6 @@
 :- dynamic(kartuTersembunyi/2).
 :- dynamic(arahMain/1).
 :- dynamic(riwayatUNI/1).
-:- dynamic(mode/1).
-:- dynamic(tim1/2).
-:- dynamic(tim2/2).
 
 /* State Game */
 :- dynamic(gameStarted/0).
@@ -119,21 +116,18 @@ startGame :-  \+gameStarted -> (
                                     retractall(prevDiscardPileTop(_)),
                                     retractall(giliran(_)),
                                     retractall(prevGiliran(_)),
-                                    retractall(mode(_)),
                                     retractall(temp(_)),
                                     asserta(temp([])),
                                     assertz(riwayatUNI([])),
                                     asserta(gameStarted),
-                                    pilihanMode,
                                     inputJumlahPemain
                                 ).
                 gameStarted -> write('Permainan sudah dimulai!'), nl, nl;
                 fail.
 
-inputJumlahPemain :- (mode(1) -> write('Masukkan jumlah pemain: '), read(Jml), nl
-                    ; Jml is 4),
-                    ((Jml > 1, Jml < 5) -> (asserta(jumlahPemain(Jml)), nl, tambahPemain(Jml));
-                    (write('Jumlah pemain harus di antara 2 sampai 4!'), nl, inputJumlahPemain)).
+inputJumlahPemain :- write('Masukkan jumlah pemain: '), read(Jml),
+                     ((Jml > 1, Jml < 5) -> (asserta(jumlahPemain(Jml)), nl, tambahPemain(Jml));
+                     (write('Jumlah pemain harus di antara 2 sampai 4!'), nl, inputJumlahPemain)).
 
 helpTambahPemain(_,0) :- randomizeUrutan. 
 
@@ -186,7 +180,6 @@ randomizeUrutan :- findAllPemain(Daftar),
                    asserta(allPemain(RandomizedDaftar)), nl,
                    kocokKartu,
                    bagiKartu(RandomizedDaftar),
-                   bikinTim,
                    write('Urutan Pemain: '),
                    writeList(RandomizedDaftar),
                    nl,
@@ -253,25 +246,5 @@ beriGiliranSkip(Num) :- allPemain(AllPemain),
                         
                         aktifkanUniJika(PemainTerkini),
                         tentukanAksi(PemainTerkini).
-
-pilihanMode:- write('Tersedia 2 mode permainan'),nl,
-              write('1. Mode klasik'),nl,
-              write('2. Mode turnamen'),nl,
-              write('Pilih mode permainan: '),
-              read(Mode),nl,
-              asserta(mode(Mode)),
-              (mode(1) ->
-                write('Permainan dimulai dalam mode klasik'),nl
-                ;
-                write('Permainan dimulai dalam mode turnamen'),nl).
-
-bikinTim:- mode(2),
-    write('Membentuk tim secara acak...'),nl,nl,
-    allPemain(Daftar),
-    Daftar=[Pemain1, Pemain2, Pemain3, Pemain4],
-    asserta(tim1(Pemain1,Pemain3)),
-    asserta(tim2(Pemain2,Pemain4)),
-    format('Tim 1 : ~w, ~w~n', [Pemain1, Pemain3]),
-    format('Tim 1 : ~w, ~w~n', [Pemain2, Pemain4]).
 
 exitGame :- retractall(gameStarted).

@@ -47,21 +47,31 @@ writeStatusUNI(S):- (riwayatUNI(Pemain) ->
                      format(S, 'status Uni: [].~n', [])
                     ).
 
-writeKartu(S) :- giliran(PemainTerkini),
-                 findAllKartuPemain(PemainTerkini, DaftarKartu),
-                 format(S, "kartu ~w: ~w.~n", [PemainTerkini, DaftarKartu]).
+writeKartu(S) :- allPemain(Urutan),
+                 kartuPemainSaatSave(Urutan, S).
 
 writeKartuAksiTerakhir(S) :- (kartuAksiTerakhir(W, J), giliranAksiTerakhir(PemainAksi, Count) ->
-                              format(S, "kartu_aksi_terakhir: ~w-~w (oleh ~w, ~w giliran lalu).~n", 
+                              format(S, 'kartu_aksi_terakhir: ~w-~w (oleh ~w, ~w giliran lalu).~n', 
                               [W, J, PemainAksi, Count])
                              ;
-                              write(S, "kartu_aksi_terakhir: tidak ada."), nl(S)
+                              write(S, 'kartu_aksi_terakhir: tidak ada.'), nl(S)
                              ).
                           
 
-writeKartuTersembunyi(S) :- giliran(PemainTerkini),
-                            ( kartuTersembunyi(PemainTerkini, KartuYGTersembunyi) ->
-                              format(S, "kartu_tersembunyi: [~w: ~w].~n", [PemainTerkini, KartuYGTersembunyi])
-                            ;
-                              format(S, "kartu_tersembunyi: [].~n", [])
-                            ).
+writeKartuTersembunyi(S) :- allPemain(Urutan),
+                            kartuTersembunyiSaatSave(Urutan, S).
+
+kartuPemainSaatSave([], _).
+kartuPemainSaatSave([Nama|T], S) :-
+    findAllKartuPemain(Nama, DaftarKartu),
+    format(S, 'kartu(~w): ~w.~n', [Nama, DaftarKartu]),
+    kartuPemainSaatSave(T, S).
+  
+kartuTersembunyiSaatSave([], _).
+kartuTersembunyiSaatSave([Nama|T], S) :-
+    ( kartuTersembunyi(Nama, KartuYGTersembunyi) ->
+        format(S, 'kartu_tersembunyi ~w: ~w.~n', [Nama, KartuYGTersembunyi])
+    ;
+        format(S, 'kartu_tersembunyi ~w: [].~n', [Nama])
+    ),
+    kartuTersembunyiSaatSave(T, S).
