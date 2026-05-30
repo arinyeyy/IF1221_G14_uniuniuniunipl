@@ -56,7 +56,7 @@ efek_kartu(kartu(W, skip)) :- updateKartuAksi(W, skip),
                               nomorGiliran(Num),
                               beriGiliranSkip(Num).
 
-efek_kartu(kartu(W,draw_two)):- updateKartuAksi(W, draw_two),
+efek_kartu(kartu(W, draw_two)):- updateKartuAksi(W, draw_two),
                                 nomorGiliran(Num),
                                 pemainNext(Num, PemainSelanjutnya),
                                 ambilBeberapaKartu(PemainSelanjutnya, 2),

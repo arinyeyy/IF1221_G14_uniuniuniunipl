@@ -3,7 +3,8 @@
 :- include('mainkanKartu.pl').
 :- include('ambilKartu.pl').
 :- include('cekInfo.pl').
-:- include('lihatCommand&lihatKartu.pl').
+:- include('lihatCommand.pl').
+:- include('lihatKartu.pl').
 :- include('lihatCommand.pl').
 :- include('findAll.pl').
 :- include('kartuMimic.pl').
@@ -13,7 +14,7 @@
 :- include('tangkap.pl').
 :- include('tantang.pl').
 % :- include('endGame.pl').
-% :- include('saveGame.pl').
+:- include('saveGame.pl').
 % :- include('loadGame.pl').
 
 
@@ -34,6 +35,8 @@
 :- dynamic(giliranAksiTerakhir/2).
 :- dynamic(riwayatAksi/3).
 :- dynamic(kartuTersembunyi/2).
+:- dynamic(arahMain/1).
+:- dynamic(riwayatUNI/1).
 
 /* State Game */
 :- dynamic(gameStarted/0).
@@ -115,6 +118,7 @@ startGame :-  \+gameStarted -> (
                                     retractall(prevGiliran(_)),
                                     retractall(temp(_)),
                                     asserta(temp([])),
+                                    assertz(riwayatUNI([])),
                                     asserta(gameStarted),
                                     inputJumlahPemain
                                 ).
@@ -164,14 +168,6 @@ ambilTujuh(Nama, N) :-
     N1 is N - 1,
     ambilTujuh(Nama, N1).
 
-ambil(_, 0) :- !.
-ambil(Nama, N) :- retract(tumpukanKartu([KartuTeratas|Sisa])),
-                  assertz(kartuPemain(Nama, KartuTeratas)),
-                  asserta(tumpukanKartu(Sisa)),
-                  N1 is N - 1,
-                  ambil(Nama, N1).
-
-
 discardPile :-
     retract(tumpukanKartu([kartu(W, J) | Sisa])),
     (number(J) -> 
@@ -192,6 +188,7 @@ randomizeUrutan :- findAllPemain(Daftar),
                    discardPile,
                    writeDiscardTop,
                    asserta(nomorGiliran(0)),
+                   asserta(arahMain(kanan)),
                    beriGiliranPertama, !.
 
 writeDiscardTop :- discardPileTop([kartu(W,J)]),
