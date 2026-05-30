@@ -26,7 +26,7 @@ uni(Index) :-
                                 retract(riwayatUNI(PemainSudahUNI)),
                                 asserta(riwayatUNI(NewPemainSudahUNI)),
                                 retract(uniActivated(Pemain)),
-                                deleteElement(ListKartu, Indexriil, SisaKartu),
+                                deleteElement(ListKartu, Indexriil, _),
                                 retract(kartuPemain(Pemain, Kartu)), !,
                                 retractall(discardPileTop(_)),
                                 assertz(discardPileTop([Kartu])),
@@ -37,7 +37,7 @@ uni(Index) :-
                     )
                 );
                 write('Kartumu tidak menjadi satu di giliran ini!'), nl,
-                write('Kamu mendapat 1 kartu sebagai penalti'), nl, nl,
-                ambil(Pemain, 1), !
+                write('Kamu mendapat 1 kartu sebagai penalti.'), nl, nl,
+                ambilBeberapaKartu(Pemain, 1), !
         );
     write('Permainan belum dimulai!'), nl, nl, fail.
