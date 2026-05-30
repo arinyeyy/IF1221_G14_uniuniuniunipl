@@ -9,7 +9,7 @@ mainkanKartu(Index) :-
             valid(Kartu, KartuAtas) ->
             ( Kartu = kartu(W,J),
             write(Pemain), format(' memainkan kartu: ~w-~w~n~n', [W, J]),
-            deleteElement(ListKartu, Indexriil, SisaKartu),
+            % deleteElement(ListKartu, Indexriil, SisaKartu), /* kayanya ini bisa dihapuss?? */
             retract(kartuPemain(Pemain, Kartu)), !,
             temp(ListLama),
             retractall(temp(_)),
@@ -41,6 +41,13 @@ efek_kartu(kartu(W, reverse)) :- updateKartuAksi(W, reverse),
                                  asserta(nomorGiliran(Num1)),
                                  retract(giliran(_)),
                                  asserta(giliran(PemainSelanjutnya)),
+                                 arahMain(Arah),
+                                 (Arah == kanan ->
+                                    retractall(arahMain(_)),
+                                    asserta(arahMain(kiri))
+                                ;
+                                    retractall(arahMain(_)),
+                                    asserta(arahMain(kanan))),
 
                                  write('Arah permainan dibalik!'), nl,
                                  format('Giliran ~w.~n', [PemainSelanjutnya]).
@@ -69,14 +76,14 @@ efek_kartu(kartu(W, wild_draw_four)) :- updateKartuAksi(W, wild_draw_four),
                                         beriGiliranSkip(Num).
 
 efek_kartu(kartu(W, mimic)) :- updateGiliranMimic,
-                               giliran(PemainTerkini),
-                               kartuMimic(PemainTerkini).
+                               nomorGiliran(Num),
+                               kartuMimic(Num).
 
 valid(Kartu, KartuAtas) :- Kartu = kartu(W, J), 
                            KartuAtas = kartu(WAtas, JAtas),
                            (JAtas \== wild, JAtas \== wild_draw_four, JAtas \== mimic ->
                                 ( WAtas \== W, J == draw-two -> fail
-                                ; WAtas == W -> true
+                                ; WAtas == W
                                 ; JAtas == J -> true
                                 ; J == wild -> true
                                 ; J == wild_draw_four -> true

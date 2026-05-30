@@ -13,7 +13,7 @@ updateGiliranMimic :-
     retractall(giliranAksiTerakhir(_, _)),
     assertz(giliranAksiTerakhir(PemainAksi, Count1)).
 
-kartuMimic(PemainTerkini) :-
+kartuMimic(Num) :-
     write('Menelusuri riwayat permainan.'), nl, nl,
     (   kartuAksiTerakhir(_, J)->  
         Efek = J
@@ -36,7 +36,7 @@ kartuMimic(PemainTerkini) :-
     pemainNext(Num, PemainSelanjutnya),
     eksekusiEfek(Efek, PemainSelanjutnya).
 
-eksekusiEfek(skip, PemainSelanjutnya) :-
+eksekusiEfek(skip, _) :-
     write('Kartu mimic menyalin efek Skip! Pemain berikutnya diskip.'), nl, nl,
     nomorGiliran(Num),
     beriGiliranSkip(Num).

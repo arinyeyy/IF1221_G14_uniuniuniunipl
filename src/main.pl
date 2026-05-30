@@ -7,12 +7,14 @@
 :- include('lihatCommand.pl').
 :- include('findAll.pl').
 :- include('kartuMimic.pl').
-% :- include('kartuTersembunyi.pl').
+:- include('kartuTersembunyi.pl').
 :- include('turn.pl').
 :- include('uni.pl').
 :- include('tangkap.pl').
 :- include('tantang.pl').
 % :- include('endGame.pl').
+% :- include('saveGame.pl').
+% :- include('loadGame.pl').
 
 
 :- dynamic(gameStarted/0).
@@ -31,13 +33,14 @@
 :- dynamic(kartuAksiTerakhir/2).
 :- dynamic(giliranAksiTerakhir/2).
 :- dynamic(riwayatAksi/3).
+:- dynamic(kartuTersembunyi/2).
 
 /* State Game */
 :- dynamic(gameStarted/0).
 :- dynamic(tantangActivated/1).
 :- dynamic(uniActivated/1).
-:- dynamic(tangkapActivated/1).
 :- dynamic(tangkap/1).
+:- dynamic(tangkapActivated/1).
 /* state game ini nyala kalau ada kondisi tertentu, lalu mati di giliran selanjutnya (tiap mainkanKartu hrs dimatiin) */
 /* nyalain: asserta; matiin: retractall */
 :- dynamic(warnaWildTerpilih/1).
@@ -156,20 +159,10 @@ ambilTujuh(_, 0) :- !.
 ambilTujuh(Nama, N) :-
     retract(tumpukanKartu([KartuTeratas|Sisa])),
     KartuTeratas = kartu(W, J),
-    (    
-        integer(J) -> 
-            (
-                assertz(kartuPemain(Nama, KartuTeratas)),
-                asserta(tumpukanKartu(Sisa)),
-                N1 is N - 1,
-                ambilTujuh(Nama, N1)
-            );
-            (
-                asserta(tumpukanKartu(Sisa)),
-                kocokTumpukan,
-                ambilTujuh(Nama, N)
-            )
-        ).
+    assertz(kartuPemain(Nama, KartuTeratas)),
+    asserta(tumpukanKartu(Sisa)),
+    N1 is N - 1,
+    ambilTujuh(Nama, N1).
 
 ambil(_, 0) :- !.
 ambil(Nama, N) :- retract(tumpukanKartu([KartuTeratas|Sisa])),
