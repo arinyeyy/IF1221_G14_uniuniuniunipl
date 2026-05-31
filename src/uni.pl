@@ -22,9 +22,10 @@ uni(Index) :-
                                 format('~w memaikan kartu: ~w-~w~n', [Pemain, W, J]),
                                 format('~w menyerukan UNI!~n~n', [Pemain]),
                                 riwayatUNI(PemainSudahUNI),
+                                (isMember(Pemain, PemainSudahUNI)-> true; 
                                 appendElement(PemainSudahUNI,Pemain,NewPemainSudahUNI),
                                 retract(riwayatUNI(PemainSudahUNI)),
-                                asserta(riwayatUNI(NewPemainSudahUNI)),
+                                asserta(riwayatUNI(NewPemainSudahUNI))),
                                 retract(uniActivated(Pemain)),
                                 deleteElement(ListKartu, Indexriil, _),
                                 retract(kartuPemain(Pemain, Kartu)), !,
