@@ -14,9 +14,9 @@
 :- include('tangkap.pl').
 :- include('tantang.pl').
 :- include('swapKartu.pl').
-% :- include('endGame.pl').
+:- include('endGame.pl').
 :- include('saveGame.pl').
-% :- include('loadGame.pl').
+:- include('loadGame.pl').
 
 
 :- dynamic(gameStarted/0).
