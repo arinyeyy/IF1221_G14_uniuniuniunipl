@@ -38,6 +38,6 @@ uni(Index) :-
                 );
                 write('Kartumu tidak menjadi satu di giliran ini!'), nl,
                 write('Kamu mendapat 1 kartu sebagai penalti'), nl, nl,
-                ambil(Pemain, 1), !
+                ambilBeberapaKartu(Pemain, 1), !
         );
     write('Permainan belum dimulai!'), nl, nl, fail.
