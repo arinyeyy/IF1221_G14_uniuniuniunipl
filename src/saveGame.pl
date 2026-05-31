@@ -9,7 +9,15 @@ saveGame :- giliran(Pemain),
             read(NamaFile), nl, 
             sambung_txt(NamaFile, FileNama), 
             createFile(FileNama),
-            format('Status permainan berhasil disimpan ke ~w.~n', [FileNama]). 
+            retractall(pemain(_)),
+            retractall(kartuPemain(_,_)),
+            retractall(allPemain(_)),,
+            retractall(discardPileTop(_)),
+            retractall(giliran(_)),
+            retractall(mode(_)),
+            retractall(arahMain(_)),
+            exitGame,
+            format('Status permainan berhasil disimpan ke ~w.~n', [FileNama]).  
 
 sambung_txt(NamaFile, FileNama):-name(NamaFile, HasilFile), 
                                  name('.txt', Txt), 
@@ -17,19 +25,19 @@ sambung_txt(NamaFile, FileNama):-name(NamaFile, HasilFile),
                                  name(FileNama, Hasil). 
       
 createFile(FileNama):- 
-  open(FileNama, write, S),
-  writeMode(S),
-  writeUrutanPemain(S),
-  writeGiliran(S),
-  writeDiscardPileTop(S),
-  writeWarnaAktif(S),
-  writeArah(S),
-  writeStatusUNI(S),
-  writeKartu(S),
-  writeKartuAksiTerakhir(S),
-  writeKartuTersembunyi(S),
-  writeTim(S),
-  close(S).
+    open(FileNama, write, S), 
+    writeMode(S),
+    (mode(2)->writeTim(S);true),
+    writeUrutanPemain(S),
+    writeGiliran(S),
+    writeDiscardPileTop(S),
+    writeWarnaAktif(S),
+    writeArah(S),
+    writeStatusUNI(S),
+    writeKartu(S),
+    writeKartuAksiTerakhir(S),
+    writeKartuTersembunyi(S),
+    close(S).
 
 writeMode(S) :-
     mode(Mode),

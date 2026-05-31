@@ -123,6 +123,7 @@ startGame :-  \+gameStarted -> (
                                     retractall(giliran(_)),
                                     retractall(prevGiliran(_)),
                                     retractall(mode(_)),
+                                    retractall(arahMain(_)),
                                     retractall(temp(_)),
                                     asserta(temp([])),
                                     assertz(riwayatUNI([])),
