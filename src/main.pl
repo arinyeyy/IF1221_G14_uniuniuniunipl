@@ -268,13 +268,6 @@ pilihanMode:- write('Tersedia 2 mode permainan'),nl,
                 ;
                 write('Permainan dimulai dalam mode turnamen'),nl).
 
-bikinTim:- 
-    write('Membentuk tim secara acak...'),nl,nl,
-    allPemain(Daftar),
-    Daftar=[Pemain1, Pemain2, Pemain3, Pemain4],
-    asserta(tim(1,[Pemain1,Pemain3])),
-    asserta(tim(2,[Pemain2,Pemain4])).
-
 bikinTim :- mode(2),
     write('Membentuk tim secara acak...'),nl,nl,
     allPemain(Daftar),
