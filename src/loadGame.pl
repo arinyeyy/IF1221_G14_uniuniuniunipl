@@ -62,7 +62,7 @@ helperLoadKartuPemain(S, N) :-
     read(S, kartu(Pemain):Line),
     Line = ListKartu,
     retractall(kartuPemain(Pemain,_)),
-    daftarkanKartuSatuPemain(Pemain, ListKartu)
+    daftarkanKartuSatuPemain(Pemain, ListKartu),
     loadCekUni(Pemain, ListKartu),
     N1 is N-1,
     helperLoadKartuPemain(S, N1).
