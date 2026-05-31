@@ -134,14 +134,11 @@ loadTim(S) :-
   asserta(setim(T2P2, T2P1)).
 
 loadGame :-
-  (
-    \+gameStarted ->
-    write('Masukkan nama file yang akan dimuat: '), read(NamaFile), nl,
-    sambung_txt(NamaFile, FileNama),
-    ( open(FileNama, read, S) ->
+  write('Masukkan nama file yang akan dimuat: '), read(NamaFile), nl,
+  sambung_txt(NamaFile, FileNama),
+  (   open(FileNama, read, S) ->
       asserta(gameStarted),
       loadMode(S),
-      (mode(2) -> loadTim(S) ; true),
       loadUrutanPemain(S),
       loadGiliran(S),
       loadDiscardPileTop(S),
@@ -151,18 +148,16 @@ loadGame :-
       loadKartuPemain(S),
       loadKartuAksiTerakhir(S),
       loadKartuTersembunyi(S),
+      (mode(2) -> loadTim(S) ; true),
       close(S),
-      initLainnya,
       format('Status permainan berhasil dimuat dari ~w.~n', [FileNama]),
       giliran(PemainTerkini),
-      format('Melanjutkan giliran ~w.~n', [PemainTerkini])
-    ;
+      format('Melanjutkan giliran ~w.~n', [PemainTerkini]),
+      (endGame -> true ; true)
+  ;
       format('File ~w tidak ditemukan!~n', [FileNama])
-    )
-    ;
-    format('Permainan sudah dimulai!~n', [])
   ).
-
+  
 initLainnya :-
   allPemain(Urutan),
   listLength(Urutan, N),
