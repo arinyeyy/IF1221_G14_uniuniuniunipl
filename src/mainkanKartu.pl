@@ -28,6 +28,7 @@ mainkanKartu(Index) :-
                     asserta(prevDiscardPileTop(KartuLama)), 
                     retractall(discardPileTop(_)),
                     assertz(discardPileTop([Kartu])),
+                    (endGame -> true ; true),
                     efek_kartu(Kartu)
                 )
                 ;
