@@ -9,7 +9,8 @@ ambilKartu :-
         ambilBeberapaKartu(Pemain, 1),
         nomorGiliran(Num),
         beriGiliranNormal(Num)
-    ).
+    ),
+    retractall(uniActivated(Pemain)).
 
 ambilBeberapaKartu(_, 0) :- !.
 ambilBeberapaKartu(Pemain, Count) :-

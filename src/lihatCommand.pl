@@ -25,11 +25,8 @@ tentukanAksi(Pemain) :-
     retractall(aksiYangDapatDilakukan(_, _)),
 
     % selalu bisa
-    assertz(aksiYangDapatDilakukan(Pemain, tangkap)),
-    assertz(aksiYangDapatDilakukan(Pemain, lihatCommand)),
-    assertz(aksiYangDapatDilakukan(Pemain, lihatKartu)),
-    assertz(aksiYangDapatDilakukan(Pemain, cekInfo)),
     assertz(aksiYangDapatDilakukan(Pemain, ambilKartu)),
+    assertz(aksiYangDapatDilakukan(Pemain, godsHand)),
 
     /*
     ambilKartu -> selalu
@@ -65,8 +62,9 @@ tentukanAksi(Pemain) :-
     
 lihatCommand :-
     giliran(Pemain),
+    tentukanAksi(Pemain),
     write('Aksi utama yang tersedia:'), nl,
-    tulisAksiUtama(Pemain, 1, [mainkanKartu, ambilKartu, tantang, uni, swapKartu, sembunyikanKartu, tampilkanKartu]),
+    tulisAksiUtama(Pemain, 1, [mainkanKartu, ambilKartu, tantang, uni, swapKartu, sembunyikanKartu, tampilkanKartu, godsHand]),
     nl,
     write('Aksi pendukung yang tersedia:'), nl,
     write('1. tangkap'), nl,
