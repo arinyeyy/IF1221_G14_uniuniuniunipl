@@ -124,13 +124,13 @@ pemenangTim(1) :-
 pemenangTim(2).
 
 endGame :-
-    retractall(gameStarted),
-    giliran(Pemenang),
+    allPemain(SemuaPemain),
+    member(Pemenang, SemuaPemain),
     \+kartuPemain(Pemenang, _), !,
     format('Permainan selesai! ~w menghabiskan semua kartunya!~n~n', [Pemenang]),
-    allPemain(SemuaPemain),
+    allPemain(SemuaPemain2),
     write('Berikut perhitungan poin sisa kartu.'), nl,
-    tampilkanPerhitungan(SemuaPemain),
+    tampilkanPerhitungan(SemuaPemain2),
     nl,
     (mode(2) ->
         tampilkanPoinTim, nl,
@@ -138,9 +138,10 @@ endGame :-
         format('Selamat, Tim ~w menjadi pemenang!~n', [TimMenang])
     ;
         write('Urutan pemenang:'), nl,
-        urutkanPemenang(SemuaPemain, Terurut),
+        urutkanPemenang(SemuaPemain2, Terurut),
         tampilkanPemenang(Terurut, 1),
         nl,
         Terurut = [Juara|_],
         format('Selamat, ~w menjadi pemenang!~n', [Juara])
-    ).
+    ),
+    retractall(gameStarted).
