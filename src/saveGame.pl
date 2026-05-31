@@ -39,10 +39,6 @@ createFile(FileNama):-
     writeKartuTersembunyi(S),
     close(S).
 
-writeMode(S) :-
-    mode(Mode),
-    format(S, "mode:~w.~n", [Mode]).
-
 writeUrutanPemain(S) :- allPemain(Urutan),
                         format(S, 'urutan_pemain:~w.~n', [Urutan]).
 

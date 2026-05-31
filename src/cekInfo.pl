@@ -21,8 +21,9 @@ displayAllPlayersInfo([], _).
 displayAllPlayersInfo([Nama|T], Index) :-
     findAllKartuPemain(Nama, Tangan),
     listLength(Tangan, Jumlah),
+    (kartuTersembunyi(Nama, _)-> Jml is Jumlah-1; Jml is Jumlah),
     format('Nama pemain ~w: ~w~n', [Index, Nama]),
-    format('Jumlah kartu : ~w~n', [Jumlah]),
+    format('Jumlah kartu : ~w~n', [Jml]),
     nl,
     NextIndex is Index + 1,
     displayAllPlayersInfo(T, NextIndex).
