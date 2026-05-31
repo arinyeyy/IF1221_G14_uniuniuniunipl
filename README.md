@@ -50,6 +50,9 @@ src terdiri atas main.pl dan file-file lainnya yang diinclude ke dalam main. doc
 * godsHand.
 * sembunyikanKartu.
 * tampilkanKartu.
+* saveGame.
+* loadGame.
+* endGame.
 
 ## Anggota Kelompok:
 * 13525043 Aufa Tatsbita Zahra
