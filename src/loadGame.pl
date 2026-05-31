@@ -1,7 +1,12 @@
 daftarkanPemain([]).
 daftarkanPemain([Nama|T]) :-
-    assertz(pemain(Nama)),
-    daftarkanPemain(T).
+  assertz(pemain(Nama)),
+  daftarkanPemain(T).
+
+loadMode(S) :-
+  read(S, mode(Mode)),
+  retractall(mode(_)),
+  asserta(mode(Mode)).
 
 loadUrutanPemain(S) :-
   read(S, urutan_pemain(Urutan)),
@@ -56,10 +61,25 @@ daftarkanKartuSatuPemain(Pemain, [Kartu|Sisa]) :-
   asserta(kartuPemain(Pemain, Kartu)),
   daftarkanKartuSatuPemain(Pemain, Sisa).
 
+loadTim(S) :-
+  read(S, tim1(Tim1)),
+  read(S, tim2(Tim2)),
+  retractall(tim(_, _)),
+  retractall(setim(_, _)),
+  asserta(tim(1, Tim1)),
+  asserta(tim(2, Tim2)),
+  Tim1 = [T1P1, T1P2],
+  Tim2 = [T2P1, T2P2],
+  asserta(setim(T1P1, T1P2)),
+  asserta(setim(T1P2, T1P1)),
+  asserta(setim(T2P1, T2P2)),
+  asserta(setim(T2P2, T2P1)).
+
 loadGame :-
   write('Masukkan nama file yang akan dimuat: '), read(NamaFile), nl,
   sambung_txt(NamaFile, FileNama),
   (   open(FileNama, read, S) ->
+      loadMode(S),
       loadUrutanPemain(S),
       loadGiliran(S),
       loadDiscardPileTop(S),
@@ -67,6 +87,7 @@ loadGame :-
       loadArah(S),
       loadStatusUNI(S),
       loadKartuPemain(S),
+      (mode(2) -> loadTim(S) ; true),
       close(S),
       format('Status permainan berhasil dimuat dari ~w.~n', [FileNama]),
       giliran(PemainTerkini),
