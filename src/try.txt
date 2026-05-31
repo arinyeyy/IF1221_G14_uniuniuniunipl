@@ -1,0 +1,14 @@
+ mode:klasik.
+urutan_pemain:[al,dul,el].
+giliran:al.
+discard_top:biru-9.
+warna_aktif:biru.
+arah_permainan:kanan.
+status_uni:[].
+kartu(al):[hijau-1,hijau-6,biru-2,merah-skip,kuning-3,hijau-4,biru-7].
+kartu(dul):[biru-6,hitam-wild_draw_four,merah-7,kuning-6,hijau-draw_two,kuning-0,hijau-5].
+kartu(el):[kuning-8,biru-5,merah-3,merah-1,merah-draw_two,kuning-2,hijau-8].
+kartu_aksi_terakhir:tidak_ada.
+kartu_tersembunyi(al):[].
+kartu_tersembunyi(dul):[].
+kartu_tersembunyi(el):[].
