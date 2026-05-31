@@ -47,12 +47,12 @@ loadArah(S) :-
   asserta(arahMain(Arah)).
 
 loadStatusUNI(S) :-
+  retractall(uniActivated(_)),
   read(S, status_uni:StatUni),
   retractall(riwayatUNI(_)),
   asserta(riwayatUNI(StatUni)).
 
 loadKartuPemain(S) :-
-  retractall(uniActivated(_)),
   allPemain(Urutan),
   listLength(Urutan, N),
   helperLoadKartuPemain(S, N).
@@ -78,7 +78,13 @@ loadCekUni(Pemain, ListKartu) :-
   (
     Len =:= 2 ->
     asserta(uniActivated(Pemain))
-    ; true
+    ;
+    Len =:= 1 ->
+    riwayatUNI(StatUni),
+    \+isMember(Pemain, StatUni),
+    asserta(uniActivated(Pemain))
+    ;
+    true
   ).
 
 loadKartuAksiTerakhir(S) :-
