@@ -4,7 +4,7 @@ ambilKartu :-
         retractall(tantangActivated(_)),
         ambilBeberapaKartu(Pemain, 4),
         nomorGiliran(Num),
-        beriGiliranSkip(Num)
+        beriGiliranNormal(Num)
     ;
         ambilBeberapaKartu(Pemain, 1),
         nomorGiliran(Num),

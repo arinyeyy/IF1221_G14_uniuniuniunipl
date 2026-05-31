@@ -114,7 +114,7 @@ kartu(hitam, wild).
 kartu(hitam, wild_draw_four). 
 kartu(hitam, mimic).
 
-startGame :-  \+gameStarted -> (
+startGame :-  \+gameStarted -> 
                                     retractall(jumlahPemain(_)),
                                     retractall(pemain(_)),
                                     retractall(kartuPemain(_,_)),
@@ -133,8 +133,8 @@ startGame :-  \+gameStarted -> (
                                     asserta(gameStarted),
                                     pilihanMode,
                                     inputJumlahPemain
-                                ).
-                gameStarted -> write('Permainan sudah dimulai!'), nl, nl;
+                                ;
+                write('Permainan sudah dimulai!'), nl, nl;
                 fail.
 
 inputJumlahPemain :- (mode(1) -> write('Masukkan jumlah pemain: '), read(Jml), nl

@@ -1,14 +1,14 @@
 mode:klasik.
 urutan_pemain:['A','B','C'].
 giliran:'A'.
-discard_top:biru-5.
+discard_top:hijau-5.
 warna_aktif:hijau.
 arah_permainan:kiri.
 status_uni:[].
-kartu('A'):[hijau-skip,hitam-wild_draw_four,hitam-wild,merah-draw_two,merah-1].
+kartu('A'):[hijau-skip,hitam-mimic].
 kartu('B'):[hijau-2,kuning-7].
 kartu('C'):[biru-9].
-kartu_aksi_terakhir:hijau-5-'C'-1.
+kartu_aksi_terakhir:hijau-skip-'C'-1.
 kartu_tersembunyi('A'):[].
 kartu_tersembunyi('B'):[].
 kartu_tersembunyi('C'):[].
