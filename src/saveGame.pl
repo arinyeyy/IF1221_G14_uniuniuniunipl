@@ -33,10 +33,10 @@ createFile(FileNama):-
     close(S).
 
 writeUrutanPemain(S) :- allPemain(Urutan),
-                        format(S, 'urutan_pemain:~w.~n', [Urutan]).
+                        format(S, 'urutan_pemain:~q.~n', [Urutan]).
 
 writeGiliran(S) :- giliran(PemainTerkini),
-                   format(S, 'giliran:~w.~n', [PemainTerkini]).
+                   format(S, 'giliran:~q.~n', [PemainTerkini]).
 
 writeDiscardPileTop(S) :- discardPileTop([kartu(W,J)]),
                           format(S, 'discard_top:~w-~w.~n', [W,J]).
@@ -51,7 +51,7 @@ writeWarnaAktif(S) :- (warnaWildTerpilih(Warna) ->
 writeArah(S) :- arahMain(Arah), format(S, 'arah_permainan:~w.~n', [Arah]).
 
 writeStatusUNI(S):- (riwayatUNI(Pemain) ->
-                     format(S, 'status_uni:~w.~n', [Pemain])
+                     format(S, 'status_uni:~q.~n', [Pemain])
                      ;
                      format(S, 'status_uni:[].~n', [])
                     ).
@@ -62,7 +62,7 @@ writeKartu(S) :- allPemain(Urutan),
 kartuPemainSaatSave([], _).
 kartuPemainSaatSave([Nama|T], S) :-
     findAllKartuPemain(Nama, DaftarKartu),
-    format(S, 'kartu(~w):[', [Nama]),
+    format(S, 'kartu(~q):[', [Nama]),
     writeKartuSatuPemain(S, DaftarKartu),
     kartuPemainSaatSave(T, S).
 
@@ -77,7 +77,7 @@ writeKartuSatuPemain(S, [H|T]) :-
     
 
 writeKartuAksiTerakhir(S) :- (kartuAksiTerakhir(W, J), giliranAksiTerakhir(PemainAksi, Count) ->
-                              format(S, 'kartu_aksi_terakhir:~w-~w-~w-~w.~n', 
+                              format(S, 'kartu_aksi_terakhir:~w-~w-~q-~w.~n', 
                               [W, J, PemainAksi, Count])
                               /* kartu(W, J), oleh PemainAksi Count lalu */
                              ;
@@ -90,8 +90,8 @@ writeKartuTersembunyi(S) :- allPemain(Urutan),
 
 writeTim(S):-
     tim(1, Tim1), tim(2, Tim2), 
-    format(S, 'tim1:~w.~n', [Tim1]),
-    format(S, 'tim2:~w.~n', [Tim2]).
+    format(S, 'tim1:~q.~n', [Tim1]),
+    format(S, 'tim2:~q.~n', [Tim2]).
 
 writeMode(S):- (mode(1) -> 
             format(S, ' mode:~w.~n', [klasik])
@@ -102,9 +102,9 @@ writeMode(S):- (mode(1) ->
 kartuTersembunyiSaatSave([], _).
 kartuTersembunyiSaatSave([Nama|T], S) :-
     ( kartuTersembunyi(Nama, KartuYGTersembunyi) ->
-        format(S, 'kartu_tersembunyi(~w):~w.~n', [Nama, KartuYGTersembunyi])
+        format(S, 'kartu_tersembunyi(~q):~w.~n', [Nama, KartuYGTersembunyi])
     ;
-        format(S, 'kartu_tersembunyi(~w):[].~n', [Nama])
+        format(S, 'kartu_tersembunyi(~q):[].~n', [Nama])
     ),
     kartuTersembunyiSaatSave(T, S).
 
