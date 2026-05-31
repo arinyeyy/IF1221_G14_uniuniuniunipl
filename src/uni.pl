@@ -9,15 +9,15 @@ uni(Index) :-
     gameStarted -> 
         (
             giliran(Pemain), !,
-            uniActivated(Pemain) ->
-                (
+            (
+                uniActivated(Pemain) ->
                     findAllKartuPemain(Pemain, ListKartu),
                     Indexriil is Index - 1,
                     getElement(ListKartu, Indexriil, Kartu),
                     discardPileTop([KartuAtas|_]),
                     (
                         valid(Kartu, KartuAtas) ->
-                            (
+                            
                                 Kartu = kartu(W, J),
                                 format('~w memaikan kartu: ~w-~w~n', [Pemain, W, J]),
                                 format('~w menyerukan UNI!~n~n', [Pemain]),
@@ -33,12 +33,15 @@ uni(Index) :-
                                 assertz(discardPileTop([Kartu])),
                                 efek_kartu(Kartu),
                                 !
-                            );
+                            ;
                         write('Kartu tidak valid!'), nl, nl, fail
                     )
-                );
+                ;
                 write('Kartumu tidak menjadi satu di giliran ini!'), nl,
                 write('Kamu mendapat 1 kartu sebagai penalti.'), nl, nl,
-                ambilBeberapaKartu(Pemain, 1), !
+                ambilBeberapaKartu(Pemain, 1), !,
+                nomorGiliran(Num),
+                beriGiliranNormal(Num)
+            )
         );
     write('Permainan belum dimulai!'), nl, nl, fail.

@@ -28,7 +28,15 @@ mainkanKartu(Index) :-
                     asserta(prevDiscardPileTop(KartuLama)), 
                     retractall(discardPileTop(_)),
                     assertz(discardPileTop([Kartu])),
-                    efek_kartu(Kartu)
+                    
+                    findAllKartuPemain(Pemain, ListyangSekarang),
+                    listLength(ListyangSekarang, LenLYS),
+                    (
+                        LenLYS =:= 0 ->
+                        endGame
+                        ;
+                        efek_kartu(Kartu)
+                    )
                 )
                 ;
                 write('Kartu tidak valid!'), nl, nl, fail

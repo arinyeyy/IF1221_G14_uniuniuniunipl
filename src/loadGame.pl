@@ -167,5 +167,6 @@ initLainnya :-
   allPemain(Urutan),
   listLength(Urutan, N),
   asserta(jumlahPemain(N)),
+  asserta(temp([])),
   kocokKartu.
 

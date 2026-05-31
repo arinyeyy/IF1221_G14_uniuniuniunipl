@@ -4,16 +4,16 @@ ambilKartu :-
         retractall(tantangActivated(_)),
         ambilBeberapaKartu(Pemain, 4),
         nomorGiliran(Num),
-        beriGiliranSkip(Num)
+        beriGiliranNormal(Num)
     ;
         ambilBeberapaKartu(Pemain, 1),
         nomorGiliran(Num),
         beriGiliranNormal(Num)
-    ),
-    retractall(uniActivated(Pemain)).
+    ).
 
 ambilBeberapaKartu(_, 0) :- !.
 ambilBeberapaKartu(Pemain, Count) :-
+    retractall(uniActivated(Pemain)),
     Count > 0,
     retract(tumpukanKartu([K|Sisa])),
     K = kartu(W, J),
@@ -25,6 +25,7 @@ ambilBeberapaKartu(Pemain, Count) :-
     ambilBeberapaKartu(Pemain, Count1).
 
 ambilBeberapaKartu(Pemain, Count) :-
+    retractall(uniActivated(Pemain)),
     tumpukanKartu(ListKartu),
     listLength(ListKartu, Len),
     Count > Len,
