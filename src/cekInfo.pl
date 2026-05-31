@@ -1,21 +1,34 @@
 cekInfo :-
-    discardPileTop([kartu(W, J)|_]),
-    format('Kartu discard top: ~w-~w.~n', [W, J]),
-    nl,
-    allPemain(Urutan),
-    write('Urutan pemain: '),
-    writeList(Urutan),
-    write('.'), nl,
-    nl,
-    displayAllPlayersInfo(Urutan, 1),
-    !.
+    gameStarted ->
+        (
+            discardPileTop([kartu(W, J)|_]),
+            format('Kartu discard top: ~w-~w.~n', [W, J]),
+            (mode(2)->displayTim;true),
+            giliran(Pemain),
+            format('Giliran saat ini: ~w.~n', [Pemain]),
+            nl,
+            allPemain(Urutan),
+            write('Urutan pemain: '),
+            writeList(Urutan),
+            write('.'), nl,
+            nl,
+            displayAllPlayersInfo(Urutan, 1),
+            !
+        );
+    write('Permainan belum dimulai!'), nl, nl, fail.
 
 displayAllPlayersInfo([], _).
 displayAllPlayersInfo([Nama|T], Index) :-
-    findall(kartu(W, J), kartuPemain(Nama, kartu(W, J)), Tangan),
+    findAllKartuPemain(Nama, Tangan),
     listLength(Tangan, Jumlah),
     format('Nama pemain ~w: ~w~n', [Index, Nama]),
     format('Jumlah kartu : ~w~n', [Jumlah]),
     nl,
     NextIndex is Index + 1,
     displayAllPlayersInfo(T, NextIndex).
+
+displayTim:-
+    tim(1,[P1,P2]),
+    tim(2,[P3,P4]),
+    format('Tim 1: ~w, ~w', [P1,P2]),nl,
+    format('Tim 1: ~w, ~w', [P3,P4]),nl.
