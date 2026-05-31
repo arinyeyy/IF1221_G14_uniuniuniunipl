@@ -232,7 +232,8 @@ beriGiliranNormal(Num) :-   allPemain(AllPemain),
                             format('Giliran ~w.~n', [PemainTerkini]),
                             
                             aktifkanUniJika(PemainTerkini),
-                            tentukanAksi(PemainTerkini).
+                            tentukanAksi(PemainTerkini),
+                            (endGame -> true ; true).
 
 beriGiliranSkip(Num) :- allPemain(AllPemain),
                         nomorGiliran(Num),
