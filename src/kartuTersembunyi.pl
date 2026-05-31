@@ -15,7 +15,10 @@ sembunyikanKartu(Index) :-
 tampilkanKartu :-
     giliran(PemainTerkini),
     kartuTersembunyi(PemainTerkini, _),
-    retractall(kartuTersembunyi(_,_)).
+    retractall(kartuTersembunyi(_,_)),
+
+    nomorGiliran(Num),
+    beriGiliranNormal(Num).
 
 % cekInfo perlu tambahan,  uni & tangkap aman selama cek pake len.
 /*flow: 
