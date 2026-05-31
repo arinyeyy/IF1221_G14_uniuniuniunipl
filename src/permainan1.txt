@@ -1,7 +1,7 @@
 mode:klasik.
 urutan_pemain:['A','B','C'].
 giliran:'A'.
-discard_top:hijau-5.
+discard_top:biru-5.
 warna_aktif:hijau.
 arah_permainan:kiri.
 status_uni:[].
