@@ -2,11 +2,11 @@
 urutan_pemain:['A','B'].
 giliran:'B'.
 discard_top:biru-reverse.
-warna_aktif:biru.
+warna_aktif:hijau.
 arah_permainan:kiri.
 status_uni:[].
-kartu('A'):[hitam-mimic,biru-8,hijau-8,merah-7,hijau-5].
-kartu('B'):[merah-9,merah-5,biru-2,hijau-0,merah-reverse].
-kartu_aksi_terakhir:biru-reverse-'A'-0.
+kartu('A'):[kuning-0,merah-3,merah-1,biru-draw_two,kuning-4,hijau-8,biru-5,kuning-6,kuning-1,hijau-5,hijau-2].
+kartu('B'):[kuning-8,biru-4,kuning-3,hijau-0].
+kartu_aksi_terakhir:biru-reverse-'B'-0.
 kartu_tersembunyi('A'):[].
 kartu_tersembunyi('B'):[].
