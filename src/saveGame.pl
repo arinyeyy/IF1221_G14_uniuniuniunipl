@@ -91,21 +91,15 @@ writeKartuAksiTerakhir(S) :- (kartuAksiTerakhir(W, J), giliranAksiTerakhir(Pemai
 writeKartuTersembunyi(S) :- allPemain(Urutan),
                             kartuTersembunyiSaatSave(Urutan, S).
 
-kartuPemainSaatSave([], _).
-kartuPemainSaatSave([Nama|T], S) :-
-    findAllKartuPemain(Nama, DaftarKartu),
-    format(S, 'kartu(~w): ~w.~n', [Nama, DaftarKartu]),
-    kartuPemainSaatSave(T, S).
-
 writeTim(S):-
     tim(1, Tim1), tim(2, Tim2), 
-    format(S, ' Tim(~w): ~w.~n', [1, Tim1]),
-    format(S, ' Tim(~w): ~w.~n', [2, Tim2]).
+    format(S, 'tim(~w):~w.~n', [1, Tim1]),
+    format(S, 'tim(~w):~w.~n', [2, Tim2]).
 
 writeMode(S):- (mode(1) -> 
-            format(S, ' mode: ~w.~n', [kalsik])
+            format(S, ' mode:~w.~n', [klasik])
             ;
-            format(S, ' mode: ~w.~n', [turnamen])).
+            format(S, ' mode:~w.~n', [turnamen])).
  
   
 kartuTersembunyiSaatSave([], _).
