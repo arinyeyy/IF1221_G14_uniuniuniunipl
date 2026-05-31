@@ -7,7 +7,10 @@ sembunyikanKartu(Index) :-
     Indexriil is (Index - 1),
     getElement(ListKartuAwal, Indexriil, KartuYGTersembunyi),
     retractall(kartuTersembunyi(_,_)),
-    asserta(kartuTersembunyi(PemainTerkini, KartuYGTersembunyi)).
+    asserta(kartuTersembunyi(PemainTerkini, KartuYGTersembunyi)),
+    
+    nomorGiliran(Num),
+    beriGiliranNormal(Num).
 
 tampilkanKartu :-
     giliran(PemainTerkini),
