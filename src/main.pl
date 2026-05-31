@@ -45,6 +45,7 @@
 :- dynamic(aksiYangDapatDilakukan/2).
 :- dynamic(swapKartuDilakukan/0).
 :- dynamic(pemainRandom/2).
+:- dynamic(temporaryList/1).
 
 /* State Game */
 :- dynamic(gameStarted/0).

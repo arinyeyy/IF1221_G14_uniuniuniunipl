@@ -1,6 +1,5 @@
 godsHand :-
     findAllPemain(ListPemain),
-    listLength(ListPemain, Len),
     randomize,
     random(0, 5, N),
     (
@@ -18,36 +17,39 @@ godsHand :-
                 asserta(kartuPemain(Pemain2, Kartu1)),
                 Kartu1 = kartu(W, J),
                 format('Tuhan telah berkehendak.~n', []),
-                format('Kartu ~w-~w milik ~w telah berpindah ke tangan ~w!~n~n', [W, J, Pemain1, Pemain2])
+                format('Kartu ~w-~w milik ~w telah berpindah ke tangan ~w!~n~n', [W, J, Pemain1, Pemain2]),
+                skipTurn
                 ;
-                format('Kalian berbuat baik!~nTuhan tidak marah, seluruh kartu aman.~n~n', [])
+                format('Kalian berbuat baik!~nTuhan tidak marah, seluruh kartu aman.~n', []),
+                giliran(PemainTerkini),
+                format('Masih giliran ~w.~n', [PemainTerkini])
             )
         ;
-        format('Kalian berbuat baik!~nTuhan tidak marah, seluruh kartu aman.~n~n', [])
+        giliran(PemainTerkini),
+        format('Kalian berbuat baik!~nTuhan tidak marah, seluruh kartu aman.~n~n', []),
+        format('Masih giliran ~w.~n', [PemainTerkini])
     ),
     retractall(pemainRandom(_,_)),
-    retractall(temp(_)),
-    nomorGiliran(Num),
-    beriGiliranNormal(Num).
+    retractall(temporaryList(_)).
 
 pilihPemainRandom1 :-
-    retractall(temp(_)),
+    retractall(temporaryList(_)),
     findAllPemain(ListPemain),
-    asserta(temp(ListPemain)),
+    asserta(temporaryList(ListPemain)),
     lanjutanPPR1.
 
 lanjutanPPR1 :-
-    temp(ListPemain),
+    temporaryList(ListPemain),
     listLength(ListPemain, Len),
     random(0, Len, Rand),
     getElement(ListPemain, Rand, Pemain),
     deleteElement(ListPemain, Rand, ListBaru),
-    retractall(temp(_)),
-    asserta(temp(ListBaru)),
+    retractall(temporaryList(_)),
+    asserta(temporaryList(ListBaru)),
     asserta(pemainRandom(1, Pemain)).
 
 pilihPemainRandom2 :-
-    temp(ListPemain),
+    temporaryList(ListPemain),
     listLength(ListPemain, Len),
     random(0, Len, Rand),
     getElement(ListPemain, Rand, Pemain),
