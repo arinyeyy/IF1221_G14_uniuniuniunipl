@@ -15,7 +15,7 @@ src terdiri atas main.pl dan file-file lainnya yang diinclude ke dalam main. doc
 │   ├── Milestone1_G14.pdf
 │   ├── Milestone2_G14.pdf
 │   └── Laporan_G14.pdf
-└── src
+└── src/
     ├── ambilkartu.pl            /* berisi kebutuhan command ambilKartu */
     ├── cekInfo.pl               /* berisi kebutuhan command cekInfo */
     ├── endGame.pl               /* berisi kebutuhan endGame (mengakhiri permainan) */
