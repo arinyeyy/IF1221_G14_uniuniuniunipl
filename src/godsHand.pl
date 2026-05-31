@@ -17,20 +17,18 @@ godsHand :-
                 asserta(kartuPemain(Pemain2, Kartu1)),
                 Kartu1 = kartu(W, J),
                 format('Tuhan telah berkehendak.~n', []),
-                format('Kartu ~w-~w milik ~w telah berpindah ke tangan ~w!~n~n', [W, J, Pemain1, Pemain2]),
-                skipTurn
+                format('Kartu ~w-~w milik ~w telah berpindah ke tangan ~w!~n~n', [W, J, Pemain1, Pemain2])
                 ;
-                format('Kalian berbuat baik!~nTuhan tidak marah, seluruh kartu aman.~n', []),
-                giliran(PemainTerkini),
-                format('Masih giliran ~w.~n', [PemainTerkini])
+                format('Tuhan Maha Berkehendak.~nTidaklah Ia memindahkan kartu pemain yang tinggal 1.~n~n', [])
             )
         ;
-        giliran(PemainTerkini),
-        format('Kalian berbuat baik!~nTuhan tidak marah, seluruh kartu aman.~n~n', []),
-        format('Masih giliran ~w.~n', [PemainTerkini])
+        format('Diberkatilah kalian, seluruh kartu aman.~n~n', [])
     ),
+    nomorGiliran(Num),
+    beriGiliranNormal(Num),
     retractall(pemainRandom(_,_)),
-    retractall(temporaryList(_)).
+    retractall(temporaryList(_)),
+    !.
 
 pilihPemainRandom1 :-
     retractall(temporaryList(_)),
