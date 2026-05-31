@@ -9,6 +9,14 @@ saveGame :- giliran(Pemain),
             read(NamaFile), nl, 
             sambung_txt(NamaFile, FileNama), 
             createFile(FileNama),
+            retractall(pemain(_)),
+            retractall(kartuPemain(_,_)),
+            retractall(allPemain(_)),,
+            retractall(discardPileTop(_)),
+            retractall(giliran(_)),
+            retractall(mode(_)),
+            retractall(arahMain(_)),
+            exitGame,
             format('Status permainan berhasil disimpan ke ~w.~n', [FileNama]). 
 
 sambung_txt(NamaFile, FileNama):-name(NamaFile, HasilFile), 
@@ -17,17 +25,19 @@ sambung_txt(NamaFile, FileNama):-name(NamaFile, HasilFile),
                                  name(FileNama, Hasil). 
       
 createFile(FileNama):- 
-  open(FileNama, write, S), 
-  writeUrutanPemain(S),
-  writeGiliran(S),
-  writeDiscardPileTop(S),
-  writeWarnaAktif(S),
-  writeArah(S),
-  writeStatusUNI(S),
-  writeKartu(S),
-  writeKartuAksiTerakhir(S),
-  writeKartuTersembunyi(S),
-  close(S).
+    open(FileNama, write, S), 
+    writeMode(S),
+    (mode(2)->writeTim(S);true),
+    writeUrutanPemain(S),
+    writeGiliran(S),
+    writeDiscardPileTop(S),
+    writeWarnaAktif(S),
+    writeArah(S),
+    writeStatusUNI(S),
+    writeKartu(S),
+    writeKartuAksiTerakhir(S),
+    writeKartuTersembunyi(S),
+    close(S).
   
 
 writeUrutanPemain(S) :- allPemain(Urutan),
@@ -76,8 +86,8 @@ kartuPemainSaatSave([Nama|T], S) :-
 
 writeTim(S):-
     tim(1, Tim1), tim(2, Tim2), 
-    format(S, ' Tim(~w): ~w.~n', [1, Tim1]),
-    format(S, ' Tim(~w): ~w.~n', [2, Tim2]).
+    format(S, ' Tim1: ~w.~n', [Tim1]),
+    format(S, ' Tim2: ~w.~n', [Tim2]).
 
 writeMode(S):- (mode(1) -> 
             format(S, ' mode: ~w.~n', [kalsik])
