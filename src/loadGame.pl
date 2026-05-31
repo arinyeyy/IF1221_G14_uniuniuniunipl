@@ -152,6 +152,7 @@ loadGame :-
       loadKartuAksiTerakhir(S),
       loadKartuTersembunyi(S),
       close(S),
+      initLainnya,
       format('Status permainan berhasil dimuat dari ~w.~n', [FileNama]),
       giliran(PemainTerkini),
       format('Melanjutkan giliran ~w.~n', [PemainTerkini])
@@ -161,3 +162,10 @@ loadGame :-
     ;
     format('Permainan sudah dimulai!~n', [])
   ).
+
+initLainnya :-
+  allPemain(Urutan),
+  listLength(Urutan, N),
+  asserta(jumlahPemain(N)),
+  kocokKartu.
+

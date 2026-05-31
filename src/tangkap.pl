@@ -18,4 +18,4 @@ tangkap(Pemain) :-
         ;
             write('Perintah tidak valid! Kartu '), write(Pemain), write(' tidak berjumlah satu.'), nl),
         ambilBeberapaKartu(PemainTangkap, 1)
-    ),nomorGiliran(Num), beriGiliranNormal(Num).
+    ), nomorGiliran(Num), beriGiliranNormal(Num).
