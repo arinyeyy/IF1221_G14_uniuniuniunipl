@@ -142,4 +142,5 @@ endGame :-
         nl,
         Terurut = [Juara|_],
         format('Selamat, ~w menjadi pemenang!~n', [Juara])
-    ).
+    ),
+    retractall(gameStarted).
