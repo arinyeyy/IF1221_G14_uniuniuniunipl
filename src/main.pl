@@ -270,7 +270,10 @@ pilihanMode:- write('Tersedia 2 mode permainan'),nl,
               (mode(1) ->
                 write('Permainan dimulai dalam mode klasik'),nl
                 ;
-                write('Permainan dimulai dalam mode turnamen'),nl).
+                mode(2)->
+                write('Permainan dimulai dalam mode turnamen'),nl
+                ;
+                write('input tidak valid!'),nl, pilihanMode).
 
 bikinTim :- mode(2),
     write('Membentuk tim secara acak...'),nl,nl,
