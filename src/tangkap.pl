@@ -1,7 +1,7 @@
 tangkap(Pemain) :-
     findAllKartuPemain(Pemain, Kartu),
     listLength(Kartu, N),
-    giliran(PemainTangkap),
+    giliran(PemainTangkap),!,
     (   N == 1 ->
         (   uniActivated(Pemain) ->
             write(Pemain), write(' tertangkap tidak menyerukan UNI.'), nl,
@@ -16,6 +16,6 @@ tangkap(Pemain) :-
             write('Terdapat kartu yang disembunyikan '), write(Pemain),nl,nl,
             write('Perintah tangkap tidak valid! '), write(PemainTangkap), write('mendapat 1 kartu penalti'),nl
         ;
-            write('Perintah tidak valid! Kartu '), write(Pemain), write(' tidak berjumlah satu.'), nl),
-        ambilBeberapaKartu(PemainTangkap, 1)
+            write('Perintah tidak valid! Kartu '), write(Pemain), write(' tidak berjumlah satu.'), nl,
+            ambilBeberapaKartu(PemainTangkap, 1))
     ), nomorGiliran(Num), beriGiliranNormal(Num).

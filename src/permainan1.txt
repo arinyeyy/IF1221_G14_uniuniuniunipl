@@ -1,12 +1,14 @@
- mode:klasik.
-urutan_pemain:['B','A'].
-giliran:'B'.
+mode:klasik.
+urutan_pemain:['A','B','C'].
+giliran:'A'.
 discard_top:hijau-5.
 warna_aktif:hijau.
 arah_permainan:kiri.
 status_uni:[].
-kartu('B'):[hitam-mimic,hitam-wild_draw_for,hitam-wild,hijau-6].
-kartu('A'):[merah-0].
-kartu_aksi_terakhir:hijau-skip-'A'-2.
-kartu_tersembunyi('B'):[].
+kartu('A'):[hijau-skip,hitam-mimic].
+kartu('B'):[hijau-2,kuning-7].
+kartu('C'):[biru-9].
+kartu_aksi_terakhir:hijau-skip-'C'-1.
 kartu_tersembunyi('A'):[].
+kartu_tersembunyi('B'):[].
+kartu_tersembunyi('C'):[].
