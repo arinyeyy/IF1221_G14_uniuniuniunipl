@@ -12,5 +12,5 @@ tangkap(Pemain) :-
         )
     ;
         write('Perintah tidak valid! Kartu '), write(Pemain), write(' tidak berjumlah satu.'), nl,
-        giliran(PemainTantang), ambil(PemainTantang, 1), !
+        giliran(PemainTantang), ambilBeberapaKartu(PemainTantang, 1), !
     ),skipTurn.
