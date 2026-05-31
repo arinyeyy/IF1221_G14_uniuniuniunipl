@@ -1,0 +1,12 @@
+ mode:klasik.
+urutan_pemain:['A','B'].
+giliran:'B'.
+discard_top:biru-reverse.
+warna_aktif:biru.
+arah_permainan:kiri.
+status_uni:[].
+kartu('A'):[hitam-mimic,biru-8,hijau-8,merah-7,hijau-5].
+kartu('B'):[merah-9,merah-5,biru-2,hijau-0,merah-reverse].
+kartu_aksi_terakhir:biru-reverse-'A'-0.
+kartu_tersembunyi('A'):[].
+kartu_tersembunyi('B'):[].

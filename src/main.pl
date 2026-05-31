@@ -51,7 +51,7 @@
 :- dynamic(gameStarted/0).
 :- dynamic(tantangActivated/1).
 :- dynamic(uniActivated/1).
-:- dynamic(tangkap/1).
+%:- dynamic(tangkap/1).
 :- dynamic(tangkapActivated/1).
 /* state game ini nyala kalau ada kondisi tertentu, lalu mati di giliran selanjutnya (tiap mainkanKartu hrs dimatiin) */
 /* nyalain: asserta; matiin: retractall */
