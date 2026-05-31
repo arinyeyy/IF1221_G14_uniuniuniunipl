@@ -124,6 +124,7 @@ pemenangTim(1) :-
 pemenangTim(2).
 
 endGame :-
+    retractall(gameStarted),
     giliran(Pemenang),
     \+kartuPemain(Pemenang, _), !,
     format('Permainan selesai! ~w menghabiskan semua kartunya!~n~n', [Pemenang]),
