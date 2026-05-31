@@ -75,6 +75,7 @@ loadTim(S) :-
     asserta(setim(T2P2, T2P1)).
 
 loadGame :-
+    \+gameStarted,
     write('Masukkan nama file yang akan dimuat: '), read(NamaFile), nl,
     sambung_txt(NamaFile, FileNama),
     (open(FileNama, read, S) ->
@@ -89,6 +90,7 @@ loadGame :-
         loadKartuTersembunyi(S),
         (mode(2) -> loadMode(S), loadTim(S) ; true),
         close(S),
+        asserta(gameStarted),
         format('Status permainan berhasil dimuat dari ~w.~n', [FileNama]),
         giliran(PemainTerkini),
         format('Melanjutkan giliran ~w.~n', [PemainTerkini])
