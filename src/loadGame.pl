@@ -52,6 +52,7 @@ loadStatusUNI(S) :-
   asserta(riwayatUNI(StatUni)).
 
 loadKartuPemain(S) :-
+  retractall(uniActivated(_)),
   allPemain(Urutan),
   listLength(Urutan, N),
   helperLoadKartuPemain(S, N).
@@ -61,7 +62,8 @@ helperLoadKartuPemain(S, N) :-
     read(S, kartu(Pemain):Line),
     Line = ListKartu,
     retractall(kartuPemain(Pemain,_)),
-    daftarkanKartuSatuPemain(Pemain, ListKartu),
+    daftarkanKartuSatuPemain(Pemain, ListKartu)
+    loadCekUni(Pemain, ListKartu),
     N1 is N-1,
     helperLoadKartuPemain(S, N1).
 
@@ -70,6 +72,14 @@ daftarkanKartuSatuPemain(Pemain, [Kartu|Sisa]) :-
     Kartu = W-J,
     asserta(kartuPemain(Pemain, kartu(W, J))),
     daftarkanKartuSatuPemain(Pemain, Sisa).
+
+loadCekUni(Pemain, ListKartu) :-
+  listLength(ListKartu, Len),
+  (
+    Len =:= 2 ->
+    asserta(uniActivated(Pemain))
+    ; true
+  ).
 
 loadKartuAksiTerakhir(S) :-
   read(S, kartu_aksi_terakhir:Term),
