@@ -25,6 +25,10 @@ tentukanAksi(Pemain) :-
     retractall(aksiYangDapatDilakukan(_, _)),
 
     % selalu bisa
+    assertz(aksiYangDapatDilakukan(Pemain, tangkap)),
+    assertz(aksiYangDapatDilakukan(Pemain, lihatCommand)),
+    assertz(aksiYangDapatDilakukan(Pemain, lihatKartu)),
+    assertz(aksiYangDapatDilakukan(Pemain, cekInfo)),
     assertz(aksiYangDapatDilakukan(Pemain, ambilKartu)),
 
     /*
@@ -50,13 +54,19 @@ tentukanAksi(Pemain) :-
     findAllKartuPemain(Pemain, ListKartu2), listLength(ListKartu2, Jumlah), Jumlah > 1, setim(Pemain, Teman),
     findAllKartuPemain(Teman, ListKartuTeman), listLength(ListKartuTeman, JumlahTeman), JumlahTeman > 1 ->
         assertz(aksiYangDapatDilakukan(Pemain, swapKartu))
+    ; true),
+
+    (\+kartuTersembunyi(Pemain, _),
+    findAllKartuPemain(Pemain, ListKartu3), listLength(ListKartu3, Jumlah3), Jumlah3 > 1 ->
+        assertz(aksiYangDapatDilakukan(Pemain, sembunyikanKartu))
+    ;   kartuTersembunyi(Pemain, _) ->
+        assertz(aksiYangDapatDilakukan(Pemain, tampilkanKartu))
     ; true).
     
 lihatCommand :-
     giliran(Pemain),
-    tentukanAksi(Pemain),
     write('Aksi utama yang tersedia:'), nl,
-    tulisAksiUtama(Pemain, 1, [mainkanKartu, ambilKartu, tantang, uni, swapKartu]),
+    tulisAksiUtama(Pemain, 1, [mainkanKartu, ambilKartu, tantang, uni, swapKartu, sembunyikanKartu, tampilkanKartu]),
     nl,
     write('Aksi pendukung yang tersedia:'), nl,
     write('1. tangkap'), nl,
@@ -64,7 +74,7 @@ lihatCommand :-
     write('3. lihatKartu'), nl,
     write('4. cekInfo'), nl.
 
-tulisAksiUtama(_, _, []) :- !.
+tulisAksiUtama(_, _, []).
 tulisAksiUtama(Pemain, N, [Aksi|T]) :-
     (aksiYangDapatDilakukan(Pemain, Aksi) ->
         format('~w. ~w~n', [N, Aksi]),
