@@ -18,23 +18,19 @@ sambung_txt(NamaFile, FileNama):-name(NamaFile, HasilFile),
                                  name(FileNama, Hasil). 
       
 createFile(FileNama):- 
-  open(FileNama, write, S),
-  writeMode(S),
-  writeUrutanPemain(S),
-  writeGiliran(S),
-  writeDiscardPileTop(S),
-  writeWarnaAktif(S),
-  writeArah(S),
-  writeStatusUNI(S),
-  writeKartu(S),
-  writeKartuAksiTerakhir(S),
-  writeKartuTersembunyi(S),
-  writeTim(S),
-  close(S).
-
-writeMode(S) :-
-    mode(Mode),
-    format(S, "mode:~w.~n", [Mode]).
+    open(FileNama, write, S), 
+    writeMode(S),
+    (mode(2)->writeTim(S);true),
+    writeUrutanPemain(S),
+    writeGiliran(S),
+    writeDiscardPileTop(S),
+    writeWarnaAktif(S),
+    writeArah(S),
+    writeStatusUNI(S),
+    writeKartu(S),
+    writeKartuAksiTerakhir(S),
+    writeKartuTersembunyi(S),
+    close(S).
 
 writeUrutanPemain(S) :- allPemain(Urutan),
                         format(S, 'urutan_pemain:~w.~n', [Urutan]).

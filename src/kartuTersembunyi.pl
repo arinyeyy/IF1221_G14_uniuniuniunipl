@@ -6,22 +6,19 @@ sembunyikanKartu(Index) :-
     LenAwal > 1,
     Indexriil is (Index - 1),
     getElement(ListKartuAwal, Indexriil, KartuYGTersembunyi),
-    retract(kartuPemain(PemainTerkini, KartuYGTersembunyi)),
     retractall(kartuTersembunyi(_,_)),
     asserta(kartuTersembunyi(PemainTerkini, KartuYGTersembunyi)).
 
 tampilkanKartu :-
     giliran(PemainTerkini),
-    kartuTersembunyi(PemainTerkini, KartuYGTersembunyi),
-    asserta(kartuPemain(PemainTerkini, KartuYGTersembunyi)),
+    kartuTersembunyi(PemainTerkini, _),
     retractall(kartuTersembunyi(_,_)).
 
-% cekInfo, uni, tangkap perlu tambahan.
+% cekInfo perlu tambahan,  uni & tangkap aman selama cek pake len.
 /*flow: 
 pemain yang sembunyiin kartu harus:
 1. ga pernah sembunyiin kartu sebelumnya
 2. punya kartu > 1
-kalo valid baru kartu di Index dihapus dari listKartuPemain, di masukkan ke kartuTersembunyi.
+kalo valid baru kartu di masukkan ke kartuTersembunyi, lihatKartu normal.
 
-tampilkan kartu: KartuYGTersembunyi dipindah dari kartuTersembunyi ke tangan pemain,
-bisa keliatan di cekInfo & lihatKartu*/
+tampilkan kartu: KartuYGTersembunyi dihapus, cekInfo balik normal jumlahnya*/
